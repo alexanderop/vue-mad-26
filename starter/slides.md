@@ -74,31 +74,13 @@ TRANSITION: For context, here's where I am -- and why.
 
 # Two weeks ago: Bun got rewritten in Rust
 
-<div class="text-center text-sm op-60 mb-6">A major JavaScript runtime. From Zig to Rust. Almost entirely by AI.</div>
+<div class="text-center text-sm op-60 mb-4">A major JavaScript runtime. From Zig to Rust. Almost entirely by AI.</div>
 
-<div class="grid grid-cols-3 gap-6 mt-8">
-
-<Card glow>
-<div class="text-xs op-50 mb-2">Lines of code</div>
-<div class="text-4xl font-bold" style="color: #ff6bed">~1M</div>
-<div class="text-sm mt-2 op-80">+1,009,257 / −4,024 in one PR</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-2">Time</div>
-<div class="text-4xl font-bold" style="color: #ff6bed">~10 days</div>
-<div class="text-sm mt-2 op-80">6,755 commits · 2,188 files</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-2">Reviewers</div>
-<div class="text-4xl font-bold" style="color: #ff6bed">Claude</div>
-<div class="text-sm mt-2 op-80">near-zero human review · ~13k unsafe blocks</div>
-</Card>
-
+<div class="flex justify-center">
+  <img src="/bun-rust-pr.png" class="max-h-80 rounded-lg shadow-lg" />
 </div>
 
-<div class="mt-8 text-center text-lg max-w-3xl mx-auto">
+<div class="mt-4 text-center text-lg max-w-3xl mx-auto">
   Whether it ships or it explodes — <strong style="color: #ff6bed">the industry just shifted.</strong>
 </div>
 
@@ -237,39 +219,6 @@ Then three buckets you can act on Monday -- Context, Feedback, Discoverability.
 Extending the agent layers on top.
 Close with where this is heading.
 
-TRANSITION: Quick scope check before we dive in.
--->
-
----
-
-# Scope check
-
-<div class="h-full flex items-center justify-center">
-  <div class="text-2xl text-center max-w-3xl leading-relaxed">
-    This talk is about the <span style="color: #ff6bed">substrate</span> under your Vue codebase —<br/>
-    not the workflow on top of it.
-  </div>
-</div>
-
-<!--
-Before we dive in -- I want to narrow the focus.
-
-OUT OF SCOPE.
-This is NOT a talk about spec-driven development.
-It is NOT a deep dive into my personal workflow -- I'll show a glimpse later, but the workflow is a separate talk.
-It is NOT about how teams should reorganize around agents.
-And it is NOT about the latest model or hottest tool.
-
-All of those are interesting -- separate talks.
-
-IN SCOPE.
-This is about FOUNDATIONS in a Vue codebase.
-Especially BROWNFIELD -- the real projects you already have, not greenfield demos.
-The stuff you do so the agent stops shipping slop every time you prompt it.
-Things you can act on MONDAY.
-
-The SUBSTRATE under your project. Not the workflow on top of it.
-
 TRANSITION: Let's start with what an agent is.
 -->
 
@@ -398,25 +347,11 @@ TRANSITION: So how big is this whole thing?
 -->
 
 ---
-layout: statement
 transition: fade-out
 ---
 
-# That's the whole agent.
-
-<v-click>
-
-# ~350 lines of TypeScript. No magic.
-
-</v-click>
-
-<div v-click class="mt-12 text-base op-60 max-w-3xl mx-auto text-center">
-  A function that calls itself<br/>
-  with the results of the previous call.
-</div>
-
-<div class="flex justify-center mt-8">
-  <img src="/nanocode-repo.png" class="max-h-80 rounded-lg shadow-lg" />
+<div class="h-full flex items-center justify-center">
+  <img src="/nanocode-repo.png" class="max-h-full max-w-full rounded-lg shadow-lg" />
 </div>
 
 <!--
@@ -445,30 +380,41 @@ TRANSITION: Three things the agent needs from your codebase.
 
 ---
 
-# The three buckets
+# The <span style="background: linear-gradient(90deg, #a855f7, #3b82f6, #14b8a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">three</span> buckets
 
-<div class="grid grid-cols-3 gap-6 mt-10">
+<div class="text-center text-sm op-60 -mt-2 mb-6">A practical framework for building reliable, maintainable agents.</div>
 
-<Card glow>
-<div class="text-xs op-50 mb-2">01</div>
-<div class="text-2xl font-bold mb-3" style="color: #ff6bed">Context</div>
-<div class="text-sm op-80">Does the agent know why things exist?</div>
-<div class="mt-4 text-xs op-50">Docs. AGENTS.md. ADRs. The rules of your house.</div>
-</Card>
+<div class="grid grid-cols-3 gap-6">
 
-<Card glow>
-<div class="text-xs op-50 mb-2">02</div>
-<div class="text-2xl font-bold mb-3" style="color: #ff6bed">Feedback loops</div>
-<div class="text-sm op-80">Does the agent know when it is wrong?</div>
-<div class="mt-4 text-xs op-50">Tests. Linting. Types. Your backpressure.</div>
-</Card>
+<BucketCard
+  number="01"
+  color="purple"
+  title="Context"
+  question="Does the agent know why things exist?"
+  footerText="Docs, AGENTS.md, ADRs, the rules of your house."
+  topIcon="document"
+  footerIcon="document"
+/>
 
-<Card glow>
-<div class="text-xs op-50 mb-2">03</div>
-<div class="text-2xl font-bold mb-3" style="color: #ff6bed">Discoverability</div>
-<div class="text-sm op-80">Can the agent find the right code?</div>
-<div class="mt-4 text-xs op-50">Modular monolith. Monorepo structure. Naming.</div>
-</Card>
+<BucketCard
+  number="02"
+  color="blue"
+  title="Feedback loops"
+  question="Does the agent know when it is wrong?"
+  footerText="Tests, linting, types, your backpressure."
+  topIcon="chat"
+  footerIcon="refresh"
+/>
+
+<BucketCard
+  number="03"
+  color="teal"
+  title="Discoverability"
+  question="Can the agent find the right code?"
+  footerText="Modular monolith, monorepo structure, naming."
+  topIcon="search"
+  footerIcon="sitemap"
+/>
 
 </div>
 
@@ -2480,28 +2426,30 @@ TRANSITION: Which is why your role itself is merging with others.
 
 # The role merge
 
-<div class="grid grid-cols-3 gap-4 mt-6">
+<div class="text-xs op-50 mb-4">There will only be four jobs — <span class="op-80">99d.substack.com/p/there-will-only-be-four-jobs</span></div>
 
-<Card glow>
-<div class="text-xs op-50 mb-2">BA's old job</div>
-<div class="text-sm font-bold" style="color: #ff6bed">Know what the business needs</div>
+<div class="grid grid-cols-2 gap-3">
+
+<Card glow class="!px-4 !py-3">
+<div class="text-sm font-bold mb-1" style="color: #ff6bed">Product eng / vibe coder / PM / slop cannon</div>
+<div class="text-xs op-70 leading-snug">High-velocity, high-tool-use generalist. Not restricted to product and eng — anyone can be commercial and product-minded.</div>
 </Card>
 
-<Card glow>
-<div class="text-xs op-50 mb-2">PO's old job</div>
-<div class="text-sm font-bold" style="color: #ff6bed">Decide what to build next</div>
+<Card glow class="!px-4 !py-3">
+<div class="text-sm font-bold mb-1" style="color: #ff6bed">SREs / infra / security / systems</div>
+<div class="text-xs op-70 leading-snug">So much STUFF being produced — need really good people stitching it together, making it stable, secure, robust.</div>
 </Card>
 
-<Card glow>
-<div class="text-xs op-50 mb-2">Dev's new job</div>
-<div class="text-sm font-bold" style="color: #ff6bed">Architect so an agent can build it</div>
+<Card glow class="!px-4 !py-3">
+<div class="text-sm font-bold mb-1" style="color: #ff6bed">Adults</div>
+<div class="text-xs op-70 leading-snug">Sometimes you need a grown-up to say "hey, come on." A governor on an otherwise accelerating org — legal, finance, etc.</div>
 </Card>
 
-</div>
+<Card glow class="!px-4 !py-3">
+<div class="text-sm font-bold mb-1" style="color: #ff6bed">Hot people</div>
+<div class="text-xs op-70 leading-snug">Sales, people, CX — present an easy UX to the world and are pleasant to be around. Many ways to be hot.</div>
+</Card>
 
-<div v-click class="mt-12 text-center text-2xl max-w-3xl mx-auto leading-snug">
-  You're not losing your job to AI.<br/>
-  <strong style="color: #ff6bed">You're absorbing two other jobs</strong> because AI made the typing free.
 </div>
 
 <!--
