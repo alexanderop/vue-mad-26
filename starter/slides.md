@@ -14,7 +14,6 @@ info: |
   work the same way good engineers do — and your codebase is their UX.
 
   By Alexander Opalic — alexop.dev
-hideFooter: true
 layout: image
 image: /madvue-2026.png
 backgroundSize: contain
@@ -44,26 +43,14 @@ TRANSITION: Quick intro...
 -->
 
 ---
-
-# About me
-
-<About />
-
-<!--
-Quick intro
-
-Alexander Opalic -- Vue 8+ years
-Otto Payments -- e-commerce
-Blog at alexop.dev -- mostly Vue and AI now
-
-TRANSITION: Before we start -- I want to know where YOU are on this journey.
--->
-
----
 layout: image
 image: /five-levels.png
 backgroundSize: contain
 ---
+
+<div class="absolute bottom-4 right-6 text-xs op-50">
+  Framing: Dan Shapiro · <em>The Five Levels: From Spicy Autocomplete to the Software Factory</em> · Jan 2026
+</div>
 
 <!--
 Dan Shapiro framed this beautifully. Six levels, like driving automation.
@@ -77,68 +64,10 @@ L5 software factory -- you manage goals, AI defines, ships, fixes.
 
 The question for you: where are you actually sitting?
 
-TRANSITION: Credit where it's due -- this framing is from a great blog post.
--->
-
----
-
-# Credit where it's due
-
-<div class="text-center text-sm op-60 mb-8">The "five levels" framing comes from an awesome blog post.</div>
-
-<div class="max-w-2xl mx-auto">
-
-<Card glow>
-<div class="flex items-start gap-4">
-  <div class="i-ph-article-bold flex-shrink-0 mt-1" style="color: #ff6bed; width: 40px; height: 40px" />
-  <div>
-    <div class="text-xl font-bold" style="color: #ff6bed">The Five Levels: From Spicy Autocomplete to the Software Factory</div>
-    <div class="text-sm op-70 mt-2">Dan Shapiro · January 2026</div>
-    <div class="mt-3 flex items-center gap-2 text-xs op-60">
-      <div class="i-ph-link" />
-      <span>danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory</span>
-    </div>
-  </div>
-</div>
-</Card>
-
-</div>
-
-<div class="mt-8 text-center op-70 text-sm max-w-2xl mx-auto">
-  Go read it. It's the cleanest mental model I've seen for where AI-assisted dev is heading.
-</div>
-
-<!--
-Quick credit before we move on.
-
-The framing -- the six levels, the driving analogy --
-that is all Dan Shapiro. January 2026 blog post.
-
+Quick credit -- the framing is all Dan Shapiro, Jan 2026 blog post.
 If you take ONE link from this talk, take that one.
-It is the cleanest mental model I have found
-for where AI-assisted development is heading.
 
 TRANSITION: For context, here's where I am -- and why.
--->
-
----
-layout: statement
-transition: fade-out
----
-
-# Making a talk about AI is really hard
-
-<!--
-[pause]
-
-The space moves every week.
-Half of what I write is stale by the time I hit publish.
-
-So this talk is NOT about the latest model or the hottest tool.
-It is about the part that does not change:
-your codebase.
-
-TRANSITION: And to prove the space moves every week -- exhibit A from two weeks ago.
 -->
 
 ---
@@ -270,15 +199,31 @@ transition: fade-out
 This is the question.
 The rest of the talk is the answer.
 
+TRANSITION: Quick intro -- then how we're going to answer that.
+-->
+
+---
+
+# About me
+
+<About />
+
+<!--
+Quick intro -- now that you know why you should care.
+
+Alexander Opalic -- Vue 8+ years
+Otto Payments -- e-commerce
+Blog at alexop.dev -- mostly Vue and AI now
+
 TRANSITION: Here is what we are going to do.
 -->
 
 ---
 
 <PyramidOutline :items="[
-  { title: 'The Problem', subtitle: 'Why AI 10x some codebases and breaks others' },
   { title: 'What an Agent Actually Is', subtitle: 'A loop, not a magic box' },
   { title: 'Context', subtitle: 'Does it know why things exist?' },
+  { title: 'Extending the Agent', subtitle: 'Skills and MCP — the agent’s reach' },
   { title: 'Feedback Loops', subtitle: 'Does it know when it is wrong?' },
   { title: 'Discoverability', subtitle: 'Can the agent find the right code?' },
   { title: 'Where this is heading', subtitle: 'The role merge' }
@@ -287,9 +232,10 @@ TRANSITION: Here is what we are going to do.
 <!--
 Six beats.
 
-Problem first. Then what an agent really is.
-Then three concrete buckets you can act on Monday.
-Then where this is going.
+Start with what an agent really is.
+Then three buckets you can act on Monday -- Context, Feedback, Discoverability.
+Extending the agent layers on top.
+Close with where this is heading.
 
 TRANSITION: Quick scope check before we dive in.
 -->
@@ -467,6 +413,10 @@ transition: fade-out
 <div v-click class="mt-12 text-base op-60 max-w-3xl mx-auto text-center">
   A function that calls itself<br/>
   with the results of the previous call.
+</div>
+
+<div class="flex justify-center mt-8">
+  <img src="/nanocode-repo.png" class="max-h-80 rounded-lg shadow-lg" />
 </div>
 
 <!--
@@ -980,7 +930,6 @@ TRANSITION: But there is one trick that is even bigger.
 -->
 
 ---
-layout: statement
 transition: fade-out
 ---
 
@@ -992,6 +941,14 @@ transition: fade-out
 
 </v-click>
 
+<div v-click class="mt-12 max-w-3xl mx-auto">
+
+<QuoteCard author="Michael Arnaldi" highlight="setting up repositories">
+  Most of my time as a programmer is now spent setting up repositories so that coding agents can act well inside them.
+</QuoteCard>
+
+</div>
+
 <!--
 [pause]
 
@@ -1000,29 +957,14 @@ Hot take.
 Agents are post-trained on READING CODE.
 Not reading prose docs.
 Stale docs in their training data are noise.
-
 Real source in your tree is signal.
 
 CLICK -- If you want the agent to write like VueUse,
 let it READ VueUse.
 
-TRANSITION: How.
--->
-
----
-layout: quote
-transition: fade
----
-
-<QuoteCard author="Michael Arnaldi" highlight="setting up repositories">
-  Most of my time as a programmer is now spent setting up repositories so that coding agents can act well inside them.
-</QuoteCard>
-
-<!--
-QUOTE: Michael Arnaldi -- "Vibe Engineering Effect Apps: Just Clone the Repo"
-
-The shift in his quote is the shift in the whole talk.
-Programming is now: configuring the room the agent works in.
+CLICK -- Michael Arnaldi nails the shift:
+"Setting up repositories so that coding agents can act well inside them."
+That is the job now. Programming is configuring the room the agent works in.
 
 TRANSITION: One command. Try it tomorrow.
 -->
@@ -1098,44 +1040,24 @@ TRANSITION: One more layer to context -- extending the agent itself.
 -->
 
 ---
+transition: fade
+---
 
-# Bonus: extending the agent
-
-<div class="grid grid-cols-2 gap-6 mt-8 max-w-4xl mx-auto">
-
-<Card glow>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Skills</div>
-<div class="text-sm op-70">Reusable recipes in <code>.claude/skills/</code>. Bake your repo's workflows — and your local CLIs — into the harness.</div>
-</Card>
-
-<Card glow>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">MCP servers</div>
-<div class="text-sm op-70">Give the agent eyes outside your repo. Figma → component. Linear → ticket. Live docs instead of stale training data.</div>
-</Card>
-
-</div>
-
-<div v-click class="mt-10 text-center max-w-3xl mx-auto">
-
-<Callout type="warn">
-Once your foundation is clean, these <strong>multiply your leverage</strong>.<br/>
-If your foundation is messy, they <strong>multiply your chaos</strong>.
-</Callout>
-
-</div>
+<PartSlide
+  part="3"
+  title="Extending the Agent"
+  subtitle="Skills and MCP — the agent's reach"
+/>
 
 <!--
-Two layers. That's it.
+[scan room]
 
-Skills -- reusable recipes for your repo AND your local tools.
-MCP servers -- the agent's eyes outside the repo.
+Bucket three. Once context is solid, you can extend the agent.
+Two layers: skills (recipes for your repo and local CLIs)
+and MCP servers (eyes outside the repo).
 
-CLICK -- The warning.
-
-If the foundation is clean, these are multipliers.
-If the foundation is messy, they make the mess WORSE faster.
-
-TRANSITION: Let me get concrete on the skills I actually run.
+The warning -- if the foundation is clean, these multiply leverage.
+If the foundation is messy, they multiply chaos.
 -->
 
 ---
@@ -1346,7 +1268,7 @@ transition: fade
 ---
 
 <PartSlide
-  part="3"
+  part="4"
   title="Feedback Loops"
   subtitle="Backpressure: tests, types, lint"
 />
@@ -1592,41 +1514,69 @@ TRANSITION: But there's a layer EVEN BEFORE commit -- inside the agent loop itse
 
 <div class="text-center text-sm op-60 mb-4">Lefthook is the gate at commit time. <strong>Hooks are guards mid-loop.</strong></div>
 
-<div class="grid grid-cols-2 gap-3">
+<div class="grid grid-cols-2 gap-4">
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">.claude/settings.json</div>
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{
+        "type": "command",
+        "command": ".claude/hooks/block-destructive.sh"
+      }]
+    }]
+  }
+}
+```
+
+<div class="text-xs font-bold mb-2 mt-3" style="color: #ff6bed">block-destructive.sh</div>
+
+```bash
+#!/usr/bin/env bash
+CMD=$(jq -r '.tool_input.command')
+if [[ "$CMD" =~ rm[[:space:]]+-rf|git[[:space:]]+push.*--force ]]; then
+  echo "Blocked: destructive command" >&2
+  exit 2   # tells the agent: NOT allowed, try again
+fi
+```
+
+</div>
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">What the agent sees</div>
+
+```text
+Agent: Bash("rm -rf node_modules")
+
+Hook → exit 2
+  stderr: Blocked: destructive command
+
+Agent: "I was blocked. Let me try
+        pnpm store prune instead."
+
+Agent: Bash("pnpm store prune") ✓
+```
+
+<div v-click class="mt-4">
 
 <Card variant="muted">
-<div class="text-xs font-bold mb-1" style="color: #ff6bed">PreToolUse(Bash)</div>
-<div class="text-sm">Block destructive commands: <code>rm -rf</code>, <code>git push --force</code>, <code>git reset --hard</code>.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs font-bold mb-1" style="color: #ff6bed">PreToolUse(Bash)</div>
-<div class="text-sm">Enforce <code>pnpm</code>. No npm/yarn slipping in.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs font-bold mb-1" style="color: #ff6bed">PreToolUse(Edit | Write)</div>
-<div class="text-sm">Protect generated files: <code>.nuxt/</code>, <code>components.d.ts</code>, <code>auto-imports.d.ts</code>.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs font-bold mb-1" style="color: #ff6bed">PreToolUse(Read | Bash)</div>
-<div class="text-sm">Block <code>.env</code> reads. Point the agent at <code>.env.example</code>.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs font-bold mb-1" style="color: #ff6bed">SessionStart</div>
-<div class="text-sm">Orient: print project type, branch, run <code>nuxi prepare</code> if types are stale.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs font-bold mb-1" style="color: #ff6bed">PostToolUse(Edit | Write)</div>
-<div class="text-sm"><strong>The one carve-out</strong>: <code>oxfmt</code>. Normalization, not feedback.</div>
+<div class="text-xs op-60 mb-1">Five more guards I run, same pattern</div>
+<div class="text-xs op-80">enforce pnpm · protect <code>.nuxt/</code> &amp; <code>*.d.ts</code> · block <code>.env</code> reads · <code>SessionStart</code> orient · <code>PostToolUse</code> oxfmt — the one carve-out</div>
 </Card>
 
 </div>
 
-<div v-click class="mt-6 text-center text-base op-80 max-w-3xl mx-auto">
+</div>
+
+</div>
+
+<div v-click class="mt-4 text-center text-sm op-80 max-w-3xl mx-auto">
   Don't put typecheck / lint / tests in <code>PostToolUse</code>. <span style="color: #ff6bed">That's what Lefthook is for.</span>
 </div>
 
@@ -1634,18 +1584,24 @@ TRANSITION: But there's a layer EVEN BEFORE commit -- inside the agent loop itse
 Lefthook is the gate at commit time.
 Hooks are the GUARDS mid-loop -- inside Claude Code itself.
 
-Five guards prevent disaster:
+Walk the LEFT slowly.
 
-1. Block destructive bash -- rm -rf, force push, hard reset. Exit code 2 = blocked.
-2. Enforce pnpm. No npm/yarn slipping into the lockfile.
-3. Protect generated files. The agent should NEVER hand-edit .nuxt/ or components.d.ts.
-4. Block .env reads -- including the bash escape hatches (cat, head, jq .env).
-   Point it at .env.example instead.
-5. SessionStart -- orient the agent. What project? What branch? Run nuxi prepare if stale.
+settings.json wires a PreToolUse hook on every Bash call.
+The hook is just a shell script. Reads the command from stdin,
+greps for rm -rf or force push. Exit code 2 = blocked.
+Exit 2 is the magic number: the agent sees it as "NOT allowed,
+try something else." Anything non-zero would just be an error.
 
-And ONE carve-out: oxfmt on PostToolUse(Edit|Write).
-Why? Because oxfmt is NORMALIZATION not feedback.
-Prettier is too slow -- 200-500ms per edit. Oxfmt is milliseconds.
+RIGHT -- what the agent actually sees.
+Tried rm -rf. Got blocked. Reasoned: "okay, try pnpm store prune."
+Ran THAT. Green.
+
+CLICK -- I have five more guards built the same way:
+- Enforce pnpm. No npm/yarn slipping into the lockfile.
+- Protect generated files. Never hand-edit .nuxt/ or components.d.ts.
+- Block .env reads, including cat/head/jq escape hatches. Point at .env.example.
+- SessionStart -- orient the agent: project type, branch, nuxi prepare if stale.
+- The one PostToolUse carve-out: oxfmt. Normalization, not feedback. Milliseconds, not seconds.
 
 CLICK -- The trap: don't put typecheck/lint/tests in PostToolUse.
 Drift. Intermediate broken state. Context cost. Slow signals.
@@ -1661,7 +1617,7 @@ transition: fade
 ---
 
 <PartSlide
-  part="4"
+  part="5"
   title="Discoverability"
   subtitle="One folder = one feature"
 />
@@ -2118,47 +2074,7 @@ The work is no longer "me typing."
 The work is "me deciding what should exist,
 and reviewing what came back."
 
-TRANSITION: I wrote the whole pipeline up. Here's the long version.
--->
-
----
-
-# I'm building this pipeline right now
-
-<div class="text-center text-sm op-60 mb-6">Six phases. HITL at the edges. AFK in the middle.</div>
-
-<div class="max-w-2xl mx-auto">
-
-<Card glow>
-<div class="flex items-start gap-4">
-  <div class="i-ph-article-bold flex-shrink-0 mt-1" style="color: #ff6bed; width: 40px; height: 40px" />
-  <div>
-    <div class="text-xl font-bold" style="color: #ff6bed">How to do AFK Coding</div>
-    <div class="text-sm op-70 mt-2">Alexander Opalic · the full write-up</div>
-    <div class="mt-3 flex items-center gap-2 text-xs op-60">
-      <div class="i-ph-link" />
-      <span>alexop.dev/posts/how-to-do-afk-coding</span>
-    </div>
-  </div>
-</div>
-</Card>
-
-</div>
-
-<div class="mt-8 text-center op-70 text-sm max-w-2xl mx-auto">
-  This is what I'm working on right now — turning my week into a repeatable pipeline.
-</div>
-
-<!--
-Quick aside before I show you my week.
-
-I wrote the whole pipeline up on my blog.
-This is what I am ACTIVELY building right now --
-turning the loop into something I can hand off.
-
-If you want the long version after the talk -- alexop.dev.
-
-TRANSITION: Here is the pipeline at a glance.
+TRANSITION: Here is what the loop looks like in practice.
 -->
 
 ---
@@ -2167,8 +2083,12 @@ image: /afk/pipeline.png
 backgroundSize: contain
 ---
 
+<div class="absolute bottom-4 right-6 text-xs op-50">
+  Full write-up: <span style="color: #ff6bed">alexop.dev/posts/how-to-do-afk-coding</span>
+</div>
+
 <!--
-Six phases.
+Six phases. HITL at the edges. AFK in the middle.
 
 Spec -- I align with the business. Human in the loop.
 Slice -- agent breaks the PRD into vertical sub-tickets.
@@ -2178,204 +2098,9 @@ QA -- a QA agent drives the real browser.
 Review -- I read the PR. HITL again.
 
 Human judgment at the edges. Agent execution in the middle.
+This is the glimpse -- full write-up on my blog if you want the long version.
 
-TRANSITION: But this only matters for one kind of ticket.
--->
-
----
-layout: image
-image: /afk/ticket-sizes.png
-backgroundSize: contain
----
-
-<!--
-Two kinds of tickets.
-
-One to three pointers fit in one Claude session.
-Paste it. Ship it. No pipeline needed.
-
-Five pointers are where things break.
-Paste them in one shot and three things go wrong:
-
-One -- context runs out. Auto-compact eats the bit you needed.
-Two -- no refactoring. The agent appends, never restructures.
-Three -- silent skip. Test fails round four, agent deletes the test.
-
-That is a workflow problem. Not a model problem.
-
-TRANSITION: So here is how the pipeline runs in my actual week.
--->
-
----
-
-# What my week actually looks like
-
-<div class="text-center text-sm op-60 mb-4">I haven't typed code into a feature in months. This is the loop.</div>
-
-<div class="space-y-3">
-
-<Card variant="muted">
-  <div class="flex items-center gap-4">
-    <div class="text-2xl font-bold op-50">01</div>
-    <div>
-      <div class="text-base font-bold">Paste the ticket into the feature branch</div>
-      <div class="text-xs op-60">The story, verbatim — not my summary.</div>
-    </div>
-  </div>
-</Card>
-
-<Card variant="muted">
-  <div class="flex items-center gap-4">
-    <div class="text-2xl font-bold op-50">02</div>
-    <div>
-      <div class="text-base font-bold">"Read the codebase. Ask me what's unclear."</div>
-      <div class="text-xs op-60">Catches missing scope before any code moves.</div>
-    </div>
-  </div>
-</Card>
-
-<Card variant="muted">
-  <div class="flex items-center gap-4">
-    <div class="text-2xl font-bold op-50">03</div>
-    <div>
-      <div class="text-base font-bold">Break into vertical-slice sub-tasks · ship small PRs</div>
-      <div class="text-xs op-60">Each slice is reviewable on its own.</div>
-    </div>
-  </div>
-</Card>
-
-<Card variant="muted">
-  <div class="flex items-center gap-4">
-    <div class="text-2xl font-bold op-50">04</div>
-    <div>
-      <div class="text-base font-bold">I review · Copilot reviews</div>
-      <div class="text-xs op-60">Two sets of eyes on every PR. Mine, plus an automated reviewer.</div>
-    </div>
-  </div>
-</Card>
-
-<Card glow>
-  <div class="flex items-center gap-4">
-    <div class="text-2xl font-bold" style="color: #ff6bed">05</div>
-    <div>
-      <div class="text-base font-bold" style="color: #ff6bed">Refactor pass in a fresh context</div>
-      <div class="text-xs op-70">No carryover bias from the implementation chat. Just: simplify.</div>
-    </div>
-  </div>
-</Card>
-
-</div>
-
-<!--
-This is concrete. Real. What my week actually looks like.
-
-01 -- I paste the ticket TEXT into the branch. Verbatim.
-The agent should see what business and devs agreed on,
-not my paraphrase of it.
-
-02 -- The most important step in the whole loop.
-"Read the codebase. Ask me what's unclear."
-Nine times out of ten the agent finds something we forgot.
-An edge case nobody specced. A field nobody mapped.
-This catches it BEFORE any code moves.
-
-03 -- Vertical slices. Each one ships independently. Small PRs.
-
-04 -- Two reviewers. Me, and an automated one -- Copilot or CodeRabbit.
-Different eyes catch different things.
-
-05 -- After it's green, a separate refactor pass in a FRESH context.
-No memory of the implementation conversation. No "I built this so it must be good" bias.
-Just: simplify this.
-
-I am the engineering manager of one IC. The IC is the agent.
-
-TRANSITION: Step 03 says "vertical slices." That word matters. Here's why.
--->
-
----
-layout: image
-image: /afk/slicing.png
-backgroundSize: contain
----
-
-<!--
-Vertical slicing.
-
-Horizontal: "frontend task" plus "backend task" plus "tests task."
-Each blocks the next. Nothing works until everything works.
-Compaction guaranteed.
-
-Vertical: one form step plus its endpoint plus its e2e test.
-Independently shippable. Survives if a sibling slice fails.
-Each one fits in a Ralph loop.
-
-For a booking wizard:
-slice 1 -- step 1 form plus draft endpoint plus test
-slice 2 -- step 2 form plus rooms endpoint plus test
-slice 3 -- step 3 form plus confirm endpoint plus test
-slice 4 -- wizard state machine plus its test
-
-Four sub-tickets. Each a one or two pointer.
-
-TRANSITION: Each slice runs in its own Ralph loop.
--->
-
----
-layout: image
-image: /afk/ralph-loop.png
-backgroundSize: contain
----
-
-<!--
-Ralph loop -- Geoffrey Huntley's technique.
-
-A while-loop that pipes a PROMPT.md file into a fresh Claude invocation.
-Every iteration starts with an empty context.
-Reads the prompt. Picks the next unchecked task.
-Ships it. Commits. Ticks the box. Exits.
-
-The reason it works -- context windows degrade as they fill.
-Resetting between iterations keeps every task in the model's smart zone.
-
-One bash one-liner:
-
-  while :; do
-    cat PROMPT.md | claude --dangerously-skip-permissions
-  done
-
-One per slice. Four slices, four worktrees, four agents.
-In parallel.
-
-TRANSITION: Tests pass doesn't mean the user can use it. That's QA.
--->
-
----
-layout: image
-image: /afk/agentic-qa.png
-backgroundSize: contain
----
-
-<!--
-Agentic QA.
-
-Vercel's agent-browser. A CLI that exposes the browser's
-accessibility tree as a snapshot the agent can read.
-No CSS selectors. No Playwright API. Just shell commands.
-
-A QA agent walks the user journey.
-Happy path. Negative paths.
-Screenshot at every state.
-Writes a markdown report with pass/fail per test case.
-
-I wake up to a report with screenshots.
-If everything is green, the PR is ready for human eyes.
-
-This is why a11y-clean DOM matters --
-if your buttons are divs, the QA agent is blind.
-
-TRANSITION: But the most important thing in this loop is what I do
-when the agent gets it WRONG.
+TRANSITION: The most important thing in this loop is what I do when it goes wrong.
 -->
 
 ---
@@ -2426,62 +2151,7 @@ Every PR review teaches the factory.
 
 The codebase gets smarter over time. You get more leverage every week.
 
-TRANSITION: So if THIS is the loop -- what does the TEAM look like?
--->
-
----
-
-# The software factory
-
-<div class="text-sm op-60 text-center mb-6">Teams shrink. Roles merge. Agents do the handoffs.</div>
-
-<div class="grid grid-cols-2 gap-6">
-
-<Card variant="muted">
-<div class="text-sm font-bold mb-3" style="color: rgba(255,255,255,0.7)">Old team — 12 people</div>
-<ul class="text-xs space-y-1 op-70">
-  <li>· Frontend, backend, QA, DevOps</li>
-  <li>· Designer, BA, PO, EM</li>
-  <li>· Handoffs everywhere</li>
-  <li>· Specialists optimize their slice</li>
-</ul>
-</Card>
-
-<Card glow>
-<div class="text-sm font-bold mb-3" style="color: #ff6bed">New team — 5 + agents</div>
-<ul class="text-xs space-y-1 op-70">
-  <li>· 5 generalists, end-to-end</li>
-  <li>· Agents do the handoffs</li>
-  <li>· Everyone is a builder</li>
-  <li>· Generalists optimize the <em>outcome</em></li>
-</ul>
-</Card>
-
-</div>
-
-<div v-click class="mt-8 text-center text-lg op-90">
-  <strong style="color: #ff6bed">Designers ship Vue components.</strong> PMs prototype flows.<br/>
-  BAs write the failing test that defines done.
-</div>
-
-<!--
-12 to 5. Generalists with agents as their execution layer.
-
-Old: each specialist optimizes their slice.
-New: generalists optimize the OUTCOME.
-
-CLICK
-
-The simple coder role -- translating a Jira ticket into a script setup block --
-that is the part that gets automated.
-
-What is LEFT is the part developers used to complain they weren't paid to do:
-understanding the business.
-
-Designers ship Vue components. PMs prototype flows.
-BAs write the failing test that defines done.
-
-TRANSITION: Which means the dev role itself is merging.
+TRANSITION: Which is why your role itself is merging with others.
 -->
 
 ---
@@ -2529,193 +2199,7 @@ Frame this as opportunity. Not threat.
 Vue devs who care about UX and product
 are CLOSER to this than backend devs grinding on microservices.
 
-TRANSITION: One warning before the close.
--->
-
----
-layout: image
-image: /afk/twenty-pipelines.png
-backgroundSize: contain
----
-
-<!--
-[pause]
-
-Here is the trap.
-
-Just because you CAN run twenty pipelines in parallel
-doesn't mean you should.
-
-Simon Willison: "AI doesn't reduce work -- it intensifies it."
-
-The point of AFK coding is to be AWAY from the keyboard.
-Not to triple-book your attention.
-
-Run as many pipelines as your REVIEW CAPACITY can absorb.
-Not more.
-
-TRANSITION: So what does your Vue project actually need for any of this to work?
--->
-
----
-
-# What your Vue project needs for this to work
-
-<div class="text-center text-sm op-60 mb-6">If any of these is missing, the pipeline stalls on that phase.</div>
-
-<div class="grid grid-cols-2 gap-4 mt-4">
-
-<Card glow>
-<div class="text-xs op-50 mb-1">For the spec phase</div>
-<div class="text-sm font-bold" style="color: #ff6bed">AGENTS.md + clear domain language</div>
-<div class="text-xs op-70 mt-2">So the interviewer agent asks the right questions.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-1">For Ralph loops</div>
-<div class="text-sm font-bold" style="color: #ff6bed">Feature-sliced folders + small files</div>
-<div class="text-xs op-70 mt-2">A vertical slice maps to a folder. Context stays small.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-1">For TDD inside the loop</div>
-<div class="text-sm font-bold" style="color: #ff6bed">Vitest + lint + types as backpressure</div>
-<div class="text-xs op-70 mt-2">Red turns green or the agent doesn't get to commit.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-1">For agentic QA</div>
-<div class="text-sm font-bold" style="color: #ff6bed">A11y-clean DOM the browser agent can read</div>
-<div class="text-xs op-70 mt-2">No div soup. Real buttons. Labelled inputs.</div>
-</Card>
-
-</div>
-
-<!--
-The pipeline is only as good as the codebase it runs on.
-
-Four prereqs.
-
-AGENTS.md plus clear domain language -- so the interviewer agent
-in the spec phase asks the RIGHT questions. Garbage spec, garbage everything.
-
-Feature-sliced folders -- so a vertical slice maps to a folder.
-Context stays small inside each Ralph loop.
-
-Vitest, lint, and types -- backpressure.
-Red turns green or the agent does not get to commit.
-
-A11y-clean DOM -- agent-browser reads the accessibility tree.
-Div soup is invisible to the QA agent.
-Real semantic markup is required.
-
-This is what the rest of the talk has been about.
-Context. Feedback loops. Discoverability.
-Same three buckets. Different layer of the pipeline.
-
-TRANSITION: One slide. Do this Monday.
--->
-
----
-
-# Do this Monday
-
-<div class="space-y-4 mt-8">
-
-<div v-click>
-<Card glow>
-<div class="flex items-center gap-4">
-  <div class="text-3xl font-bold" style="color: #ff6bed">01</div>
-  <div>
-    <div class="text-lg font-bold">Write an AGENTS.md</div>
-    <div class="text-sm op-70">Folder conventions. Naming. Design system. Test rules. One page is enough to start.</div>
-  </div>
-</div>
-</Card>
-</div>
-
-<div v-click>
-<Card glow>
-<div class="flex items-center gap-4">
-  <div class="text-3xl font-bold" style="color: #ff6bed">02</div>
-  <div>
-    <div class="text-lg font-bold">Add Vitest + one real test</div>
-    <div class="text-sm op-70">Backpressure starts with one failing test the agent can chase.</div>
-  </div>
-</div>
-</Card>
-</div>
-
-<div v-click>
-<Card glow>
-<div class="flex items-center gap-4">
-  <div class="text-3xl font-bold" style="color: #ff6bed">03</div>
-  <div>
-    <div class="text-lg font-bold">Restructure into a pnpm workspace</div>
-    <div class="text-sm op-70">Start with one feature module. Move the next when you touch it.</div>
-  </div>
-</div>
-</Card>
-</div>
-
-</div>
-
-<!--
-The hierarchy.
-
-CLICK -- If you do nothing else: write an AGENTS.md tomorrow.
-One page. Folders, naming, design system, tests. Done.
-
-CLICK -- If you do two things: add Vitest with one real test.
-Give the agent a signal it can chase.
-
-CLICK -- If you do three: restructure into a pnpm workspace.
-Pull ONE feature out. The rest follows when you touch it.
-
-TRANSITION: The closer.
--->
-
----
-layout: statement
-transition: fade-out
----
-
-# Clean code is sexy again —
-
-<v-click>
-
-# because now it pays you back twice.
-
-</v-click>
-
-<v-click>
-
-# Once when humans read it.
-
-</v-click>
-
-<v-click>
-
-# And once when agents do.
-
-</v-click>
-
-<!--
-[breathe] [look up]
-
-The patterns weren't wrong before.
-They're just non-optional now.
-
-The cost of bad code used to be human friction.
-Now it's your AI multiplier doesn't work.
-
-CLICK
-
-CLICK
-
-CLICK
-
-Mic drop. Q&A.
+TRANSITION: Thank you.
 -->
 
 ---
