@@ -375,6 +375,37 @@ and fall apart in another?
 
 That is what the rest of this talk is about.
 
+TRANSITION: First, the official framing -- then three buckets.
+-->
+
+---
+layout: quote
+transition: fade
+---
+
+<QuoteCard author="Anthropic engineering team" highlight="more than the model alone">
+  The ecosystem built around the model — the harness — determines how Claude Code performs more than the model alone.
+</QuoteCard>
+
+<div class="absolute bottom-4 right-6 text-xs op-50">
+  Source: <em>How Claude Code works in large codebases</em> · claude.com/blog · May 2026
+</div>
+
+<!--
+[pause]
+
+That is the Anthropic engineering team. Published this month.
+Not a hype tweet -- the team that ships Claude Code.
+
+The HARNESS matters more than the MODEL.
+Five extension points they name -- CLAUDE.md, hooks, skills, plugins, MCP.
+That is what you actually control.
+
+Stop optimizing prompts. Start configuring the room.
+
+The three buckets coming up are exactly that work --
+my organizing frame for the same five layers.
+
 TRANSITION: Three things the agent needs from your codebase.
 -->
 
@@ -612,6 +643,95 @@ TWO -- is it universal, or situational? Situational goes in /docs.
 
 CLICK -- The right context at the right time.
 
+TRANSITION: And the same idea scales to the filesystem.
+-->
+
+---
+
+# AGENTS.md is hierarchical
+
+<div class="text-center text-sm op-60 mb-4">Root for the big picture. Per-feature files for local gotchas. <strong>Claude walks the tree.</strong></div>
+
+<div class="grid grid-cols-2 gap-4">
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">Root — <code>AGENTS.md</code></div>
+
+```md
+# Project
+Run `pnpm lint && pnpm typecheck`.
+
+## Stack
+Vue 3, Pinia, Vitest, Vite
+
+## Structure
+- `src/features/*` — feature-sliced
+- `src/lib/` — shared layers
+
+## Further reading
+- `docs/testing-strategy.md`
+- `docs/data-model.md`
+```
+
+</div>
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">Feature — <code>features/workout/AGENTS.md</code></div>
+
+```md
+# Workout feature
+
+Active state lives in `useWorkoutMode`
+— NOT in the Pinia store.
+
+## Gotchas
+- Use `usePersistedRestTimer()` —
+  never read `restTimer.value` raw.
+- New components → `./components/`.
+- No imports from `../timers/`.
+```
+
+</div>
+
+</div>
+
+<div v-click class="mt-6 max-w-4xl mx-auto">
+
+<Callout type="info">
+Editing <code>features/workout/...</code>? Claude loads <strong>root + workout/AGENTS.md</strong>. <code>timers/AGENTS.md</code> never enters context. Progressive disclosure — built into the filesystem.
+</Callout>
+
+</div>
+
+<div class="absolute bottom-3 right-6 text-xs op-50">
+  Pattern: Anthropic, <em>How Claude Code works in large codebases</em> · claude.com/blog
+</div>
+
+<!--
+[breathe]
+
+The Bad/Good slide showed ONE AGENTS.md. The real strategy is HIERARCHICAL.
+
+Anthropic published this pattern this month -- the official playbook
+for large codebases. Root file for the big picture, subdirectory files
+for local conventions.
+
+Root AGENTS.md = stack, tooling, structure. Pointers only.
+Each feature/ gets its OWN AGENTS.md = local gotchas, store shape, rules.
+
+When the agent edits features/workout/something.vue, it walks UP the tree:
+- loads root AGENTS.md
+- loads features/workout/AGENTS.md
+- ignores timers, exercises, settings.
+
+CLICK -- Progressive disclosure baked into the filesystem.
+The folder boundary that contains the CODE also contains its DOCS.
+
+This pairs perfectly with feature-sliced architecture --
+we'll see the feature folders in the Discoverability section.
+
 TRANSITION: But the harness already has half of this built in.
 -->
 
@@ -647,6 +767,12 @@ layout: default
   </div>
   <div class="text-center text-lg">
     <strong style="color: #ff6bed">Memory belongs in the repo</strong> — not in <code>~/.claude/</code>.
+  </div>
+</div>
+
+<div v-click class="mt-4 max-w-3xl mx-auto">
+  <div class="text-center text-xs op-60">
+    Same rule for exclusions: commit <code>permissions.deny</code> in <code>.claude/settings.json</code> so <code>dist/</code>, <code>.nuxt/</code>, generated <code>*.d.ts</code> stay out of context — for everyone, not just you. <span class="op-50">(Anthropic, <em>How Claude Code works in large codebases</em>.)</span>
   </div>
 </div>
 
@@ -1226,6 +1352,10 @@ If the foundation is messy, they multiply chaos.
 <div class="text-xs op-70 mt-1"><strong>The factory-fixer.</strong> Distil today's lessons into <code>AGENTS.md</code>.</div>
 </Card>
 
+</div>
+
+<div v-click class="mt-6 text-center text-xs op-60 max-w-3xl mx-auto">
+  Skills can be <strong style="color: #ff6bed">path-scoped</strong> — drop one in <code>features/workout/.claude/skills/</code> and it only triggers when the agent works inside <code>workout/</code>. <span class="op-50">(Pattern: Anthropic, <em>How Claude Code works in large codebases</em>.)</span>
 </div>
 
 <!--
@@ -2391,6 +2521,17 @@ transition: fade-out
 A bug isn't a bug. It's a factory defect.<br/><br/>
 Don't just patch the PR — <strong style="color: #ff6bed">add the ESLint rule</strong>, <strong style="color: #ff6bed">update AGENTS.md</strong>, <strong style="color: #ff6bed">tighten the slash command</strong>. So the same mistake can't ship next week.
 </div>
+</Card>
+
+</div>
+
+<div v-click class="mt-6 max-w-3xl mx-auto">
+
+<Card variant="muted">
+<div class="text-sm op-80">
+The reverse also matters: <strong style="color: #ff6bed">delete rules newer models have outgrown.</strong> A constraint that helped an older model can hold a newer one back.
+</div>
+<div class="text-xs op-50 mt-3">Anthropic recommends a "meaningful configuration review every three to six months" — <em>How Claude Code works in large codebases</em>.</div>
 </Card>
 
 </div>
