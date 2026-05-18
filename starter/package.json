@@ -12,8 +12,9 @@
     "export:png": "slidev export --format png"
   },
   "dependencies": {
+    "@alexop/slidev-addon-utils": "workspace:*",
     "@alexop/slidev-theme-brand": "workspace:*",
-    "@alexop/slidev-addon-utils": "workspace:*"
+    "@iconify-json/mdi": "^1.2.3"
   },
   "devDependencies": {
     "@slidev/cli": "^52.13.0",

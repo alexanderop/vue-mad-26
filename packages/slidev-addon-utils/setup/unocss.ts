@@ -2,7 +2,9 @@ import { defineConfig, presetIcons } from 'unocss'
 import { getAllIconClasses } from '../utils/parseFileTree'
 
 export default () => defineConfig({
-  safelist: getAllIconClasses(),
+  safelist: [
+    ...getAllIconClasses(),
+  ],
   presets: [
     presetIcons(),
   ],

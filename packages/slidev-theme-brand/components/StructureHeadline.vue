@@ -67,9 +67,9 @@ const subtitle = computed(() => props.subtitle || currentConfig.value.defaultSub
 
 const themeClass = computed(() => {
   const themes = {
-    flat: 'bg-gradient-to-br from-pink-600/90 to-purple-600/90 border border-pink-400/30',
+    flat: 'bg-gradient-to-br from-pink-600/90 to-purple-600/90 border border-brand/30',
     micro: 'bg-gradient-to-br from-purple-600/90 to-indigo-700/90 border border-purple-400/30',
-    modular: 'bg-gradient-to-br from-pink-500/90 to-purple-500/90 border border-pink-300/30'
+    modular: 'bg-gradient-to-br from-pink-500/90 to-purple-500/90 border border-brand/30'
   }
   return themes[props.type]
 })
@@ -79,5 +79,27 @@ const themeClass = computed(() => {
 .structure-headline {
   backdrop-filter: blur(10px);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.shimmer {
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-12deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 </style>
