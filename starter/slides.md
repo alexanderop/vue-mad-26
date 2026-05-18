@@ -352,37 +352,10 @@ Magic is the wrong mental model.
 
 # How an AI agent works
 
-<div class="mt-8">
+<div class="flex justify-center mt-4">
 
-```
-loop:
-  read   →  grep   →  bash   →  edit
-       (+ whatever MCP tools you give it)
-```
+<AgentLoopDemo />
 
-</div>
-
-<div class="mt-8 text-lg">
-
-<v-click>
-
-It is bounded by:
-
-</v-click>
-
-<v-click>
-
-- A finite **context window**
-- Whatever **tools** you give it
-- Its ability to **verify its own changes**
-
-</v-click>
-
-</div>
-
-<div v-click class="mt-8 text-center text-xl op-90">
-  <strong style="color: #ff6bed">An agent is a new engineer joining the team.</strong><br/>
-  <span class="text-base op-70">It has to find things, understand context, and get feedback. Nothing more.</span>
 </div>
 
 <!--
@@ -398,7 +371,130 @@ CLICK -- The analogy that unlocks everything: a new engineer.
 You would not throw a new hire into your worst legacy module
 and expect a feature in a week. Same with agents.
 
-TRANSITION: Three things a new engineer needs.
+TRANSITION: Let me strip the magic. Here is what a tool actually is.
+-->
+
+---
+
+# A tool is just a function
+
+```ts
+const TOOLS = {
+  read: {
+    description: 'Read file with line numbers',
+    schema: { path: 'string' },
+    execute: async (args) => Bun.file(args.path).text()
+  },
+  bash: {
+    description: 'Run a shell command',
+    schema: { cmd: 'string' },
+    execute: async (args) => $`sh -c ${args.cmd}`.text()
+  },
+  edit: {
+    description: 'Find and replace in file',
+    schema: { path: 'string', old: 'string', new: 'string' },
+    execute: edit
+  }
+}
+```
+
+<div class="mt-6 text-center text-lg op-80">
+  Name · description · schema · function.<br/>
+  You hand the list to the LLM. <strong style="color: #ff6bed">It picks which one to call.</strong>
+</div>
+
+<!--
+A tool is a function. That is the whole concept.
+
+Name. Description. Schema. The code that runs.
+
+The LLM does not "know" how to read files.
+You give it a function called read, you describe what it does,
+and you let it call it.
+
+That is the entire mechanism.
+
+TRANSITION: And the loop is even simpler.
+-->
+
+---
+
+# The loop is just recursion
+
+```ts
+async function agentLoop(messages, systemPrompt) {
+  const response = await callApi(messages, systemPrompt, TOOLS)
+  const toolResults = await runTools(response.content)
+
+  // No tools called → the agent is done
+  if (toolResults.length === 0) return messages
+
+  // Tools called → loop with results appended
+  return agentLoop(
+    [...messages, response, toolResults],
+    systemPrompt
+  )
+}
+```
+
+<div class="mt-6 text-center text-lg op-80">
+  Call API · run tools · <strong style="color: #ff6bed">repeat until no more tool calls.</strong>
+</div>
+
+<!--
+And the loop is just recursion.
+
+Call the API. Run whatever tools the model asked for.
+Loop again with the results appended to the conversation.
+
+When the model returns no tool calls -- it is done.
+
+That is the entire agent architecture.
+Everyone is talking about agents like they are a mystery. They are not.
+
+TRANSITION: So how big is this whole thing?
+-->
+
+---
+layout: statement
+transition: fade-out
+---
+
+# That's the whole agent.
+
+<v-click>
+
+# ~350 lines of TypeScript. No magic.
+
+</v-click>
+
+<div v-click class="mt-12 text-base op-60 max-w-3xl mx-auto text-center">
+  A function that calls itself<br/>
+  with the results of the previous call.
+</div>
+
+<!--
+[pause]
+
+That is nanocode. I built it to understand Claude Code from the inside.
+~350 lines of TypeScript.
+
+CLICK
+
+CLICK
+
+A function that calls itself with the results of the previous call.
+
+Once you see an agent this way, the question stops being
+"how does the magic work?"
+
+The question becomes:
+why does the same simple loop work brilliantly in one repo
+and fall apart in another?
+
+That is what the rest of this talk is about.
+
+TRANSITION: Three things the agent needs from your codebase.
 -->
 
 ---
@@ -904,7 +1000,7 @@ Bucket three. The one that compounds.
   <li>· Uses the existing repo client</li>
   <li>· Imports from `@repo/ui` primitives</li>
   <li>· Drops the file in `packages/features/cart/`</li>
-  <li>· Uses `<script setup>` and Pinia like the rest</li>
+  <li>· Uses `&lt;script setup&gt;` and Pinia like the rest</li>
   <li>· Adds nothing it does not need</li>
 </ul>
 </Card>
