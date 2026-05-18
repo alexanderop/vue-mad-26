@@ -568,18 +568,6 @@ transition: fade-out
 
 # Clean code isn't nice-to-have anymore.
 
-<v-click>
-
-# It's the substrate AI runs on.
-
-</v-click>
-
-<div v-click class="mt-12 text-base op-60 max-w-3xl mx-auto text-center">
-  Modular boundaries. Tests. Docs.<br/>
-  The patterns that made code maintainable for humans<br/>
-  are the same patterns that make code legible for agents.
-</div>
-
 <!--
 [pause before speaking. let it land]
 
@@ -927,6 +915,92 @@ TRANSITION: But there is one trick that is even bigger.
 -->
 
 ---
+
+# What `brain/` actually looks like
+
+<div class="text-center text-sm op-60 mb-6">One folder. One index. The <code>SessionStart</code> hook injects <code>index.md</code> — the agent follows wikilinks only when relevant.</div>
+
+<div class="grid grid-cols-2 gap-6">
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-2">The vault on disk</div>
+
+```text
+brain/
+├── codebase/
+│   ├── custom-components.md
+│   ├── slide-gotchas.md
+│   ├── theme-system.md
+│   ├── testing-strategy.md
+│   └── …
+├── plans/
+│   ├── preparser-extensions.md
+│   └── roadmap.md
+├── principles/
+│   ├── guard-the-context-window.md
+│   ├── fix-root-causes.md
+│   ├── subtract-before-you-add.md
+│   └── …
+├── codebase.md
+└── index.md
+```
+
+</Card>
+
+<Card glow>
+<div class="text-xs op-60 mb-2"><code>index.md</code> — the only file always in context</div>
+
+```md
+# Brain
+
+## Codebase
+- [[codebase]]
+- [[codebase/theme-system]]
+- [[codebase/slide-gotchas]]
+- [[codebase/testing-strategy]]
+
+## Plans
+- [[plans/roadmap]]
+- [[plans/preparser-extensions]]
+
+## Principles
+- [[principles/guard-the-context-window]]
+- [[principles/fix-root-causes]]
+- [[principles/subtract-before-you-add]]
+- [[principles/prove-it-works]]
+```
+
+</Card>
+
+</div>
+
+<div v-click class="mt-6 text-center text-base op-90">
+  Agent reads <code>index.md</code> first → <strong style="color: #ff6bed">only opens the wikilink it needs.</strong> Whole vault available, almost nothing loaded.
+</div>
+
+<!--
+This is what the strategy looks like on disk.
+
+LEFT -- one folder. brain/.
+codebase/ -- what THIS repo actually does. Theme system, gotchas, testing.
+plans/ -- what we are working towards.
+principles/ -- the 16 from the last slide.
+
+RIGHT -- one file. index.md.
+It is just a list of wikilinks. No content inlined.
+
+The SessionStart hook cats index.md into every conversation.
+The agent sees the MAP, not the territory.
+When it needs theme details, it follows [[codebase/theme-system]].
+When it does not, that file never enters the context window.
+
+CLICK -- whole vault available. Almost nothing loaded.
+That is guard-the-context-window in practice.
+
+TRANSITION: But there is one trick that is even bigger.
+-->
+
+---
 layout: statement
 transition: fade-out
 ---
@@ -1010,6 +1084,14 @@ git subtree add --prefix=repos/vueuse \
 
 </div>
 
+<div v-click class="mt-6 max-w-4xl mx-auto">
+
+<Callout type="info">
+<strong>Pro tip — stealing feedback loops:</strong> Clone a repo you admire (e.g. <code>github.com/npmx-dev/npmx.dev</code>) and ask the agent <em>"how do they test their Nuxt project?"</em>. Then copy the approach into your repo. Pattern matching beats reading docs.
+</Callout>
+
+</div>
+
 <!--
 One command. Vendors VueUse into your repo as a squashed subtree.
 
@@ -1025,6 +1107,11 @@ No "did you forget to init"? Just files.
 Result -- the agent's pattern matching is now anchored on real code.
 Pattern matching beats prompting.
 
+CLICK -- Pro tip. Same trick works for STEALING FEEDBACK LOOPS.
+Clone a repo you admire -- npmx.dev is a great Nuxt example.
+Ask the agent "how do they test their Nuxt project?"
+Copy the approach into your repo. Pattern matching beats reading docs.
+
 I packaged this as a Claude Code skill: clone-repo.
 Vendors any repo, wires it into AGENTS.md, done.
 
@@ -1035,31 +1122,21 @@ TRANSITION: One more layer to context -- extending the agent itself.
 
 # Bonus: extending the agent
 
-<div class="grid grid-cols-2 gap-6 mt-4">
+<div class="grid grid-cols-2 gap-6 mt-8 max-w-4xl mx-auto">
 
 <Card glow>
-<div class="text-sm font-bold mb-2" style="color: #ff6bed">Slash commands</div>
-<div class="text-xs op-70">Bake your repo's workflows into the harness. <code>/spec</code>, <code>/review</code>, <code>/check</code>.</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Skills</div>
+<div class="text-sm op-70">Reusable recipes in <code>.claude/skills/</code>. Bake your repo's workflows — and your local CLIs — into the harness.</div>
 </Card>
 
 <Card glow>
-<div class="text-sm font-bold mb-2" style="color: #ff6bed">Chat modes / personas</div>
-<div class="text-xs op-70">Different personas for different jobs — designer, reviewer, debugger.</div>
-</Card>
-
-<Card glow>
-<div class="text-sm font-bold mb-2" style="color: #ff6bed">MCP servers</div>
-<div class="text-xs op-70">Figma → component. CloudWatch → incidents. Linear → ticket context.</div>
-</Card>
-
-<Card glow>
-<div class="text-sm font-bold mb-2" style="color: #ff6bed">Persistent memory</div>
-<div class="text-xs op-70"><code>brainmaxxing</code> — an Obsidian vault the agent reads at session start and writes to when it learns.</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">MCP servers</div>
+<div class="text-sm op-70">Give the agent eyes outside your repo. Figma → component. Linear → ticket. Live docs instead of stale training data.</div>
 </Card>
 
 </div>
 
-<div v-click class="mt-8 text-center max-w-3xl mx-auto">
+<div v-click class="mt-10 text-center max-w-3xl mx-auto">
 
 <Callout type="warn">
 Once your foundation is clean, these <strong>multiply your leverage</strong>.<br/>
@@ -1069,26 +1146,24 @@ If your foundation is messy, they <strong>multiply your chaos</strong>.
 </div>
 
 <!--
-Quick tour. Not deep dives.
+Two layers. That's it.
 
-Slash commands -- recipe book for your repo.
-Chat modes -- different brain for different jobs.
-MCP servers -- give the agent eyes outside your repo. Figma. AWS. Linear.
-Memory -- AGENTS.md is the STATIC onboarding doc. Brainmaxxing is the LIVING memory.
+Skills -- reusable recipes for your repo AND your local tools.
+MCP servers -- the agent's eyes outside the repo.
 
 CLICK -- The warning.
 
 If the foundation is clean, these are multipliers.
 If the foundation is messy, they make the mess WORSE faster.
 
-TRANSITION: Let me get concrete on slash commands -- the ones I run every day.
+TRANSITION: Let me get concrete on the skills I actually run.
 -->
 
 ---
 
-# The slash commands I actually run
+# Skills: a markdown file the agent reads on demand
 
-<div class="text-center text-sm op-60 mb-4">From <code>github.com/alexanderop/dotfiles</code>. Drop into any repo's <code>.claude/commands/</code>.</div>
+<div class="text-center text-sm op-60 mb-4">A skill is a <code>.md</code> file in <code>.claude/skills/</code> with a trigger phrase. Type the phrase — the agent loads the recipe.</div>
 
 <div class="grid grid-cols-2 gap-3">
 
@@ -1102,9 +1177,9 @@ TRANSITION: Let me get concrete on slash commands -- the ones I run every day.
 <div class="text-xs op-70 mt-1">Open a PR with summary + test plan, derived from the diff.</div>
 </Card>
 
-<Card variant="muted">
+<Card glow>
 <div class="font-mono text-sm font-bold" style="color: #ff6bed">/check</div>
-<div class="text-xs op-70 mt-1">Fan out parallel reviewers — Vue, a11y, security, perf, tests.</div>
+<div class="text-xs op-70 mt-1"><strong>Vue + a11y + perf reviewers in parallel</strong>, on every diff.</div>
 </Card>
 
 <Card variant="muted">
@@ -1135,17 +1210,154 @@ TRANSITION: Let me get concrete on slash commands -- the ones I run every day.
 </div>
 
 <!--
-These are MY commands. Live in my dotfiles -- github.com/alexanderop/dotfiles.
+A skill is just a markdown file in .claude/skills/.
+You type the trigger phrase. The agent loads the recipe.
 
-/push and /pr remove the friction in the shipping loop.
-/check fans out five specialized reviewers on every diff -- in parallel.
-/fix-pipeline reads CI logs and plans the fix BEFORE touching code.
-/research spawns a research subagent across web + docs + codebase.
-/interview is backwards -- the agent grills ME until the plan is sharp.
+/push and /pr -- my two most-used. Remove all friction from shipping.
+/check -- the killer for Vue work. Vue patterns + a11y + perf + tests.
+   All in parallel. Every diff. Before I look at it.
+/fix-pipeline -- reads CI logs and plans the fix BEFORE touching code.
+/review-coderabbit -- triage CodeRabbit comments, only fix the valid ones.
+/research -- subagent across web + docs + codebase.
+/interview -- the agent grills ME until the plan is sharp.
 
 The killer is /learn.
 After a hard session, distil what the agent learned the hard way
-back into AGENTS.md. This is fix-the-factory in action.
+back into AGENTS.md. Fix-the-factory in action.
+
+TRANSITION: But shipped skills are just the start. The real power is writing your OWN.
+-->
+
+---
+
+# Write your own: wrap the CLI you already use
+
+<div class="text-center text-sm op-60 mb-6">A skill is just a recipe. If you can run it locally, the agent can too.</div>
+
+<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+<div>
+
+```md
+---
+description: Debug prod with CloudWatch logs
+trigger: /debug-prod
+---
+
+When the user types /debug-prod <feature>:
+
+1. Run `aws logs tail /aws/lambda/<fn> --since 30m`
+2. Grep for ERROR / WARN around the timestamp
+3. Cross-reference with the Vue component
+   the user is editing
+4. Propose a fix as a diff
+```
+
+</div>
+
+<div>
+
+<div class="text-base font-bold mb-3" style="color: #ff6bed">The pattern</div>
+<div class="text-sm op-80 leading-relaxed">
+You already know <code>aws</code>, <code>gh</code>, <code>kubectl</code>.<br/>
+For UI testing: <code>agent-browser</code> — a CLI that drives a real browser, captures screenshots and console.<br/><br/>
+Write a 10-line skill that wraps the flow you do by hand. The agent runs the same commands — and now it can read the output, correlate, and propose a fix.
+</div>
+
+<div v-click class="mt-6">
+
+<Callout type="info">
+<strong>No MCP server needed.</strong> No new infra. Just markdown + the CLIs on your laptop.
+</Callout>
+
+</div>
+
+<div class="mt-4 text-xs op-60">
+QA-as-an-agent reference: <code>github.com/alexanderop/explore-qa</code>
+</div>
+
+</div>
+
+</div>
+
+<!--
+This is the unlock.
+
+You don't need an MCP server for every integration.
+You don't need a fancy plugin.
+
+If you can run "aws logs tail" in your terminal,
+write a 10-line skill that runs it for you.
+The agent executes the same command, reads the output, correlates with the code.
+
+Same pattern for kubectl, gh, terraform, docker, anything you already use.
+
+For UI testing -- agent-browser is the CLI I reach for.
+Full reference repo: github.com/alexanderop/explore-qa.
+Clone it, see how QA-as-an-agent actually works.
+
+CLICK -- the callout. No MCP needed. Just markdown.
+
+TRANSITION: That said -- for some things, MCP servers ARE the right tool.
+-->
+
+---
+
+# MCP servers: the agent's eyes outside the repo
+
+<div class="text-center text-sm op-60 mb-6">Use these when the data lives in a system, not behind a CLI.</div>
+
+<div class="grid grid-cols-2 gap-4 max-w-5xl mx-auto">
+
+<Card glow>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">context7</div>
+<div class="text-sm op-80 mt-1">Live docs for Vue, Nuxt, Vite, Pinia, VueUse. No more agents writing against 2-year-old APIs.</div>
+</Card>
+
+<Card glow>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Figma</div>
+<div class="text-sm op-80 mt-1">Designer hands you a frame URL — agent reads tokens, spacing, variants, scaffolds the <code>&lt;script setup&gt;</code> component.</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Sentry</div>
+<div class="text-sm op-80 mt-1">Agent reads the stack trace, breadcrumbs, and user context — then opens the file it crashed in.</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Linear / GitHub</div>
+<div class="text-sm op-80 mt-1">Pull ticket context, parent epics, related PRs — without you pasting them into chat.</div>
+</Card>
+
+</div>
+
+<div v-click class="mt-8 text-center max-w-3xl mx-auto">
+
+<Callout type="warn">
+<strong>Rule of thumb:</strong> if there's a CLI for it, write a skill. If there isn't, reach for an MCP server.
+</Callout>
+
+</div>
+
+<!--
+MCP servers are for data behind a UI, not data behind a CLI.
+
+context7 is the one I use every day for Vue work.
+The agent's training data is months old. Vue, Nuxt, Vite move faster than that.
+context7 pulls LIVE docs at query time. No more code against deprecated APIs.
+
+Figma is the design-handoff killer.
+Frame URL goes in, scaffolded Vue component comes out.
+Tokens, spacing, variants -- the agent reads them straight from the design.
+
+Sentry MCP pulls the stack trace, breadcrumbs, and user context.
+The agent jumps straight to the file that crashed.
+For browser testing -- use the agent-browser CLI as a skill, not an MCP.
+
+Linear and GitHub MCP pull ticket context without copy-paste.
+
+CLICK -- the rule of thumb.
+CLI? Write a skill. No CLI? MCP server.
 
 TRANSITION: Context is the foundation. Now the second bucket -- feedback loops.
 -->
