@@ -666,14 +666,82 @@ TWO -- is it universal, or situational? Situational goes in /docs.
 
 CLICK -- The right context at the right time.
 
-TRANSITION: But you don't even need to write this yourself.
+TRANSITION: But the harness already has half of this built in.
+-->
+
+---
+layout: default
+---
+
+# Every harness ships with "memory" — but it's local
+
+<div class="text-center text-sm op-60 mb-6">Claude Code, Cursor, Codex — they all carry context between sessions. <strong>On your machine.</strong></div>
+
+<div class="grid grid-cols-2 gap-6">
+
+<Card glow>
+<div class="text-xs op-50 mb-2">You write it</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed"><code>CLAUDE.md</code></div>
+<div class="text-xs op-80">Project-level instructions. Loaded every session.</div>
+<div class="mt-2 text-xs op-50">Lives in the repo. Already shared. ✅</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-2">Claude writes it</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Auto-memory</div>
+<div class="text-xs op-80">Claude accumulates corrections, preferences, gotchas.</div>
+<div class="mt-2 text-xs op-50"><code>~/.claude/projects/&lt;proj&gt;/memory/</code> — only on your laptop. ❌</div>
+</Card>
+
+</div>
+
+<div v-click class="mt-8 max-w-3xl mx-auto">
+  <div class="text-center text-base mb-3">
+    Your teammate doesn't see it. The cloud agent doesn't see it. The next contributor starts from zero.
+  </div>
+  <div class="text-center text-lg">
+    <strong style="color: #ff6bed">Memory belongs in the repo</strong> — not in <code>~/.claude/</code>.
+  </div>
+</div>
+
+<!--
+Every harness has this. Claude Code calls it Memory.
+Cursor calls them Memories. Codex has its own variant.
+
+Two halves -- shown right here:
+
+LEFT -- CLAUDE.md. The instructions YOU write. Lives in the repo.
+Every teammate gets it. Every cloud agent gets it. This part works.
+
+RIGHT -- auto-memory. The corrections and preferences Claude
+accumulates *itself*. Read the Claude docs -- it's a real feature.
+The path is right there: tilde slash dot-claude slash projects.
+
+That second half is the problem.
+
+CLICK
+
+Your teammate spins up the repo -- starts from zero.
+The AFK agent in the cloud -- starts from zero.
+You join a new laptop -- start from zero.
+
+The intelligence is real. It's just locked to one machine.
+
+Memory belongs in the repo. Same as CLAUDE.md.
+And that is exactly what the next slide does.
+
+TRANSITION: brainmaxxing commits the missing half.
 -->
 
 ---
 
 # Don't write it yourself — copy `brainmaxxing`
 
-<div class="text-center text-sm op-60 mb-6"><code>github.com/poteto/brainmaxxing</code> — persistent memory + skills + hooks for Claude Code.</div>
+<div class="text-center text-sm op-60 mb-4"><code>github.com/poteto/brainmaxxing</code> — persistent memory + skills + hooks for Claude Code.</div>
+
+<div class="flex justify-center mb-6">
+  <img src="/brainmaxxing-repo.png" class="max-h-40 rounded-lg shadow-lg" />
+</div>
 
 <div class="grid grid-cols-3 gap-5">
 
@@ -726,6 +794,110 @@ files in brain/ change. The factory runs itself.
 CLICK -- The install is wild. No npm install. No script.
 You literally tell Claude "install brainmaxxing from this URL"
 and the agent does the copying.
+
+TRANSITION: But the cards are not the magic. The skills are.
+The six skills are what keep `brain/` alive.
+-->
+
+---
+layout: default
+---
+
+# Six skills that keep `brain/` alive
+
+<div class="text-center text-sm op-60 mb-5">Each skill reads the vault, writes back to it, or sharpens what's there.</div>
+
+<div class="grid grid-cols-3 gap-3">
+
+<Card glow>
+<div class="text-xs op-50 mb-1"><code>/plan</code></div>
+<div class="text-base font-bold mb-1" style="color: #ff6bed">Plan</div>
+<div class="text-xs op-80">Phased plan written to <code>brain/plans/</code>. Planning only — no code.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1"><code>/review</code></div>
+<div class="text-base font-bold mb-1" style="color: #ff6bed">Review</div>
+<div class="text-xs op-80">Critique a PR or plan against <code>brain/principles/</code>. No edits.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1"><code>/reflect</code></div>
+<div class="text-base font-bold mb-1" style="color: #ff6bed">Reflect</div>
+<div class="text-xs op-80">Distil this session's mistakes &amp; learnings back into <code>brain/</code>.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1"><code>/meditate</code></div>
+<div class="text-base font-bold mb-1" style="color: #ff6bed">Meditate</div>
+<div class="text-xs op-80">Audit the vault. Prune stale notes. Find cross-cutting principles.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1"><code>/ruminate</code></div>
+<div class="text-base font-bold mb-1" style="color: #ff6bed">Ruminate</div>
+<div class="text-xs op-80">Mine past conversations for patterns that never got written down.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1"><code>/brain</code></div>
+<div class="text-base font-bold mb-1" style="color: #ff6bed">Brain</div>
+<div class="text-xs op-80">Direct read/write of vault files. The primitive the others build on.</div>
+</Card>
+
+</div>
+
+<div v-click class="mt-8">
+  <div class="text-center text-xs op-60 mb-3">The loop that compounds</div>
+  <div class="flex items-center justify-center gap-2 text-sm flex-wrap">
+    <code style="color: #ff6bed">/plan</code>
+    <span class="op-40">→</span>
+    <span class="op-80">code</span>
+    <span class="op-40">→</span>
+    <code style="color: #ff6bed">/review</code>
+    <span class="op-40">→</span>
+    <code style="color: #ff6bed">/reflect</code>
+    <span class="op-40 mx-2">·····  weekly  ·····</span>
+    <code style="color: #ff6bed">/meditate</code>
+    <span class="op-40">+</span>
+    <code style="color: #ff6bed">/ruminate</code>
+  </div>
+  <div class="text-center text-xs op-50 mt-3">Every loop ends with the vault sharper than it started.</div>
+</div>
+
+<!--
+The cards on the previous slide were the boxes. These are the verbs.
+Six skills, and each one either reads brain/, writes to brain/, or
+cleans brain/. That is the whole game.
+
+Per task:
+
+/plan -- before I touch code on anything bigger than a one-file fix.
+It reads brain/principles/, then writes a phased plan to brain/plans/.
+Planning only. The plan is the deliverable.
+
+Code. The agent now has a plan grounded in *my* principles, not
+generic advice from training data.
+
+/review -- after the code is written. Loads the same principles
+fresh, critiques the diff against them. No edits, just the review.
+
+/reflect -- end of session. Did I correct the agent? Did I learn
+something new about the codebase? /reflect distils it into brain/
+so next session starts ahead of where this one ended.
+
+CLICK
+
+Periodically -- maybe weekly:
+
+/meditate audits the vault. Prunes stale notes. Asks "is this still
+true?" of every entry. Cleans the room.
+
+/ruminate goes the other direction -- mines old Claude conversations
+for patterns that never made it into brain/. Recovers lost knowledge.
+
+That is the compounding piece. Every loop, brain/ gets a little
+sharper. Next session, the agent starts from there.
 
 TRANSITION: And the bonus -- it ships with 16 principles built in.
 -->
@@ -1290,26 +1462,9 @@ it will ship whatever compiles.
 
 </v-click>
 
-<div v-click class="mt-12 grid grid-cols-3 gap-6">
-
-<Card glow>
-<div class="i-ph-test-tube-bold mb-3" style="color: #ff6bed; width: 28px; height: 28px" />
-<div class="text-lg font-bold">Vitest</div>
-<div class="text-xs op-70 mt-2">Fast. Watch mode. Browser mode. The agent's first signal.</div>
-</Card>
-
-<Card glow>
-<div class="i-ph-shield-check-bold mb-3" style="color: #ff6bed; width: 28px; height: 28px" />
-<div class="text-lg font-bold">Strict tsconfig</div>
-<div class="text-xs op-70 mt-2">Types are an early failure. Catch the lie before the bug.</div>
-</Card>
-
-<Card glow>
-<div class="i-ph-broom-bold mb-3" style="color: #ff6bed; width: 28px; height: 28px" />
-<div class="text-lg font-bold">ESLint / oxlint</div>
-<div class="text-xs op-70 mt-2">The agent's conscience for everything types miss.</div>
-</Card>
-
+<div v-click class="mt-12 text-center text-lg op-80">
+Every red check is a signal the agent can chase.<br/>
+<span style="color: #ff6bed">The faster the signal, the faster the loop.</span>
 </div>
 
 <!--
@@ -1318,105 +1473,273 @@ This is the most important slide in the whole feedback section.
 An agent with a failing test loops until it is green.
 Without tests, it ships whatever compiles.
 
-CLICK
-
-CLICK -- Three layers. Vitest. Strict TS. Lint.
-Each one is a failure signal the agent can act on.
+CLICK -- Every red check is a signal. Faster signal, faster loop.
 
 The slower your tests, the slower the agent. Keep them fast.
 
-TRANSITION: But test SHAPE matters more than test count.
+TRANSITION: Let's walk the first 5 layers. Modern frontend tooling.
 -->
 
 ---
 
-# Selectors vs page objects
+# Layer 1 — Type safety
 
-<div class="text-center text-xs op-60 mb-3">Same test. Two styles. One survives a refactor.</div>
+<div class="text-sm op-60 mb-4">The first lie-detector. Catch the bug before it runs.</div>
 
-<div class="grid grid-cols-2 gap-4">
-
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">LEFT — Inline selectors</div>
-
-```ts
-test("applies discount", async () => {
-  const input = page.getByRole("textbox", {
-    name: "Enter discount code"
-  })
-  await input.fill("SAVE10")
-  await page.getByRole("button", {
-    name: "Apply"
-  }).click()
-  await expect(
-    page.locator(".discount-banner.success")
-  ).toBeVisible()
-  await expect(
-    page.locator("[data-testid='cart-total']")
-  ).toHaveText("$45.00")
-})
-```
-
-<div class="mt-2 text-xs" style="color: #ef4444">Designer renames a label → 12 tests break.</div>
-
-</div>
+<div class="grid grid-cols-2 gap-6">
 
 <div>
 
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">RIGHT — Page object</div>
-
 ```ts
-// pages/CartPage.ts
-export class CartPage {
-  async applyDiscount(code: string) { ... }
-  async discountStatus() { ... }
-  async total() { ... }
+// tsconfig.json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true
+  }
 }
-
-// tests/cart-discount.spec.ts
-test("applies discount", async () => {
-  const cart = new CartPage(page)
-  await cart.goto()
-  await cart.applyDiscount("SAVE10")
-  expect(await cart.discountStatus())
-    .toBe("applied")
-  expect(await cart.total()).toBe("$45.00")
-})
 ```
 
-<div class="mt-2 text-xs" style="color: #ff6bed">Update CartPage.ts once. All 12 tests stay green.</div>
+</div>
+
+<div>
+
+```ts
+// At every untyped boundary
+import { z } from "zod"
+
+const User = z.object({
+  id: z.string().uuid(),
+  email: z.email(),
+})
+
+const user = User.parse(await res.json())
+```
 
 </div>
 
 </div>
 
-<div v-click class="mt-6 text-center text-lg">
-  The agent doesn't need to understand your DOM.<br/>
-  <strong style="color: #ff6bed">It needs an API. The page object IS that API.</strong>
+<div v-click class="mt-6 text-center text-base op-80">
+TypeScript trusts the types you write.<br/>
+<strong style="color: #ff6bed">Zod / Valibot / ArkType check that runtime data still matches.</strong>
 </div>
 
 <!--
-Both tests do the same thing.
+Layer 1 -- type safety.
 
-LEFT: hardcoded selectors, accessible names, css classes.
-Two weeks later a designer renames a label -- 12 tests break.
-The agent has to update every test.
+Strict tsconfig is non-negotiable.
+noUncheckedIndexedAccess and exactOptionalPropertyTypes catch
+the bugs the default strict mode lets through.
 
-RIGHT: page object. The test reads like English.
-The DOM changed? Update CartPage.ts ONCE.
+But types are a compile-time fiction. At every untyped boundary --
+fetch responses, route params, env vars, form input --
+parse with Zod or Valibot.
 
-CLICK -- The agent does not need to understand your DOM.
-It needs an API. The page object IS that API.
+CLICK -- TypeScript trusts the types you write. Schemas check
+the runtime data actually matches.
 
-TRANSITION: Tests are just one layer. There are 15.
+With parsing in place, the agent stops reaching for `as`.
+
+TRANSITION: Layer 2 -- lint and format. Fast enough to run on every keystroke.
+-->
+
+---
+
+# Layer 2 — Lint & format
+
+<div class="text-sm op-60 mb-4">Oxlint + Oxfmt. Fast enough to run on every keystroke.</div>
+
+<div class="grid grid-cols-2 gap-6">
+
+<Card glow>
+<div class="text-xs op-60 mb-1">Oxlint</div>
+<div class="text-2xl font-bold mb-2" style="color: #ff6bed">~50× faster</div>
+<div class="text-xs op-70">Rust-based. Covers the high-value rules. Pair with ESLint for the long tail.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-60 mb-1">Oxfmt</div>
+<div class="text-2xl font-bold mb-2" style="color: #ff6bed">~30× faster</div>
+<div class="text-xs op-70">Prettier-compatible defaults. Drop-in replacement.</div>
+</Card>
+
+</div>
+
+<div v-click class="mt-6">
+
+```bash
+# Vite+ wraps both behind one CLI
+vp check     # type + lint + format
+vp test      # vitest
+vp build     # rolldown
+```
+
+</div>
+
+<!--
+Layer 2 -- lint and format.
+
+Oxlint is roughly 50x faster than ESLint. Oxfmt 30x faster than Prettier.
+That speed matters: lint becomes something you can run on every keystroke,
+not something the agent batches at the end.
+
+Oxlint's rule set is smaller than ESLint's, but it covers the high-value cases.
+Run it as the fast first pass; keep ESLint for the rules Oxlint doesn't ship yet.
+
+CLICK -- Vite+ is VoidZero's unified toolchain. One CLI, one config,
+wraps Vite, Rolldown, Vitest, Oxlint, Oxfmt, Tsdown.
+
+TRANSITION: Layer 3 -- the tests themselves.
+-->
+
+---
+
+# Layer 3 — Unit tests
+
+<div class="text-sm op-60 mb-4">Vitest. Watch mode. ESM-native. Same matchers as Jest.</div>
+
+```ts
+// formatPrice.test.ts
+import { describe, it, expect } from "vitest"
+import { formatPrice } from "./formatPrice"
+
+describe("formatPrice", () => {
+  it("formats EUR with two decimals", () => {
+    expect(formatPrice(1234.5, "EUR")).toBe("€1,234.50")
+  })
+
+  it("rounds to nearest cent", () => {
+    expect(formatPrice(1.005, "EUR")).toBe("€1.01")
+  })
+})
+```
+
+<div v-click class="mt-6 text-center text-base op-80">
+Pure functions, hooks, stores, composables.<br/>
+<strong style="color: #ff6bed">The cheapest signal. Most logic lives here.</strong>
+</div>
+
+<!--
+Layer 3 -- unit tests with Vitest.
+
+Pure functions. Hooks. Stores. Composables.
+Anything you can call without mounting a component.
+
+Vitest runs in watch mode while you code, and runs everything in CI.
+Aim for high coverage of pure modules. Don't chase coverage on UI glue --
+that's what the next two layers are for.
+
+CLICK -- Cheapest signal. Most logic lives here.
+The agent gets a green or red within milliseconds of saving.
+
+TRANSITION: Layer 4 -- components, but in a REAL browser.
+-->
+
+---
+
+# Layer 4 — Component tests
+
+<div class="text-sm op-60 mb-4">Vitest browser mode. Real Chromium via Playwright. No more jsdom.</div>
+
+```ts
+// Button.browser.test.ts
+import { render } from "vitest-browser-vue"
+import { expect, test } from "vitest"
+import Button from "./Button.vue"
+
+test("shows tooltip on hover", async () => {
+  const screen = render(Button, { props: { tooltip: "Save" } })
+  await screen.getByRole("button").hover()
+  await expect.element(screen.getByText("Save")).toBeVisible()
+})
+```
+
+<div v-click class="mt-6 grid grid-cols-2 gap-4">
+
+<Card glow>
+<div class="text-xs op-60 mb-1">Works in browser mode</div>
+<div class="text-sm">Hover, focus, layout, intersection observers, scroll.</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-1">Broken in jsdom</div>
+<div class="text-sm">All of the above. Half your CSS. Most pointer events.</div>
+</Card>
+
+</div>
+
+<!--
+Layer 4 -- component tests in a REAL browser.
+
+The biggest win in 2026. Vitest browser mode runs your component tests
+in a real Chromium via Playwright instead of jsdom.
+
+Hover states. Focus. Layout. Intersection observers. Scroll behaviour.
+All work as they do in production.
+
+CLICK -- Browser mode handles all the things jsdom faked.
+The agent can finally trust that "passes in tests" means
+"works in the browser".
+
+TRANSITION: Layer 5 -- mock the network ONCE.
+-->
+
+---
+
+# Layer 5 — API mocking
+
+<div class="text-sm op-60 mb-4">MSW. Define handlers once. Use them everywhere.</div>
+
+```ts
+// src/mocks/handlers.ts
+import { http, HttpResponse } from "msw"
+
+export const handlers = [
+  http.get("/api/users/:id", ({ params }) =>
+    HttpResponse.json({ id: params.id, email: "ada@example.com" })
+  ),
+]
+```
+
+<div v-click class="mt-6 text-center">
+
+<div class="inline-grid grid-cols-4 gap-3 text-xs">
+  <Card glow><div class="font-bold">Vitest</div></Card>
+  <Card glow><div class="font-bold">Browser mode</div></Card>
+  <Card glow><div class="font-bold">Playwright</div></Card>
+  <Card glow><div class="font-bold">Dev server</div></Card>
+</div>
+
+<div class="mt-4 text-base op-80">
+One source of truth.<br/>
+<strong style="color: #ff6bed">Not three drifting fixture folders.</strong>
+</div>
+
+</div>
+
+<!--
+Layer 5 -- API mocking with MSW.
+
+Hard-coded fixtures go stale. Tests that hit a real backend are flaky.
+MSW intercepts at the network layer -- fetch, XHR, GraphQL --
+with a service worker in the browser and a request interceptor in Node.
+
+CLICK -- The same handlers run in Vitest, browser mode, Playwright,
+AND the dev server. One source of truth. Not three drifting fixture folders.
+
+Pair MSW with Zod schemas at the same boundary and your mocks are
+typed AND schema-validated. The agent can't lie to itself about the API shape.
+
+TRANSITION: That's 5 of 15. The rest are on the blog.
 -->
 
 ---
 
 # 15 layers of feedback
 
-<div class="text-center text-sm op-60 mb-4">Tests are layer 3 of 15. Every layer is a signal the agent can chase.</div>
+<div class="text-center text-sm op-60 mb-4">You've seen 5. There are 10 more. Every layer is a signal the agent can chase.</div>
 
 <div class="grid grid-cols-[1fr_auto] gap-8 items-center">
 
@@ -1435,11 +1758,10 @@ TRANSITION: Tests are just one layer. There are 15.
 </div>
 
 <!--
-Tests are layer 3 of 15.
+You've seen the first 5: types, lint, unit, component, API mocking.
 
-Type safety, lint, unit, component, API mocking, contract, E2E,
-a11y, visual regression, performance, dead code, i18n drift,
-preview deploys, AI code review, observability.
+The other 10: contract testing, E2E, a11y, visual regression, performance,
+dead code, i18n drift, preview deploys, AI code review, observability.
 
 Every one is a signal the agent can chase.
 The cheap ones at the center run on every save.
