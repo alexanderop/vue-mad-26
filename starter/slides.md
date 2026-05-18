@@ -2567,30 +2567,10 @@ TRANSITION: Which is why your role itself is merging with others.
 
 # The role merge
 
-<div class="text-xs op-50 mb-4">There will only be four jobs — <span class="op-80">99d.substack.com/p/there-will-only-be-four-jobs</span></div>
+<div class="text-xs op-50 mb-2">There will only be four jobs — <span class="op-80">99d.substack.com/p/there-will-only-be-four-jobs</span></div>
 
-<div class="grid grid-cols-2 gap-3">
-
-<Card glow class="!px-4 !py-3">
-<div class="text-sm font-bold mb-1" style="color: #ff6bed">Product eng / vibe coder / PM / slop cannon</div>
-<div class="text-xs op-70 leading-snug">High-velocity, high-tool-use generalist. Not restricted to product and eng — anyone can be commercial and product-minded.</div>
-</Card>
-
-<Card glow class="!px-4 !py-3">
-<div class="text-sm font-bold mb-1" style="color: #ff6bed">SREs / infra / security / systems</div>
-<div class="text-xs op-70 leading-snug">So much STUFF being produced — need really good people stitching it together, making it stable, secure, robust.</div>
-</Card>
-
-<Card glow class="!px-4 !py-3">
-<div class="text-sm font-bold mb-1" style="color: #ff6bed">Adults</div>
-<div class="text-xs op-70 leading-snug">Sometimes you need a grown-up to say "hey, come on." A governor on an otherwise accelerating org — legal, finance, etc.</div>
-</Card>
-
-<Card glow class="!px-4 !py-3">
-<div class="text-sm font-bold mb-1" style="color: #ff6bed">Hot people</div>
-<div class="text-xs op-70 leading-snug">Sales, people, CX — present an easy UX to the world and are pleasant to be around. Many ways to be hot.</div>
-</Card>
-
+<div class="h-full flex items-center justify-center">
+  <img src="/four-roles.png" class="max-h-[78%] max-w-full rounded-lg shadow-lg" />
 </div>
 
 <!--
