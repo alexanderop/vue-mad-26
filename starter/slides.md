@@ -298,32 +298,11 @@ TRANSITION: Quick scope check before we dive in.
 
 # Scope check
 
-<div class="text-center text-sm op-60 mb-6">Before we dive in — let me narrow the focus.</div>
-
-<div class="grid grid-cols-2 gap-6">
-
-<Card variant="muted">
-<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">NOT this talk</div>
-<ul class="text-sm space-y-2 op-80">
-  <li>· Spec-driven development</li>
-  <li>· A deep dive into my personal workflow</li>
-  <li>· How teams reorganize around agents</li>
-  <li>· The latest model or hottest tool</li>
-</ul>
-<div class="mt-3 text-xs op-50">All separate talks.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">THIS talk</div>
-<ul class="text-sm space-y-2 op-80">
-  <li>· Foundations under a Vue codebase</li>
-  <li>· Brownfield projects you already have</li>
-  <li>· How to stop the agent shipping slop</li>
-  <li>· Things you can do Monday</li>
-</ul>
-<div class="mt-3 text-xs" style="color: #ff6bed">The substrate. Not the workflow.</div>
-</Card>
-
+<div class="h-full flex items-center justify-center">
+  <div class="text-2xl text-center max-w-3xl leading-relaxed">
+    This talk is about the <span style="color: #ff6bed">substrate</span> under your Vue codebase —<br/>
+    not the workflow on top of it.
+  </div>
 </div>
 
 <!--
@@ -1698,24 +1677,35 @@ Once context is in place, the agent can help you carve the structure too.
 
 # One folder = one feature
 
-<div class="grid grid-cols-2 gap-8 mt-4">
+<div class="text-center text-xs op-50 mb-3">Real layout from <code>alexanderop/workoutTracker</code></div>
+
+<div class="grid grid-cols-2 gap-8 mt-2">
 
 <div>
 
-<div class="text-sm font-bold mb-2" style="color: #ff6bed">Monorepo with feature packages</div>
-
 <FolderTree
   root
-  title="Project Files"
-  :structure="`apps/
-  web/
-packages/
-  ui/
+  title="src/"
+  :structure="`src/
+  views/
+  router/
+  components/
+  composables/
+  lib/
+  db/
+  stores/
+  types/
   features/
-    cart/
-    checkout/
-    auth/
-    catalog/`"
+    workout/
+      components/
+      composables/
+      utils/
+    timers/
+      components/
+      composables/
+    exercises/
+    settings/
+    templates/`"
 />
 
 </div>
@@ -1723,15 +1713,15 @@ packages/
 <div class="flex flex-col justify-center gap-4">
 
 <Card variant="muted">
-<div class="text-sm op-80">Vue SFCs are already agent-friendly — one file = one concern.</div>
+<div class="text-sm op-80">Shared layers stay shared: <code>components</code>, <code>composables</code>, <code>lib</code>, <code>db</code>, <code>stores</code>, <code>types</code>.</div>
 </Card>
 
 <Card variant="muted">
-<div class="text-sm op-80">Composables + Pinia stores give clean module seams.</div>
+<div class="text-sm op-80">Each feature is one folder — <code>workout/</code> alone has 24 components and 7 composables.</div>
 </Card>
 
 <Card glow>
-<div class="text-sm">The pnpm workspace makes those seams <strong style="color: #ff6bed">enforceable</strong>.</div>
+<div class="text-sm"><strong style="color: #ff6bed">No <code>workout</code> imports from <code>timers</code>.</strong> The folder boundary <em>is</em> the contract.</div>
 </Card>
 
 </div>
@@ -1739,71 +1729,80 @@ packages/
 </div>
 
 <!--
-The big idea.
+The big idea, grounded in a real project.
 
-Vue is already friendly for agents at the file level --
-one component, one file, one concern.
+This is the actual src/ layout of my workout tracker.
+Ten features under features/. Shared layers above.
+Views and router at the top.
 
-Where Vue projects go wrong is the FOLDER level.
-A flat `components/` and `composables/` and `stores/`
-hides the seams between features.
+The workout feature alone is 24 components and 7 composables.
+That used to be 24 components scattered across src/components/workout/
+and 7 composables in src/composables/. The agent had to grep across
+three folders to find anything related to workouts.
 
-Put each feature in its own package. The workspace boundary
-becomes a wall the agent can see.
+Now workout/ is one folder. timers/ is one folder.
+And critically -- workout does NOT import from timers.
+If they need to share something, it goes up to lib/ or composables/.
 
-TRANSITION: Let me show you what that wall does.
+TRANSITION: Let me show you what that wall does to the agent.
 -->
 
 ---
 
 # Same task, two structures
 
-<div class="text-center text-sm op-60 mb-4">"Add a discount code to the cart" — watch the same agent work</div>
+<div class="text-center text-sm op-60 mb-4">"Add a rest-timer reminder to the active workout" — same agent, same task</div>
 
 <div class="grid grid-cols-2 gap-6">
 
 <div>
 
-<div class="text-xs op-50 mb-2">LEFT — Flat structure</div>
+<div class="text-xs op-50 mb-2">LEFT — Flat (the old layout)</div>
 
 <FolderTree
   root
   title="src/"
   :structure="`src/
   components/
-    CartSummary.vue
-    CartItem.vue
-    DiscountBadge.vue
-    Header.vue
-    ProductCard.vue
+    workout/
+      WorkoutActiveMode.vue
+      WorkoutHeader.vue
+      WorkoutAmrapView.vue
+    settings/
+    exercise/
   composables/
-    useCart.ts
-    useAuth.ts
-    useCheckout.ts
+    useWorkout.ts
+    useWorkoutMode.ts
+    useRestTimer.ts
+    timers/
+      useAmrapTimer.ts
   stores/
-    cart.ts
-    user.ts`"
+    workout.ts`"
 />
 
 </div>
 
 <div>
 
-<div class="text-xs op-50 mb-2">RIGHT — Modular monolith</div>
+<div class="text-xs op-50 mb-2">RIGHT — Feature-sliced (today)</div>
 
 <FolderTree
   root
-  title="packages/features/"
-  :structure="`packages/
+  title="src/"
+  :structure="`src/
   features/
-    cart/
+    workout/
+      components/
+        WorkoutActiveMode.vue
+        WorkoutHeader.vue
+      composables/
+        useWorkoutMode.ts
+        useWorkoutPersistence.ts
+    timers/
       components/
       composables/
-      store.ts
-      index.ts
-    checkout/
-    auth/
-    catalog/`"
+    exercises/
+    settings/`"
 />
 
 </div>
@@ -1811,21 +1810,26 @@ TRANSITION: Let me show you what that wall does.
 </div>
 
 <div class="mt-4 grid grid-cols-2 gap-6 text-xs">
-  <div class="text-center op-60">cart logic is scattered across 3 folders</div>
-  <div class="text-center" style="color: #ff6bed">cart logic is one folder. <strong>index.ts is the public API.</strong></div>
+  <div class="text-center op-60">workout logic spread across <code>components/</code>, <code>composables/</code>, <code>stores/</code></div>
+  <div class="text-center" style="color: #ff6bed"><code>features/workout/</code> is one folder. Cross-feature edges go through <code>lib/</code>.</div>
 </div>
 
 <!--
-Same product. Same agent. Same task: add a discount code.
+Same app -- my workout tracker -- two snapshots in time.
 
-LEFT: cart, useCart, store.ts — three different folders.
-What is shared with checkout? Who knows.
+LEFT is what src/ used to look like.
+WorkoutActiveMode in components/workout/.
+useWorkoutMode in composables/.
+Workout store somewhere else.
+A change to "active workout" touches three folders.
 
-RIGHT: features/cart is a unit.
-index.ts says what is public.
-Anything not exported is private to the feature.
+RIGHT is the layout today.
+features/workout is the unit.
+Everything Workout* lives there.
+If timers and workout need to share something --
+say, the rest-timer state -- it gets lifted to lib/.
 
-TRANSITION: Now the agent traces.
+TRANSITION: Now watch what the agent does in each.
 -->
 
 ---
@@ -1839,19 +1843,20 @@ TRANSITION: Now the agent traces.
 <div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">LEFT — flat structure</div>
 
 ```text
-Grep("cart")             → 47 hits, 9 features
-Read CartSummary.vue     → not the right one
-Read CartItem.vue        → close, state elsewhere
-Grep("useCart")          → 23 hits, half are tests
-Read useCart.ts          → found state
-Read stores/cart.ts      → found mutations
-Edit CartSummary.vue
-Edit useCart.ts
-Edit stores/cart.ts
-Bash: vitest             → 90s, 2 fails
-Read checkout.spec.ts    → coupling discovered
-Edit useCheckout.ts      → fix coupling
-Bash: vitest             → 90s, green
+Grep("workout")              → 80+ hits, 9 folders
+Read WorkoutActiveMode.vue   → not the state
+Read WorkoutHeader.vue       → wrong file
+Grep("useWorkout")           → 30 hits, half tests
+Read composables/useWorkout  → found state
+Read stores/workout.ts       → found mutations
+Read composables/useRest...  → timer coupling?
+Edit WorkoutActiveMode.vue
+Edit useWorkoutMode.ts
+Edit stores/workout.ts
+Bash: vitest                 → 90s, 2 fails
+Read timers.spec.ts          → coupling via store
+Edit useAmrapTimer.ts        → fix coupling
+Bash: vitest                 → 90s, green
 ```
 
 <div class="mt-3 text-center">
@@ -1866,15 +1871,14 @@ Bash: vitest             → 90s, green
 <div class="text-xs font-bold mb-2" style="color: #ff6bed">RIGHT — modular monolith</div>
 
 ```text
-Glob("features/cart/**")   → 8 files
-Read features/cart/index.ts
-Read features/cart/store.ts
-Read features/cart/
-     components/
-     CartSummary.vue
-Edit store.ts
-Edit CartSummary.vue
-Bash: vitest features/cart → 4s, green
+Glob("src/features/workout/**") → 31 files
+Read features/workout/
+     composables/useWorkoutMode.ts
+Read features/workout/
+     components/WorkoutActiveMode.vue
+Edit useWorkoutMode.ts
+Edit WorkoutActiveMode.vue
+Bash: vitest src/features/workout → 4s, green
 ```
 
 <div class="mt-3 text-center">
@@ -1904,6 +1908,168 @@ Same task. Six tool calls. Vitest in 4 seconds because we scope it.
 
 CLICK -- The point: you didn't make the agent smarter.
 You made the codebase LEGIBLE.
+
+TRANSITION: So what are the actual rules? Let me draw them.
+-->
+
+---
+
+# Who can import what
+
+<div class="text-center text-sm op-60 mb-2">Arrows point down. Siblings inside <code>features/</code> can't see each other.</div>
+
+```text
+   ┌───────────────────────────────────────────────────────────┐
+   │   views/   ·   router/                                    │  top-level
+   │   sees everything below                                   │  orchestrators
+   └───────────────────────────┬───────────────────────────────┘
+                               │  may import ↓
+                               ▼
+   ┌───────────────────────────────────────────────────────────┐
+   │   features/                                               │
+   │                                                           │
+   │    ┌─────────┐    ╳    ┌────────┐    ╳    ┌───────────┐   │
+   │    │ workout │ ──╳──── │ timers │ ──╳──── │ exercises │   │
+   │    └─────────┘         └────────┘         └───────────┘   │
+   │                                                           │
+   │    siblings cannot import each other                      │
+   └───────────────────────────┬───────────────────────────────┘
+                               │  may import ↓
+                               ▼
+   ┌───────────────────────────────────────────────────────────┐
+   │   components/   composables/   stores/                    │  shared
+   │   lib/          db/            types/                     │  layers
+   └───────────────────────────────────────────────────────────┘
+```
+
+<div class="mt-2 text-center text-xs op-60">
+  Three rules: <strong>down only</strong> · <strong>no cross-feature</strong> · <strong>app is the only thing that sees the whole graph</strong>
+</div>
+
+<!--
+Three rules. That's it.
+
+ONE -- arrows only point down. lib can't import hooks.
+components can't import features. The layer order is fixed.
+
+TWO -- inside features/, siblings can't see each other.
+cart cannot import checkout. If they share something,
+the shared thing belongs in lib or components, not in
+one feature reaching into another.
+
+THREE -- app/ is the only place that sees the whole graph.
+That's where wiring happens -- routes, providers, the
+shell. Nothing else gets that view.
+
+If you can keep these three rules in your head, the codebase
+stays navigable. But you won't -- and the agent definitely won't.
+So we make a machine enforce them.
+
+TRANSITION: Here's the machine.
+-->
+
+---
+
+# Make the boundary executable
+
+<div class="text-center text-sm op-60 mb-4">A convention is a vibe. A lint rule is a wall.</div>
+
+<div class="grid grid-cols-2 gap-6">
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">ESLint — the real <code>eslint.config.ts</code></div>
+
+```ts {*}{maxHeight:'320px'}
+// workoutTracker/eslint.config.ts
+{
+  name: 'app/feature-boundaries',
+  files: ['src/**/*.{ts,vue}'],
+  rules: {
+    'import-x/no-restricted-paths': ['error', {
+      zones: [
+        // cross-feature isolation
+        { target: './src/features/workout',
+          from: './src/features',
+          except: ['./workout'] },
+        { target: './src/features/timers',
+          from: './src/features',
+          except: ['./timers'] },
+        // ...one per feature
+
+        // shared can't reach into features
+        { target: ['./src/components',
+                   './src/composables',
+                   './src/lib', './src/stores'],
+          from: ['./src/features', './src/views'] },
+      ],
+    }],
+  },
+}
+```
+
+</div>
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">On oxlint? Generate a plugin</div>
+
+```text
+oxlint has no import/no-restricted-paths.
+
+Prompt:
+"Generate a custom oxlint JS plugin at
+ scripts/oxlint-plugin-boundaries.mjs that:
+ 1. Reads tsconfig paths for aliases.
+ 2. Classifies importer + target by layer.
+ 3. Blocks cross-feature imports.
+ 4. Blocks upward imports (lib → features).
+ Wire it in .oxlintrc.json via jsPlugins."
+```
+
+```js {*}{maxHeight:'140px'}
+// 200 lines later — the agent ships:
+function allowed(importer, target) {
+  const set = ZONES[importer.layer]
+  if (!set.has(target.layer)) return false
+  if (target.layer === 'features')
+    return importer.bucket === target.bucket
+  return true
+}
+```
+
+</div>
+
+</div>
+
+<div class="mt-4 text-center text-sm op-70">
+  Either way: <strong style="color: #ff6bed">the agent wrote the rule. Now the rule polices the agent.</strong>
+</div>
+
+<!--
+A convention is a vibe.
+A lint rule is a wall.
+
+LEFT -- this is the actual eslint.config.ts in my workout
+tracker. import-x/no-restricted-paths. One zone per feature
+saying "you can be imported from yourself and nothing else
+under features/". Plus the inverse: shared layers cannot
+import from features or views.
+
+That is the contract. Every PR -- mine, the agent's --
+fails CI the moment workout reaches into timers.
+
+RIGHT -- if you have already switched to oxlint, you hit a
+wall: it does not ship no-restricted-paths. So I told the
+agent: generate a custom oxlint JS plugin that does the
+same thing. Reads tsconfig paths. Classifies by layer.
+Blocks cross-feature.
+
+200 lines, one prompt, committed.
+
+The point is the loop, not the linter.
+The agent wrote the rule.
+Now the rule polices the agent.
 
 TRANSITION: That's the three buckets. Zoom out -- where is this all heading?
 -->
@@ -1952,7 +2118,92 @@ The work is no longer "me typing."
 The work is "me deciding what should exist,
 and reviewing what came back."
 
-TRANSITION: Let me show you what that looks like in MY week.
+TRANSITION: I wrote the whole pipeline up. Here's the long version.
+-->
+
+---
+
+# I'm building this pipeline right now
+
+<div class="text-center text-sm op-60 mb-6">Six phases. HITL at the edges. AFK in the middle.</div>
+
+<div class="max-w-2xl mx-auto">
+
+<Card glow>
+<div class="flex items-start gap-4">
+  <div class="i-ph-article-bold flex-shrink-0 mt-1" style="color: #ff6bed; width: 40px; height: 40px" />
+  <div>
+    <div class="text-xl font-bold" style="color: #ff6bed">How to do AFK Coding</div>
+    <div class="text-sm op-70 mt-2">Alexander Opalic · the full write-up</div>
+    <div class="mt-3 flex items-center gap-2 text-xs op-60">
+      <div class="i-ph-link" />
+      <span>alexop.dev/posts/how-to-do-afk-coding</span>
+    </div>
+  </div>
+</div>
+</Card>
+
+</div>
+
+<div class="mt-8 text-center op-70 text-sm max-w-2xl mx-auto">
+  This is what I'm working on right now — turning my week into a repeatable pipeline.
+</div>
+
+<!--
+Quick aside before I show you my week.
+
+I wrote the whole pipeline up on my blog.
+This is what I am ACTIVELY building right now --
+turning the loop into something I can hand off.
+
+If you want the long version after the talk -- alexop.dev.
+
+TRANSITION: Here is the pipeline at a glance.
+-->
+
+---
+layout: image
+image: /afk/pipeline.png
+backgroundSize: contain
+---
+
+<!--
+Six phases.
+
+Spec -- I align with the business. Human in the loop.
+Slice -- agent breaks the PRD into vertical sub-tickets.
+Ralph loop -- one agent per slice, fresh context every iteration, TDD inside.
+Refactor -- a dedicated pass. The step LLMs always skip.
+QA -- a QA agent drives the real browser.
+Review -- I read the PR. HITL again.
+
+Human judgment at the edges. Agent execution in the middle.
+
+TRANSITION: But this only matters for one kind of ticket.
+-->
+
+---
+layout: image
+image: /afk/ticket-sizes.png
+backgroundSize: contain
+---
+
+<!--
+Two kinds of tickets.
+
+One to three pointers fit in one Claude session.
+Paste it. Ship it. No pipeline needed.
+
+Five pointers are where things break.
+Paste them in one shot and three things go wrong:
+
+One -- context runs out. Auto-compact eats the bit you needed.
+Two -- no refactoring. The agent appends, never restructures.
+Three -- silent skip. Test fails round four, agent deletes the test.
+
+That is a workflow problem. Not a model problem.
+
+TRANSITION: So here is how the pipeline runs in my actual week.
 -->
 
 ---
@@ -2038,6 +2289,90 @@ No memory of the implementation conversation. No "I built this so it must be goo
 Just: simplify this.
 
 I am the engineering manager of one IC. The IC is the agent.
+
+TRANSITION: Step 03 says "vertical slices." That word matters. Here's why.
+-->
+
+---
+layout: image
+image: /afk/slicing.png
+backgroundSize: contain
+---
+
+<!--
+Vertical slicing.
+
+Horizontal: "frontend task" plus "backend task" plus "tests task."
+Each blocks the next. Nothing works until everything works.
+Compaction guaranteed.
+
+Vertical: one form step plus its endpoint plus its e2e test.
+Independently shippable. Survives if a sibling slice fails.
+Each one fits in a Ralph loop.
+
+For a booking wizard:
+slice 1 -- step 1 form plus draft endpoint plus test
+slice 2 -- step 2 form plus rooms endpoint plus test
+slice 3 -- step 3 form plus confirm endpoint plus test
+slice 4 -- wizard state machine plus its test
+
+Four sub-tickets. Each a one or two pointer.
+
+TRANSITION: Each slice runs in its own Ralph loop.
+-->
+
+---
+layout: image
+image: /afk/ralph-loop.png
+backgroundSize: contain
+---
+
+<!--
+Ralph loop -- Geoffrey Huntley's technique.
+
+A while-loop that pipes a PROMPT.md file into a fresh Claude invocation.
+Every iteration starts with an empty context.
+Reads the prompt. Picks the next unchecked task.
+Ships it. Commits. Ticks the box. Exits.
+
+The reason it works -- context windows degrade as they fill.
+Resetting between iterations keeps every task in the model's smart zone.
+
+One bash one-liner:
+
+  while :; do
+    cat PROMPT.md | claude --dangerously-skip-permissions
+  done
+
+One per slice. Four slices, four worktrees, four agents.
+In parallel.
+
+TRANSITION: Tests pass doesn't mean the user can use it. That's QA.
+-->
+
+---
+layout: image
+image: /afk/agentic-qa.png
+backgroundSize: contain
+---
+
+<!--
+Agentic QA.
+
+Vercel's agent-browser. A CLI that exposes the browser's
+accessibility tree as a snapshot the agent can read.
+No CSS selectors. No Playwright API. Just shell commands.
+
+A QA agent walks the user journey.
+Happy path. Negative paths.
+Screenshot at every state.
+Writes a markdown report with pass/fail per test case.
+
+I wake up to a report with screenshots.
+If everything is green, the PR is ready for human eyes.
+
+This is why a11y-clean DOM matters --
+if your buttons are divs, the QA agent is blind.
 
 TRANSITION: But the most important thing in this loop is what I do
 when the agent gets it WRONG.
@@ -2193,6 +2528,90 @@ You're absorbing two other jobs because AI made the typing free.
 Frame this as opportunity. Not threat.
 Vue devs who care about UX and product
 are CLOSER to this than backend devs grinding on microservices.
+
+TRANSITION: One warning before the close.
+-->
+
+---
+layout: image
+image: /afk/twenty-pipelines.png
+backgroundSize: contain
+---
+
+<!--
+[pause]
+
+Here is the trap.
+
+Just because you CAN run twenty pipelines in parallel
+doesn't mean you should.
+
+Simon Willison: "AI doesn't reduce work -- it intensifies it."
+
+The point of AFK coding is to be AWAY from the keyboard.
+Not to triple-book your attention.
+
+Run as many pipelines as your REVIEW CAPACITY can absorb.
+Not more.
+
+TRANSITION: So what does your Vue project actually need for any of this to work?
+-->
+
+---
+
+# What your Vue project needs for this to work
+
+<div class="text-center text-sm op-60 mb-6">If any of these is missing, the pipeline stalls on that phase.</div>
+
+<div class="grid grid-cols-2 gap-4 mt-4">
+
+<Card glow>
+<div class="text-xs op-50 mb-1">For the spec phase</div>
+<div class="text-sm font-bold" style="color: #ff6bed">AGENTS.md + clear domain language</div>
+<div class="text-xs op-70 mt-2">So the interviewer agent asks the right questions.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">For Ralph loops</div>
+<div class="text-sm font-bold" style="color: #ff6bed">Feature-sliced folders + small files</div>
+<div class="text-xs op-70 mt-2">A vertical slice maps to a folder. Context stays small.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">For TDD inside the loop</div>
+<div class="text-sm font-bold" style="color: #ff6bed">Vitest + lint + types as backpressure</div>
+<div class="text-xs op-70 mt-2">Red turns green or the agent doesn't get to commit.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">For agentic QA</div>
+<div class="text-sm font-bold" style="color: #ff6bed">A11y-clean DOM the browser agent can read</div>
+<div class="text-xs op-70 mt-2">No div soup. Real buttons. Labelled inputs.</div>
+</Card>
+
+</div>
+
+<!--
+The pipeline is only as good as the codebase it runs on.
+
+Four prereqs.
+
+AGENTS.md plus clear domain language -- so the interviewer agent
+in the spec phase asks the RIGHT questions. Garbage spec, garbage everything.
+
+Feature-sliced folders -- so a vertical slice maps to a folder.
+Context stays small inside each Ralph loop.
+
+Vitest, lint, and types -- backpressure.
+Red turns green or the agent does not get to commit.
+
+A11y-clean DOM -- agent-browser reads the accessibility tree.
+Div soup is invisible to the QA agent.
+Real semantic markup is required.
+
+This is what the rest of the talk has been about.
+Context. Feedback loops. Discoverability.
+Same three buckets. Different layer of the pipeline.
 
 TRANSITION: One slide. Do this Monday.
 -->
