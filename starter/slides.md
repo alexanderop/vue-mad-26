@@ -506,9 +506,9 @@ TRANSITION: Same idea scales beyond context — to the actions the agent takes.
 
 ---
 
-# Skills — progressive disclosure for *actions*
+# Skills — recipes loaded on demand
 
-<div class="text-center text-sm op-60 mb-5">An open standard: a folder with a <code>SKILL.md</code>. The agent loads it <strong>only when relevant</strong>.</div>
+<div class="text-center text-sm op-60 mb-5">A skill is a reusable playbook. The agent only reads the full instructions when the task needs them.</div>
 
 <div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
 
@@ -536,33 +536,41 @@ description: Tail CloudWatch logs and
 
 <div class="text-sm op-80 leading-relaxed">
 
-<div class="text-base font-bold mb-3" style="color: #ff6bed">Three stages — pay-as-you-go context</div>
+<div class="text-base font-bold mb-3" style="color: #ff6bed">Simple mental model</div>
 
-<div class="mb-3"><strong style="color: #ff6bed">1. Discovery.</strong> At startup, only <code>name</code> + <code>description</code> load (~100 tokens). The agent knows the skill exists.</div>
+<div class="mb-3"><strong style="color: #ff6bed">1. Menu.</strong> At startup, the agent sees the skill name and when to use it.</div>
 
-<div class="mb-3"><strong style="color: #ff6bed">2. Activation.</strong> When your task matches the description, the full <code>SKILL.md</code> body loads.</div>
+<div class="mb-3"><strong style="color: #ff6bed">2. Open.</strong> When your prompt matches, it opens <code>SKILL.md</code>.</div>
 
-<div class="mb-3"><strong style="color: #ff6bed">3. Execution.</strong> Scripts, references, assets — loaded only when steps call for them.</div>
+<div class="mb-3"><strong style="color: #ff6bed">3. Use.</strong> If the skill points to scripts, references, or templates, it pulls those in too.</div>
 
-<div class="text-xs op-60 mt-4">Open format from Anthropic. Same <code>SKILL.md</code> runs in Claude Code, Cursor, Codex, Copilot, Gemini CLI — ~30 agents. Browse <code>skills.sh</code> before writing your own — vendors already publish theirs.</div>
+<Card variant="muted" class="mt-5">
+<div class="text-xs op-60 mb-1">Say it this way</div>
+<div class="text-sm op-90">Skills are buttons you can teach the agent: <code>/review</code>, <code>/plan</code>, <code>/deploy</code>. Each button carries the exact steps, scripts, and standards for that job.</div>
+</Card>
+
+<div class="text-xs op-60 mt-4">Open format from Anthropic. Same <code>SKILL.md</code> runs in Claude Code, Cursor, Codex, Copilot, Gemini CLI — ~30 agents.</div>
 
 </div>
 
 </div>
 
 <!--
-AGENTS.md was progressive disclosure for *context*.
-Skills are progressive disclosure for *actions*.
+AGENTS.md was progressive disclosure for context.
+Skills are progressive disclosure for actions.
 
-A skill is just a folder. SKILL.md on top -- YAML frontmatter with
-name + description, markdown instructions below.
+A skill is just a named recipe the agent can open when it needs it.
+The folder has SKILL.md on top -- YAML frontmatter with name and
+description, markdown instructions below.
 
-At startup the agent reads ONLY name + description -- maybe 100 tokens
-each. So you can have 50 skills loaded and pay almost nothing.
+At startup the agent does not read the whole cookbook. It only sees
+the menu: skill names and descriptions. So you can have lots of skills
+without stuffing the context window.
 
-When your prompt matches a description -- THEN the body loads.
-When the body says "run scripts/extract.py" -- THAT loads.
-Pay-as-you-go. Same trick as AGENTS.md, applied to actions.
+When your prompt matches a description, THEN the body loads.
+When the body says "run scripts/extract.py", THEN that script matters.
+So the simple version is: skills are buttons. Press /review, and the
+agent gets your exact review process instead of improvising.
 
 Open standard. Same SKILL.md runs in Claude Code, Cursor, Codex,
 Copilot -- thirty agents now.
@@ -571,15 +579,15 @@ And before you write one -- browse skills.sh. Vendors publish theirs:
 Vercel's React best-practices, Anthropic's frontend-design, Microsoft's
 Azure flows. Free recipes from the platform owners themselves.
 
-TRANSITION: Skills decide what the agent CAN do. Hooks decide what
-it CAN'T -- and run scripts around every tool call.
+TRANSITION: Skills are the buttons you call intentionally. Hooks are
+the automation that fires whether you remember or not.
 -->
 
 ---
 
-# Hooks — guards around every tool call
+# Hooks — automation around the agent loop
 
-<div class="text-center text-sm op-60 mb-4">Shell scripts the harness runs <strong>before, after, or alongside</strong> tool calls. Exit 2 = blocked, agent tries something else.</div>
+<div class="text-center text-sm op-60 mb-4">A hook is: <strong>when this event happens, run this handler</strong>. The handler gets JSON and can allow, block, log, or add context.</div>
 
 <div class="grid grid-cols-2 gap-4">
 
@@ -616,25 +624,27 @@ fi
 
 <div>
 
-<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">What the agent sees</div>
+<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">What happens</div>
 
 ```text
-Agent: Bash("rm -rf node_modules")
+1. Agent tries:
+   Bash("rm -rf node_modules")
 
-Hook → exit 2
-  stderr: Blocked: destructive command
+2. PreToolUse hook runs first.
+   It receives JSON about the Bash call.
 
-Agent: "I was blocked. Let me try
-        pnpm store prune instead."
+3. Hook exits 2:
+   "Blocked: destructive command"
 
-Agent: Bash("pnpm store prune") ✓
+4. Agent sees the block and chooses
+   a safer command.
 ```
 
 <div v-click class="mt-4">
 
 <Card variant="muted">
-<div class="text-xs op-60 mb-1">Events you can hook</div>
-<div class="text-xs op-80"><code>PreToolUse</code> · <code>PostToolUse</code> · <code>SessionStart</code> · <code>UserPromptSubmit</code> — pure bash, no LLM in the loop</div>
+<div class="text-xs op-60 mb-1">Useful events</div>
+<div class="text-xs op-80"><code>SessionStart</code> inject context · <code>PreToolUse</code> block bad moves · <code>PostToolUse</code> react after edits · <code>UserPromptSubmit</code> enrich prompts</div>
 </Card>
 
 </div>
@@ -644,36 +654,59 @@ Agent: Bash("pnpm store prune") ✓
 </div>
 
 <!--
-Skills add abilities. Hooks add GUARDS.
+Skills are recipes you invoke. Hooks are rules that fire automatically.
+
+The easiest hook sentence is: when this event happens, run this
+handler.
 
 LEFT -- settings.json wires a PreToolUse hook on every Bash call.
-The hook is just a shell script. Reads the command from stdin,
-greps for rm -rf or force push. Exit code 2 = blocked.
+Before Bash actually runs, Claude Code sends JSON to the script on
+stdin. The script reads .tool_input.command, checks for rm -rf or
+force push, and decides what happens.
 
 Exit 2 is the magic number. The agent sees it as "NOT allowed,
 try something else." Anything non-zero would just be an error.
 
-RIGHT -- what the agent actually sees.
-Tried rm -rf. Got blocked. Reasoned: "okay, try pnpm store prune."
-Ran THAT. Green. The agent ROUTES AROUND the wall.
+RIGHT -- four steps.
+The agent proposes a tool call. The hook runs first. The hook blocks.
+The agent receives the reason and routes around it.
 
 CLICK -- four event types I use:
-PreToolUse and PostToolUse on Bash and Edit.
-SessionStart to orient -- print branch, project type.
-UserPromptSubmit to log or inject context.
-All pure bash. No LLM in the loop.
+SessionStart injects context before the first answer.
+PreToolUse blocks bad moves before they happen.
+PostToolUse reacts after edits or commands.
+UserPromptSubmit can enrich or reject a user prompt.
 
 Codex got hooks in May 2026. Cursor next. This is the new normal.
 
-TRANSITION: Now you know the two primitives. Skills + hooks.
-The next slide shows what happens when you point both at a shared folder.
+TRANSITION: Skills are manual buttons. Hooks are automatic plumbing.
+Brainmaxxing is what happens when both read and write the same memory
+folder.
+-->
+
+---
+layout: image
+image: /claude-code-lifecycle.svg
+backgroundSize: contain
+---
+
+<!--
+You don't need to memorize this.
+The point is the surface area — there are dozens of points the harness
+will hand you JSON and let you decide what happens next.
+
+The four I use daily are SessionStart, PreToolUse, PostToolUse, UserPromptSubmit.
+The rest are there when you need them.
+
+TRANSITION: Skills are buttons. Hooks are plumbing. Brainmaxxing is what
+happens when both read and write the same memory folder.
 -->
 
 ---
 
-# `brainmaxxing` — skills + hooks pointed at one folder
+# `brainmaxxing` — shared memory for the agent
 
-<div class="text-center text-sm op-60 mb-4">You know skills. You know hooks. <strong style="color: #ff6bed"><code>brain/</code></strong> is the new thing — and it lives in the repo.</div>
+<div class="text-center text-sm op-60 mb-4">One repo folder stores what the agent should remember. Skills are the buttons. Hooks are the plumbing.</div>
 
 <div class="flex justify-center mb-6">
   <img src="/brainmaxxing-repo.png" class="max-h-40 rounded-lg shadow-lg" />
@@ -682,23 +715,27 @@ The next slide shows what happens when you point both at a shared folder.
 <div class="grid grid-cols-3 gap-5">
 
 <Card glow>
-<div class="text-xs op-50 mb-2">The new idea</div>
+<div class="text-xs op-50 mb-2">Memory</div>
 <div class="text-xl font-bold mb-3" style="color: #ff6bed"><code>brain/</code></div>
-<div class="text-sm op-80">An Obsidian-style markdown vault. Committed to the repo — every teammate, every cloud agent gets it.</div>
+<div class="text-sm op-80">Markdown notes in the repo: principles, lessons, plans, project knowledge. Humans can read it in Obsidian.</div>
 </Card>
 
 <Card variant="muted">
-<div class="text-xs op-50 mb-2">Already familiar</div>
-<div class="text-xl font-bold mb-3">Six skills</div>
-<div class="text-sm op-80">Wire the loop: <code>/reflect</code> writes, <code>/plan</code> &amp; <code>/review</code> read, <code>/meditate</code> prunes.</div>
+<div class="text-xs op-50 mb-2">Buttons</div>
+<div class="text-xl font-bold mb-3">Skills</div>
+<div class="text-sm op-80"><code>/reflect</code> writes lessons. <code>/plan</code> and <code>/review</code> read principles. <code>/meditate</code> cleans up.</div>
 </Card>
 
 <Card variant="muted">
-<div class="text-xs op-50 mb-2">Already familiar</div>
-<div class="text-xl font-bold mb-3">Two hooks</div>
-<div class="text-sm op-80"><code>SessionStart</code> injects the vault. <code>PostToolUse</code> re-indexes when files drift.</div>
+<div class="text-xs op-50 mb-2">Plumbing</div>
+<div class="text-xl font-bold mb-3">Hooks</div>
+<div class="text-sm op-80"><code>SessionStart</code> gives the agent the brain index. File hooks rebuild it when notes change.</div>
 </Card>
 
+</div>
+
+<div v-click class="mt-7 text-center">
+  <div class="text-sm op-80">The loop: use Claude → <code style="color: #ff6bed">/reflect</code> captures learning → <code style="color: #ff6bed">brain/</code> updates → next session starts smarter.</div>
 </div>
 
 <div v-click class="mt-10 text-center">
@@ -708,19 +745,26 @@ The next slide shows what happens when you point both at a shared folder.
 </div>
 
 <!--
-You already know skills. You already know hooks.
-brainmaxxing is what happens when you point both at one shared folder.
+This is the key explanation:
+Brainmaxxing is not a third primitive. It is skills plus hooks plus one
+shared folder.
 
-That folder is brain/ -- the only NEW idea on this slide.
-An Obsidian-style markdown vault. Committed to the repo.
-Every teammate, every cloud agent, every new laptop -- gets it.
-That solves the local-memory problem from the previous slide.
+The folder is brain/. It is just markdown, committed to the repo.
+It holds principles, plans, project notes, and lessons learned.
+Because it lives in git, every teammate, cloud agent, and new laptop
+gets the same memory.
 
-The skills and hooks are the same primitives from two slides ago.
-Six skills wire the loop: /reflect writes lessons in, /plan and
-/review read them out, /meditate prunes what's stale.
-Two hooks plumb it: SessionStart injects the vault index every
-turn, PostToolUse re-indexes when files drift. Pure bash.
+Skills are how you intentionally use the memory:
+/reflect writes lessons in.
+/plan and /review read principles out.
+/meditate cleans contradictions and stale notes.
+
+Hooks are how the memory becomes automatic:
+SessionStart gives the agent the brain index at the beginning.
+File-change hooks rebuild the index when notes move.
+
+So the loop is simple: work with Claude, reflect what mattered into
+brain/, and the next session starts from that sharper memory.
 
 CLICK -- the install is wild. No npm install. No script.
 You literally tell Claude "install brainmaxxing from this URL"
