@@ -952,45 +952,29 @@ TRANSITION: Skills you call. Hooks fire. Now combine both with a folder. That's 
 -->
 
 ---
+clicks: 6
+---
 
 # `brainmaxxing` — skills + hooks + a `brain/` folder
 
-<div class="text-center text-sm op-60 mb-4">A loop that makes the agent <strong>sharper every session</strong>.</div>
-
-```mermaid {scale: 0.7}
-graph LR
-  A([work with Claude]) --> B["/reflect"]
-  B --> C[("brain/")]
-  C -. principles .-> D["/plan"]
-  C -. principles .-> E["/review"]
-  D --> A
-  E --> A
-  F["/meditate"] -. prunes .-> C
-```
-
-<div v-click class="mt-6 text-center text-sm">
-  <code style="color: #ff6bed">"Install brainmaxxing from github.com/poteto/brainmaxxing into this project."</code>
-  <div class="text-xs op-50 mt-1">No npm install. Tell Claude. It copies the files and merges <code>settings.json</code>.</div>
-</div>
+<BrainmaxxingLoop :step="$clicks" />
 
 <!--
-You just saw skills. You just saw hooks. Brainmaxxing combines both
-with one folder: brain/.
+brainmaxxing: skills + hooks + a brain/ folder.
+Walk the loop one click at a time, then zoom out.
 
-Skills do the work.
-/reflect WRITES into brain/ -- you saw the SKILL.md.
-/plan and /review READ from brain/principles/.
-/meditate periodically prunes the vault.
-
-Hooks keep brain/ connected.
-SessionStart (the inject-brain.sh you saw) injects brain/index.md.
-PostToolUse on brain/ rebuilds the index when notes move.
-
-Result -- a markdown vault that learns. Every session, brain/
-gets a little sharper. Next session starts ahead.
-
-CLICK -- the install is wild. No npm. You tell Claude the URL
-and the agent does the copying.
+CLICK 1 -- "work with Claude". The starting point. You're in a session.
+CLICK 2 -- the writers. /reflect captures what just happened at session end.
+           /ruminate mines past Claude conversations -- corrections you gave,
+           preferences you repeated, knowledge that never got captured.
+           Both feed brain/.
+CLICK 3 -- brain/. A markdown vault. principles/, codebase/, inbox/, index.md.
+           Also an Obsidian vault -- you can browse it yourself.
+CLICK 4 -- /plan and /review READ principles back out. Apply them in the next
+           session. Loop closed.
+CLICK 5 -- /meditate. Not just housekeeping -- it audits your skills against
+           the brain, evolves principles, and prunes stale notes.
+CLICK 6 -- zoom out. The whole loop, lit up. That's brainmaxxing.
 
 TRANSITION: Here is what brain/ actually looks like on disk.
 -->
