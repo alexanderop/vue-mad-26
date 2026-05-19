@@ -74,6 +74,28 @@ TRANSITION: Which brings us to the quote that sums up the shift.
 -->
 
 ---
+
+# And the creator defends it
+
+<div class="flex justify-center">
+  <img src="/bun-creator-defense.png" class="max-h-90 rounded-lg shadow-lg" />
+</div>
+
+<!--
+Jarred Sumner, the creator of Bun, jumped in to defend the Rust port.
+
+Smaller binaries: -5.5MB on macOS, -6.8MB on Linux, -3.8MB on Windows.
+
+His response to the critics:
+- The unsafe usage is a deliberate tradeoff -- a port intended to not change behavior. Strictly better than before. Miri in CI soon.
+- The code style looks like Zig because it is intentional -- the team needs to feel at home in the codebase the agent shipped.
+
+That last point is the one. The agent shipped code that humans still have to live with.
+
+TRANSITION: Which brings us to the quote that sums up the shift.
+-->
+
+---
 layout: quote
 transition: fade
 ---
@@ -161,6 +183,49 @@ Otto Payments -- e-commerce
 Blog at alexop.dev -- mostly Vue and AI now
 
 TRANSITION: Here is what we are going to do.
+-->
+
+---
+layout: statement
+transition: fade
+---
+
+# Quick show of hands
+
+<div class="mt-12 text-3xl leading-relaxed op-90">
+
+Who is driving with...
+
+</div>
+
+<div class="mt-8 text-2xl leading-loose">
+
+- **Claude Code**
+- **Codex**
+- **Copilot**
+- **Cursor**
+- something else
+
+</div>
+
+<div class="mt-10 text-xl op-60">
+
+Just so I know which harness you live in.
+
+</div>
+
+<!--
+Quick check before we go in.
+
+I want to know which harness you actually use day to day.
+Claude Code -- Codex -- Copilot -- Cursor -- something else.
+
+[count hands per option]
+
+Reason I am asking: the patterns in this talk apply to all of them,
+but the failure modes look different per harness.
+
+TRANSITION: OK -- here is the plan.
 -->
 
 ---
@@ -2286,37 +2351,11 @@ TRANSITION: So what are the actual rules? Let me draw them.
 -->
 
 ---
+transition: fade-out
+---
 
-# Who can import what
-
-<div class="text-center text-sm op-60 mb-2">Arrows point down. Siblings inside <code>features/</code> can't see each other.</div>
-
-```text
-   ┌───────────────────────────────────────────────────────────┐
-   │   views/   ·   router/                                    │  top-level
-   │   sees everything below                                   │  orchestrators
-   └───────────────────────────┬───────────────────────────────┘
-                               │  may import ↓
-                               ▼
-   ┌───────────────────────────────────────────────────────────┐
-   │   features/                                               │
-   │                                                           │
-   │    ┌─────────┐    ╳    ┌────────┐    ╳    ┌───────────┐   │
-   │    │ workout │ ──╳──── │ timers │ ──╳──── │ exercises │   │
-   │    └─────────┘         └────────┘         └───────────┘   │
-   │                                                           │
-   │    siblings cannot import each other                      │
-   └───────────────────────────┬───────────────────────────────┘
-                               │  may import ↓
-                               ▼
-   ┌───────────────────────────────────────────────────────────┐
-   │   components/   composables/   stores/                    │  shared
-   │   lib/          db/            types/                     │  layers
-   └───────────────────────────────────────────────────────────┘
-```
-
-<div class="mt-2 text-center text-xs op-60">
-  Three rules: <strong>down only</strong> · <strong>no cross-feature</strong> · <strong>app is the only thing that sees the whole graph</strong>
+<div class="h-full flex items-center justify-center">
+  <img src="/who-can-import-what.png" class="max-h-full max-w-full rounded-lg shadow-lg" />
 </div>
 
 <!--
@@ -2347,13 +2386,11 @@ TRANSITION: Here's the machine.
 
 <div class="text-center text-sm op-60 mb-4">A convention is a vibe. A lint rule is a wall.</div>
 
-<div class="grid grid-cols-2 gap-6">
-
-<div>
+<div class="max-w-3xl mx-auto">
 
 <div class="text-xs font-bold mb-2" style="color: #ff6bed">ESLint — the real <code>eslint.config.ts</code></div>
 
-```ts {*}{maxHeight:'320px'}
+```ts {*}{maxHeight:'360px'}
 // workoutTracker/eslint.config.ts
 {
   name: 'app/feature-boundaries',
@@ -2371,8 +2408,7 @@ TRANSITION: Here's the machine.
         // ...one per feature
 
         // shared can't reach into features
-        { target: ['./src/components',
-                   './src/composables',
+        { target: ['./src/components', './src/composables',
                    './src/lib', './src/stores'],
           from: ['./src/features', './src/views'] },
       ],
@@ -2383,31 +2419,88 @@ TRANSITION: Here's the machine.
 
 </div>
 
+<div class="mt-4 text-center text-sm op-70">
+  Every PR — mine, the agent's — fails CI the moment <strong style="color: #ff6bed">workout reaches into timers.</strong>
+</div>
+
+<!--
+A convention is a vibe.
+A lint rule is a wall.
+
+This is the actual eslint.config.ts in my workout tracker.
+import-x/no-restricted-paths. One zone per feature
+saying "you can be imported from yourself and nothing else
+under features/". Plus the inverse: shared layers cannot
+import from features or views.
+
+That is the contract. Every PR -- mine, the agent's --
+fails CI the moment workout reaches into timers.
+
+TRANSITION: But what if you have already switched to oxlint?
+-->
+
+---
+
+# On oxlint? Write the wall yourself.
+
+<div class="text-center text-sm op-60 mb-4">No <code>no-restricted-paths</code> rule — so generate a JS plugin.</div>
+
+<div class="grid grid-cols-2 gap-6">
+
 <div>
 
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">On oxlint? Generate a plugin</div>
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">Prompt the agent</div>
 
-```text
-oxlint has no import/no-restricted-paths.
-
-Prompt:
-"Generate a custom oxlint JS plugin at
- scripts/oxlint-plugin-boundaries.mjs that:
- 1. Reads tsconfig paths for aliases.
- 2. Classifies importer + target by layer.
- 3. Blocks cross-feature imports.
- 4. Blocks upward imports (lib → features).
- Wire it in .oxlintrc.json via jsPlugins."
+```text {*}{maxHeight:'150px'}
+Generate scripts/oxlint-plugin-boundaries.mjs:
+ 1. Read tsconfig paths.
+ 2. Classify importer + target by layer.
+ 3. Block cross-feature imports.
+ 4. Block upward imports (lib → features).
+Wire it via jsPlugins.
 ```
 
-```js {*}{maxHeight:'140px'}
-// 200 lines later — the agent ships:
-function allowed(importer, target) {
-  const set = ZONES[importer.layer]
-  if (!set.has(target.layer)) return false
-  if (target.layer === 'features')
-    return importer.bucket === target.bucket
-  return true
+<div class="text-xs font-bold mt-3 mb-2" style="color: #ff6bed">Wire it: <code>.oxlintrc.json</code></div>
+
+```json
+{
+  "jsPlugins": [
+    "./scripts/oxlint-plugin-boundaries.mjs"
+  ],
+  "rules": {
+    "boundaries/no-cross-feature": "error"
+  }
+}
+```
+
+</div>
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">200 lines later — the agent ships</div>
+
+```js {*}{maxHeight:'340px'}
+// scripts/oxlint-plugin-boundaries.mjs
+const noCrossFeature = {
+  create(context) {
+    return {
+      ImportDeclaration(node) {
+        const from = classify(context.filename)
+        const to   = classify(node.source.value)
+        if (!allowed(from, to)) {
+          context.report({
+            node,
+            message: `${from.layer} → ${to.layer} forbidden`,
+          })
+        }
+      },
+    }
+  },
+}
+
+export default {
+  meta: { name: 'boundaries' },
+  rules: { 'no-cross-feature': noCrossFeature },
 }
 ```
 
@@ -2416,27 +2509,19 @@ function allowed(importer, target) {
 </div>
 
 <div class="mt-4 text-center text-sm op-70">
-  Either way: <strong style="color: #ff6bed">the agent wrote the rule. Now the rule polices the agent.</strong>
+  The agent wrote the rule. <strong style="color: #ff6bed">Now the rule polices the agent.</strong>
 </div>
 
 <!--
-A convention is a vibe.
-A lint rule is a wall.
+If you have already switched to oxlint, you hit a wall:
+it does not ship no-restricted-paths.
 
-LEFT -- this is the actual eslint.config.ts in my workout
-tracker. import-x/no-restricted-paths. One zone per feature
-saying "you can be imported from yourself and nothing else
-under features/". Plus the inverse: shared layers cannot
-import from features or views.
+So I told the agent: generate a custom oxlint JS plugin.
 
-That is the contract. Every PR -- mine, the agent's --
-fails CI the moment workout reaches into timers.
-
-RIGHT -- if you have already switched to oxlint, you hit a
-wall: it does not ship no-restricted-paths. So I told the
-agent: generate a custom oxlint JS plugin that does the
-same thing. Reads tsconfig paths. Classifies by layer.
-Blocks cross-feature.
+oxlint exposes a JS plugin API. ESLint-compatible visitor
+pattern -- create(context) returns node visitors,
+context.report flags violations. Export a plugin with rules,
+register it under jsPlugins, turn the rule on.
 
 200 lines, one prompt, committed.
 
@@ -2500,9 +2585,6 @@ image: /afk/pipeline.png
 backgroundSize: contain
 ---
 
-<div class="absolute bottom-4 right-6 text-xs op-50">
-  Full write-up: <span style="color: #ff6bed">alexop.dev/posts/how-to-do-afk-coding</span>
-</div>
 
 <!--
 Six phases. HITL at the edges. AFK in the middle.
@@ -2579,36 +2661,6 @@ Every PR review teaches the factory.
 
 The codebase gets smarter over time. You get more leverage every week.
 
-TRANSITION: Which is why your role itself is merging with others.
--->
-
----
-
-# The role merge
-
-<div class="text-xs op-50 mb-2">There will only be four jobs — <span class="op-80">99d.substack.com/p/there-will-only-be-four-jobs</span></div>
-
-<div class="h-full flex items-center justify-center">
-  <img src="/four-roles.png" class="max-h-[78%] max-w-full rounded-lg shadow-lg" />
-</div>
-
-<!--
-[slow down]
-
-The developer who thrives now is the one who:
-- Knows what the business actually needs (the BA's old job)
-- Can decide what to build next (the PO's old job)
-- Can architect the system so an agent can build it (the dev's new job)
-
-CLICK -- This is the line:
-
-You're not losing your job to AI.
-You're absorbing two other jobs because AI made the typing free.
-
-Frame this as opportunity. Not threat.
-Vue devs who care about UX and product
-are CLOSER to this than backend devs grinding on microservices.
-
 TRANSITION: Thank you.
 -->
 
@@ -2619,38 +2671,11 @@ transition: fade
 
 # Thank You!
 
-<div class="text-lg op-80 mb-8">
-
-**alexop.dev** · **@alexanderopalic**
-
-</div>
-
-<div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
-
-<Card glow class="flex items-center gap-4 !px-5 !py-4">
-  <div class="i-ph-file-text-bold flex-shrink-0" style="color: #ff6bed; width: 56px; height: 56px" />
-  <div class="text-left">
-    <div class="text-lg font-bold" style="color: #ff6bed">AGENTS.md starter</div>
-    <div class="text-xs op-60 mt-1.5">A minimal AGENTS.md template you can drop into any Vue project.</div>
-    <div class="mt-2 flex items-center gap-2 text-xs op-40">
-      <div class="i-ph-github-logo" />
-      <span>alexop.dev/blog/agents-md</span>
-    </div>
+<div class="flex flex-col items-center gap-6 mt-12">
+  <img src="/qr-blog.png" class="w-64 h-64 bg-white p-3 rounded-lg" />
+  <div class="text-lg op-80">
+    <span style="color: #ff6bed">alexop.dev</span> · <span class="op-70">@alexanderopalic</span>
   </div>
-</Card>
-
-<Card variant="muted" class="flex items-center gap-4 !px-5 !py-4">
-  <div class="i-ph-git-fork-bold flex-shrink-0" style="color: rgba(255,255,255,0.5); width: 56px; height: 56px" />
-  <div class="text-left">
-    <div class="text-lg font-bold">clone-repo skill</div>
-    <div class="text-xs op-60 mt-1.5">Vendor any repo as a subtree and wire it into AGENTS.md.</div>
-    <div class="mt-2 flex items-center gap-2 text-xs op-40">
-      <div class="i-ph-github-logo" />
-      <span>github.com/alexanderop/clone-repo</span>
-    </div>
-  </div>
-</Card>
-
 </div>
 
 <!--
@@ -2658,10 +2683,8 @@ transition: fade
 
 Thank you!
 
-Two takeaways on the slide.
-
-AGENTS.md starter -- a one-page template you can copy.
-clone-repo skill -- vendor any reference repo in one command.
+Scan the QR for the blog -- AGENTS.md starter, the quality pipeline write-up,
+the AFK loop deep dive, all there.
 
 Come find me to chat. I want to hear what your AGENTS.md looks like.
 
