@@ -649,265 +649,170 @@ TWO -- is it universal, or situational? Situational goes in /docs.
 
 CLICK -- The right context at the right time.
 
-TRANSITION: This is what a thin AGENTS.md looks like in practice — it points at brain/.
+TRANSITION: AGENTS.md is the front door. But the agent has two more
+knobs you should know — skills, then hooks. Then we tie all three together.
 -->
 
 ---
 
-# `brainmaxxing` — `brain/` is the agent's docs
+# Skills — recipes the agent opens when triggered
 
-<div class="text-center text-sm op-60 mb-6">A thin <code>AGENTS.md</code> points at <code>brain/</code>. The agent reads, writes, and maintains <code>brain/</code> itself.</div>
-
-<div class="flex justify-center mb-6">
-  <img src="/brainmaxxing-repo.png" class="max-h-32 rounded-lg shadow-lg" />
-</div>
-
-<div class="grid grid-cols-2 gap-5 mb-4">
-
-<Card glow>
-<div class="text-xs op-50 mb-2">Top level</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed"><code>AGENTS.md</code></div>
-<div class="text-sm op-80">Stack. Commands. Folder map. Then one line: <em>"Look up <code>brain/index.md</code>."</em></div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-2">The depth</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed"><code>brain/</code></div>
-<div class="text-sm op-80">Principles, plans, lessons, codebase notes. Markdown in the repo. <strong>Docs for the agent itself.</strong></div>
-</Card>
-
-</div>
-
-<div class="grid grid-cols-2 gap-5">
-
-<Card variant="muted">
-<div class="text-xs op-50 mb-2">How the agent <em>uses</em> brain/</div>
-<div class="text-base font-bold mb-2">Skills</div>
-<div class="text-sm op-80"><code>/plan</code> reads principles. <code>/reflect</code> writes lessons. <code>/meditate</code> cleans up.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs op-50 mb-2">How brain/ stays connected</div>
-<div class="text-base font-bold mb-2">Hooks</div>
-<div class="text-sm op-80"><code>SessionStart</code> injects <code>index.md</code>. File hooks rebuild it when notes change.</div>
-</Card>
-
-</div>
-
-<div v-click class="mt-6 text-center">
-  <div class="text-xs op-60 mb-1">Install</div>
-  <div class="text-sm"><code style="color: #ff6bed">"Install brainmaxxing from github.com/poteto/brainmaxxing into this project."</code></div>
-  <div class="text-xs op-50 mt-1">No script. Just tell Claude. It copies the files and merges <code>settings.json</code>.</div>
-</div>
-
-<!--
-This is the umbrella. Four pieces. One loop.
-
-AGENTS.md stays THIN. Stack, commands, folder map. Then the magic line:
-"Look up brain/index.md before any task."
-
-brain/ is where the depth lives. Markdown notes in the repo: principles, plans,
-codebase knowledge, lessons learned. Think of it as docs for the agent --
-the same way a senior dev keeps personal docs. Humans can read it in Obsidian.
-Because it lives in git, every teammate, cloud agent, and new laptop gets the
-same memory.
-
-Skills are how the agent USES brain/. The buttons:
-/plan reads principles. /reflect writes lessons back. /meditate cleans
-contradictions. /review critiques against principles.
-
-Hooks are how brain/ stays CONNECTED. The plumbing:
-SessionStart cats index.md into context at every conversation start.
-File-change hooks rebuild the index when notes move.
-
-So the loop is: work with Claude, reflect what mattered into brain/, and
-the next session starts from that sharper memory.
-
-CLICK -- install is wild. No npm install. No script. You literally tell
-Claude "install brainmaxxing from this URL" and the agent does the copying.
-
-TRANSITION: I keep saying skills and hooks. Let's look at each. First: skills.
--->
-
----
-
-# Skills — recipes loaded on demand
-
-<div class="text-center text-sm op-60 mb-5">A skill is a reusable playbook. The agent only reads the full instructions when the task needs them.</div>
-
-<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
+<div class="grid grid-cols-2 gap-8 max-w-5xl mx-auto mt-8">
 
 <div>
 
-```text
-.claude/skills/
-└── my-skill/
-    ├── SKILL.md       # name + description + steps
-    ├── scripts/       # optional: code to run
-    ├── references/    # optional: deeper docs
-    └── assets/        # optional: templates
-```
+<div class="text-xs op-50 mb-2"><code>.claude/skills/reflect/SKILL.md</code></div>
 
 ```yaml
 ---
-name: debug-prod
-description: Tail CloudWatch logs and
-  correlate with the file being edited.
-  Use when prod is broken.
+name: reflect
+description: >-
+  Reflect on the conversation and update
+  the brain. Use when wrapping up, after
+  mistakes or corrections.
+  Triggers: "reflect", "remember this".
 ---
+
+# Reflect
+
+Review the conversation and persist
+learnings to `brain/`.
+…
 ```
 
 </div>
 
 <div class="text-sm op-80 leading-relaxed">
 
-<div class="text-base font-bold mb-3" style="color: #ff6bed">Simple mental model</div>
+<div class="text-base font-bold mb-4" style="color: #ff6bed">How it loads</div>
 
-<div class="mb-3"><strong style="color: #ff6bed">1. Menu.</strong> At startup, the agent sees the skill name and when to use it.</div>
+<div class="mb-3"><strong style="color: #ff6bed">1.</strong> At startup, the agent reads only <em>name + description</em>.</div>
 
-<div class="mb-3"><strong style="color: #ff6bed">2. Open.</strong> When your prompt matches, it opens <code>SKILL.md</code>.</div>
+<div class="mb-3"><strong style="color: #ff6bed">2.</strong> When your prompt matches, the body loads.</div>
 
-<div class="mb-3"><strong style="color: #ff6bed">3. Use.</strong> If the skill points to scripts, references, or templates, it pulls those in too.</div>
+<div class="mb-3"><strong style="color: #ff6bed">3.</strong> Scripts and references load only if the body opens them.</div>
 
-<Card variant="muted" class="mt-5">
-<div class="text-xs op-60 mb-1">Say it this way</div>
-<div class="text-sm op-90">Skills are buttons you can teach the agent: <code>/review</code>, <code>/plan</code>, <code>/deploy</code>. Each button carries the exact steps, scripts, and standards for that job.</div>
-</Card>
-
-<div class="text-xs op-60 mt-4">Open format from Anthropic. Same <code>SKILL.md</code> runs in Claude Code, Cursor, Codex, Copilot, Gemini CLI — ~30 agents.</div>
+<div class="text-xs op-50 mt-6">Open format. Same <code>SKILL.md</code> runs in Claude Code, Cursor, Codex, Copilot — ~30 agents.</div>
 
 </div>
 
 </div>
 
 <!--
-AGENTS.md was progressive disclosure for context.
-Skills are progressive disclosure for actions.
+A skill is a named recipe the agent can open when it needs it.
+Frontmatter on top -- name + description. Markdown body below.
 
-A skill is just a named recipe the agent can open when it needs it.
-The folder has SKILL.md on top -- YAML frontmatter with name and
-description, markdown instructions below.
+At startup the agent does NOT load the whole cookbook.
+It only sees the menu -- names and one-line descriptions.
+Progressive disclosure for actions.
 
-At startup the agent does not read the whole cookbook. It only sees
-the menu: skill names and descriptions. So you can have lots of skills
-without stuffing the context window.
+When your prompt matches a description, the body loads.
+When the body says "run scripts/extract.py", THEN the script
+loads. Three levels of lazy loading -- skills scale.
 
-When your prompt matches a description, THEN the body loads.
-When the body says "run scripts/extract.py", THEN that script matters.
-So the simple version is: skills are buttons. Press /review, and the
-agent gets your exact review process instead of improvising.
+This is brainmaxxing's /reflect skill -- the actual file from
+the repo. End of session, the agent scans the conversation
+and distils what mattered back into brain/. You'll see five
+more like this in a minute -- /plan, /review, /meditate,
+/ruminate, /brain.
 
-Open standard. Same SKILL.md runs in Claude Code, Cursor, Codex,
-Copilot -- thirty agents now.
+Open standard. Same SKILL.md runs in Claude Code, Cursor,
+Codex, Copilot -- thirty agents.
 
-And before you write one -- browse skills.sh. Vendors publish theirs:
-Vercel's React best-practices, Anthropic's frontend-design, Microsoft's
-Azure flows. Free recipes from the platform owners themselves.
+And before you write one -- browse skills.sh. Vendors publish theirs.
+Vercel's React best-practices. Anthropic's frontend-design.
+Free recipes from the platform owners.
 
-TRANSITION: Skills are the buttons you call intentionally. Hooks are
-the automation that fires whether you remember or not.
+TRANSITION: Skills are buttons you press. Hooks fire whether
+you press anything or not.
 -->
 
 ---
 
-# Hooks — automation around the agent loop
+# Hooks — code that runs around agent events
 
-<div class="text-center text-sm op-60 mb-4">A hook is: <strong>when this event happens, run this handler</strong>. The handler gets JSON and can allow, block, log, or add context.</div>
-
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-2 gap-6 mt-6">
 
 <div>
 
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">.claude/settings.json</div>
+<div class="text-xs op-50 mb-2"><code>.claude/settings.json</code></div>
 
 ```json
 {
   "hooks": {
-    "PreToolUse": [{
-      "matcher": "Bash",
+    "SessionStart": [{
+      "matcher": "startup|resume",
       "hooks": [{
         "type": "command",
-        "command": ".claude/hooks/block-destructive.sh"
+        "command": ".claude/hooks/inject-brain.sh"
       }]
     }]
   }
 }
 ```
 
-<div class="text-xs font-bold mb-2 mt-3" style="color: #ff6bed">block-destructive.sh</div>
+<div class="text-xs op-50 mb-2 mt-3"><code>inject-brain.sh</code></div>
 
 ```bash
-#!/usr/bin/env bash
-CMD=$(jq -r '.tool_input.command')
-if [[ "$CMD" =~ rm[[:space:]]+-rf|git[[:space:]]+push.*--force ]]; then
-  echo "Blocked: destructive command" >&2
-  exit 2   # tells the agent: NOT allowed, try again
-fi
+#!/bin/bash
+INDEX="$CLAUDE_PROJECT_DIR/brain/index.md"
+[ -f "$INDEX" ] && cat "$INDEX"
 ```
 
 </div>
 
 <div>
 
-<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">What happens</div>
+<div class="text-base font-bold mb-4" style="color: #ff6bed">When + what fires</div>
 
 ```text
-1. Agent tries:
-   Bash("rm -rf node_modules")
-
-2. PreToolUse hook runs first.
-   It receives JSON about the Bash call.
-
-3. Hook exits 2:
-   "Blocked: destructive command"
-
-4. Agent sees the block and chooses
-   a safer command.
+session starts
+   │
+   ▼
+SessionStart hook fires
+   │   (cats brain/index.md)
+   ▼
+agent reads it as context
+   │
+   ▼
+first reply is grounded in brain/
 ```
 
-<div v-click class="mt-4">
-
-<Card variant="muted">
-<div class="text-xs op-60 mb-1">Useful events</div>
-<div class="text-xs op-80"><code>SessionStart</code> inject context · <code>PreToolUse</code> block bad moves · <code>PostToolUse</code> react after edits · <code>UserPromptSubmit</code> enrich prompts</div>
+<Card variant="muted" class="mt-5">
+<div class="text-xs op-60 mb-1">Other events</div>
+<div class="text-xs op-80"><code>PreToolUse</code> block bad calls · <code>PostToolUse</code> react after writes · <code>UserPromptSubmit</code> rewrite prompts</div>
 </Card>
 
 </div>
 
 </div>
 
-</div>
-
 <!--
-Skills are recipes you invoke. Hooks are rules that fire automatically.
+Skills are buttons you press. Hooks fire automatically when
+an event happens in the agent loop.
 
-The easiest hook sentence is: when this event happens, run this
-handler.
+The easiest sentence: when this event happens, run this handler.
 
-LEFT -- settings.json wires a PreToolUse hook on every Bash call.
-Before Bash actually runs, Claude Code sends JSON to the script on
-stdin. The script reads .tool_input.command, checks for rm -rf or
-force push, and decides what happens.
+LEFT -- the actual brainmaxxing config. SessionStart wires
+inject-brain.sh. Every new session, before the agent's first
+reply, that script runs.
 
-Exit 2 is the magic number. The agent sees it as "NOT allowed,
-try something else." Anything non-zero would just be an error.
+The script just cats brain/index.md to stdout. Claude Code
+captures stdout and prepends it to the conversation as context.
+That's the trick -- "before any session, show the agent the map."
 
-RIGHT -- four steps.
-The agent proposes a tool call. The hook runs first. The hook blocks.
-The agent receives the reason and routes around it.
+You can use the same SessionStart event for anything --
+loading env vars, kicking a tunnel, warming a cache.
 
-CLICK -- four event types I use:
-SessionStart injects context before the first answer.
-PreToolUse blocks bad moves before they happen.
-PostToolUse reacts after edits or commands.
-UserPromptSubmit can enrich or reject a user prompt.
+RIGHT -- the four events you'll actually use:
+SessionStart -- inject context, like brainmaxxing does.
+PreToolUse -- block destructive Bash, gate writes to certain paths.
+PostToolUse -- run lint after edits, rebuild an index after writes.
+UserPromptSubmit -- enrich or rewrite the prompt before the model sees it.
 
-Codex got hooks in May 2026. Cursor next. This is the new normal.
+Codex got hooks in May 2026. Cursor next. Open pattern now.
 
-Brainmaxxing wires SessionStart to cat brain/index.md into every
-conversation -- that is how the agent always knows the map.
-
-TRANSITION: There are dozens of hook events. Don't memorize them. Know they exist.
+TRANSITION: Dozens of events. Don't memorize them. Here's the map.
 -->
 
 ---
@@ -924,7 +829,118 @@ will hand you JSON and let you decide what happens next.
 The four I use daily are SessionStart, PreToolUse, PostToolUse, UserPromptSubmit.
 The rest are there when you need them.
 
-TRANSITION: Now the six skills brainmaxxing ships — all wired around brain/.
+TRANSITION: Skills you call. Hooks fire. Now combine both with a folder. That's brainmaxxing.
+-->
+
+---
+
+# `brainmaxxing` — skills + hooks + a `brain/` folder
+
+<div class="text-center text-sm op-60 mb-4">A loop that makes the agent <strong>sharper every session</strong>.</div>
+
+```mermaid {scale: 0.7}
+graph LR
+  A([work with Claude]) --> B["/reflect"]
+  B --> C[("brain/")]
+  C -. principles .-> D["/plan"]
+  C -. principles .-> E["/review"]
+  D --> A
+  E --> A
+  F["/meditate"] -. prunes .-> C
+```
+
+<div v-click class="mt-6 text-center text-sm">
+  <code style="color: #ff6bed">"Install brainmaxxing from github.com/poteto/brainmaxxing into this project."</code>
+  <div class="text-xs op-50 mt-1">No npm install. Tell Claude. It copies the files and merges <code>settings.json</code>.</div>
+</div>
+
+<!--
+You just saw skills. You just saw hooks. Brainmaxxing combines both
+with one folder: brain/.
+
+Skills do the work.
+/reflect WRITES into brain/ -- you saw the SKILL.md.
+/plan and /review READ from brain/principles/.
+/meditate periodically prunes the vault.
+
+Hooks keep brain/ connected.
+SessionStart (the inject-brain.sh you saw) injects brain/index.md.
+PostToolUse on brain/ rebuilds the index when notes move.
+
+Result -- a markdown vault that learns. Every session, brain/
+gets a little sharper. Next session starts ahead.
+
+CLICK -- the install is wild. No npm. You tell Claude the URL
+and the agent does the copying.
+
+TRANSITION: Here is what brain/ actually looks like on disk.
+-->
+
+---
+
+# What `brain/` actually looks like
+
+<div class="grid grid-cols-2 gap-6 mt-6">
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-2">The vault on disk</div>
+
+```text
+brain/
+├── codebase/
+│   ├── slide-gotchas.md
+│   ├── theme-system.md
+│   └── …
+├── plans/
+│   └── roadmap.md
+├── principles/
+│   ├── fix-root-causes.md
+│   ├── prove-it-works.md
+│   └── …
+└── index.md
+```
+
+</Card>
+
+<Card glow>
+<div class="text-xs op-60 mb-2"><code>index.md</code> — the only file always loaded</div>
+
+```md
+# Brain
+
+## Codebase
+- [[codebase/theme-system]]
+- [[codebase/slide-gotchas]]
+
+## Plans
+- [[plans/roadmap]]
+
+## Principles
+- [[principles/fix-root-causes]]
+- [[principles/prove-it-works]]
+```
+
+</Card>
+
+</div>
+
+<!--
+LEFT -- one folder. brain/.
+codebase/ -- what THIS repo actually does.
+plans/ -- what we are working towards.
+principles/ -- coming up next.
+
+RIGHT -- one file. index.md. A list of wikilinks. No content inlined.
+
+The SessionStart hook cats index.md into every conversation.
+The agent sees the MAP, not the territory.
+When it needs theme details, it follows [[codebase/theme-system]].
+When it does not, that file never enters the context window.
+
+Whole vault available. Almost nothing loaded.
+That is guard-the-context-window in practice.
+
+TRANSITION: Six skills run on top of this vault.
 -->
 
 ---
@@ -933,9 +949,7 @@ layout: default
 
 # Six skills that keep `brain/` alive
 
-<div class="text-center text-sm op-60 mb-5">Each skill reads the vault, writes back to it, or sharpens what's there.</div>
-
-<div class="grid grid-cols-3 gap-3">
+<div class="grid grid-cols-3 gap-3 mt-8">
 
 <Card glow>
 <div class="text-xs op-50 mb-1"><code>/plan</code></div>
@@ -952,45 +966,27 @@ layout: default
 <Card glow>
 <div class="text-xs op-50 mb-1"><code>/reflect</code></div>
 <div class="text-base font-bold mb-1" style="color: #ff6bed">Reflect</div>
-<div class="text-xs op-80">Distil this session's mistakes &amp; learnings back into <code>brain/</code>.</div>
+<div class="text-xs op-80">Distil session learnings back into <code>brain/</code>.</div>
 </Card>
 
 <Card glow>
 <div class="text-xs op-50 mb-1"><code>/meditate</code></div>
 <div class="text-base font-bold mb-1" style="color: #ff6bed">Meditate</div>
-<div class="text-xs op-80">Audit the vault. Prune stale notes. Find cross-cutting principles.</div>
+<div class="text-xs op-80">Audit the vault. Prune stale notes.</div>
 </Card>
 
 <Card glow>
 <div class="text-xs op-50 mb-1"><code>/ruminate</code></div>
 <div class="text-base font-bold mb-1" style="color: #ff6bed">Ruminate</div>
-<div class="text-xs op-80">Mine past conversations for patterns that never got written down.</div>
+<div class="text-xs op-80">Mine past conversations for missed patterns.</div>
 </Card>
 
 <Card glow>
 <div class="text-xs op-50 mb-1"><code>/brain</code></div>
 <div class="text-base font-bold mb-1" style="color: #ff6bed">Brain</div>
-<div class="text-xs op-80">Direct read/write of vault files. The primitive the others build on.</div>
+<div class="text-xs op-80">Direct read/write of vault files. The primitive.</div>
 </Card>
 
-</div>
-
-<div v-click class="mt-8">
-  <div class="text-center text-xs op-60 mb-3">The loop that compounds</div>
-  <div class="flex items-center justify-center gap-2 text-sm flex-wrap">
-    <code style="color: #ff6bed">/plan</code>
-    <span class="op-40">→</span>
-    <span class="op-80">code</span>
-    <span class="op-40">→</span>
-    <code style="color: #ff6bed">/review</code>
-    <span class="op-40">→</span>
-    <code style="color: #ff6bed">/reflect</code>
-    <span class="op-40 mx-2">·····  weekly  ·····</span>
-    <code style="color: #ff6bed">/meditate</code>
-    <span class="op-40">+</span>
-    <code style="color: #ff6bed">/ruminate</code>
-  </div>
-  <div class="text-center text-xs op-50 mt-3">Every loop ends with the vault sharper than it started.</div>
 </div>
 
 <!--
@@ -1034,9 +1030,7 @@ TRANSITION: And the bonus -- it ships with 16 principles built in.
 
 # 16 principles you don't have to write
 
-<div class="text-center text-sm op-60 mb-6">In <code>brain/principles/</code> — the rules your AGENTS.md never has to spell out.</div>
-
-<div class="grid grid-cols-2 gap-x-8 gap-y-3 max-w-5xl mx-auto">
+<div class="grid grid-cols-2 gap-x-8 gap-y-3 max-w-5xl mx-auto mt-6">
 
 <div class="flex items-start gap-3">
   <div class="text-xs font-mono op-40 mt-0.5">01</div>
@@ -1112,8 +1106,8 @@ TRANSITION: And the bonus -- it ships with 16 principles built in.
 
 </div>
 
-<div v-click class="mt-8 text-center text-base op-90 max-w-3xl mx-auto">
-  These are the things you'd otherwise <strong style="color: #ff6bed">rediscover the hard way</strong> over a year.
+<div v-click class="mt-8 text-center text-sm op-70">
+  <strong style="color: #ff6bed">Photograph this slide.</strong>
 </div>
 
 <!--
@@ -1144,92 +1138,6 @@ TRANSITION: But there is one trick that is even bigger.
 -->
 
 ---
-
-# What `brain/` actually looks like
-
-<div class="text-center text-sm op-60 mb-6">One folder. One index. The <code>SessionStart</code> hook injects <code>index.md</code> — the agent follows wikilinks only when relevant.</div>
-
-<div class="grid grid-cols-2 gap-6">
-
-<Card variant="muted">
-<div class="text-xs op-60 mb-2">The vault on disk</div>
-
-```text
-brain/
-├── codebase/
-│   ├── custom-components.md
-│   ├── slide-gotchas.md
-│   ├── theme-system.md
-│   ├── testing-strategy.md
-│   └── …
-├── plans/
-│   ├── preparser-extensions.md
-│   └── roadmap.md
-├── principles/
-│   ├── guard-the-context-window.md
-│   ├── fix-root-causes.md
-│   ├── subtract-before-you-add.md
-│   └── …
-├── codebase.md
-└── index.md
-```
-
-</Card>
-
-<Card glow>
-<div class="text-xs op-60 mb-2"><code>index.md</code> — the only file always in context</div>
-
-```md
-# Brain
-
-## Codebase
-- [[codebase]]
-- [[codebase/theme-system]]
-- [[codebase/slide-gotchas]]
-- [[codebase/testing-strategy]]
-
-## Plans
-- [[plans/roadmap]]
-- [[plans/preparser-extensions]]
-
-## Principles
-- [[principles/guard-the-context-window]]
-- [[principles/fix-root-causes]]
-- [[principles/subtract-before-you-add]]
-- [[principles/prove-it-works]]
-```
-
-</Card>
-
-</div>
-
-<div v-click class="mt-6 text-center text-base op-90">
-  Agent reads <code>index.md</code> first → <strong style="color: #ff6bed">only opens the wikilink it needs.</strong> Whole vault available, almost nothing loaded.
-</div>
-
-<!--
-This is what the strategy looks like on disk.
-
-LEFT -- one folder. brain/.
-codebase/ -- what THIS repo actually does. Theme system, gotchas, testing.
-plans/ -- what we are working towards.
-principles/ -- the 16 from the last slide.
-
-RIGHT -- one file. index.md.
-It is just a list of wikilinks. No content inlined.
-
-The SessionStart hook cats index.md into every conversation.
-The agent sees the MAP, not the territory.
-When it needs theme details, it follows [[codebase/theme-system]].
-When it does not, that file never enters the context window.
-
-CLICK -- whole vault available. Almost nothing loaded.
-That is guard-the-context-window in practice.
-
-TRANSITION: But there is one trick that is even bigger.
--->
-
----
 transition: fade-out
 ---
 
@@ -1240,14 +1148,6 @@ transition: fade-out
 # Give the agent VueUse.
 
 </v-click>
-
-<div v-click class="mt-12 max-w-3xl mx-auto">
-
-<QuoteCard author="Michael Arnaldi" highlight="setting up repositories">
-  Most of my time as a programmer is now spent setting up repositories so that coding agents can act well inside them.
-</QuoteCard>
-
-</div>
 
 <!--
 [pause]
@@ -1261,10 +1161,6 @@ Real source in your tree is signal.
 
 CLICK -- If you want the agent to write like VueUse,
 let it READ VueUse.
-
-CLICK -- Michael Arnaldi nails the shift:
-"Setting up repositories so that coding agents can act well inside them."
-That is the job now. Programming is configuring the room the agent works in.
 
 TRANSITION: One command. Try it tomorrow.
 -->
@@ -1291,6 +1187,10 @@ git subtree add --prefix=repos/vueuse \
 - `repos/nuxt/` — module & plugin conventions.
 ```
 
+<div class="absolute bottom-4 right-8 text-xs op-40">
+Credit: <a href="https://effect.website/blog/the-one-weird-git-trick-that-makes-coding-agents-more-effect-ive/">effect.website — The One Weird Git Trick</a>
+</div>
+
 <!--
 One command. Vendors VueUse into your repo as a squashed subtree.
 
@@ -1303,6 +1203,10 @@ CLICK
 Why a subtree, not a submodule? No clone-time pain.
 No "did you forget to init"? Just files.
 
+Why not just point at node_modules? Compiled and flattened --
+the structure agents need is gone. And agents are deoptimized
+from reading gitignored directories in the first place.
+
 Result -- the agent's pattern matching is now anchored on real code.
 Pattern matching beats prompting.
 
@@ -1313,6 +1217,71 @@ Copy the approach into your repo. Pattern matching beats reading docs.
 
 I packaged this as a Claude Code skill: clone-repo.
 Vendors any repo, wires it into AGENTS.md, done.
+
+Credit where it's due: this whole pattern is from the Effect team's
+blog post -- "The One Weird Git Trick That Makes Coding Agents More
+Effect-ive" by Maxwell Brown. Read it.
+
+TRANSITION: One more thing -- tune the room so humans don't trip over it.
+-->
+
+---
+
+# Tune the room
+
+<div class="text-sm op-60 mb-4">Hide <code>repos/</code> from your editor so auto-imports don't suggest VueUse internals.</div>
+
+<div class="grid grid-cols-2 gap-6">
+
+<div>
+
+```json
+// .vscode/settings.json
+{
+  "typescript.preferences.autoImportFileExcludePatterns": ["repos/**"],
+  "files.exclude":        { "repos/**": true },
+  "files.watcherExclude": { "repos/**": true },
+  "search.exclude":       { "repos/**": true }
+}
+```
+
+</div>
+
+<div>
+
+<div class="text-sm op-60 mb-2">Then ask the agent to distill it:</div>
+
+```
+Read repos/vueuse. Write
+agent-patterns/vueuse.md with
+the idioms an agent should
+follow when writing composables
+in this project.
+```
+
+<div class="mt-4 text-xs op-60">
+A reusable artifact the agent
+comes back to — instead of
+rediscovering the same patterns
+every session.
+</div>
+
+</div>
+
+</div>
+
+<!--
+Editor side: without this, VSCode happily auto-imports from
+repos/vueuse/packages/core/. You ship VueUse internals into your app.
+Add these four lines and the editor pretends repos/ does not exist --
+but the agent still reads it.
+
+CLICK
+
+Pattern files: once the agent has explored the vendored source,
+have it write down what it learned. agent-patterns/vueuse.md.
+Next session it loads that instead of re-exploring 800 composables.
+Cheaper context. Sharper output.
 
 TRANSITION: Context is the foundation. Now bucket two -- feedback loops.
 -->
