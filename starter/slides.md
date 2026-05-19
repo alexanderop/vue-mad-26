@@ -19,28 +19,10 @@ image: /madvue-2026.png
 backgroundSize: contain
 ---
 
-<!--
-Vue MAD 2026 -- Madrid.
-
-TRANSITION: Now the talk title...
--->
-
----
-
 <PartSlide
   title="Clean Code Is Sexy Again"
   subtitle="Making Your Vue Project AI-Ready · Vue MAD 2026 · Alexander Opalic"
 />
-
-<!--
-[breathe] [scan room]
-
-Welcome -- excited to be here.
-Talk about something I would have rolled my eyes at two years ago:
-clean code. And why it just got way more interesting.
-
-TRANSITION: Quick intro...
--->
 
 ---
 layout: image
@@ -64,9 +46,6 @@ L5 software factory -- you manage goals, AI defines, ships, fixes.
 
 The question for you: where are you actually sitting?
 
-Quick credit -- the framing is all Dan Shapiro, Jan 2026 blog post.
-If you take ONE link from this talk, take that one.
-
 TRANSITION: For context, here's where I am -- and why.
 -->
 
@@ -74,41 +53,24 @@ TRANSITION: For context, here's where I am -- and why.
 
 # Two weeks ago: Bun got rewritten in Rust
 
-<div class="text-center text-sm op-60 mb-4">A major JavaScript runtime. From Zig to Rust. Almost entirely by AI.</div>
-
 <div class="flex justify-center">
   <img src="/bun-rust-pr.png" class="max-h-80 rounded-lg shadow-lg" />
 </div>
 
-<div class="mt-4 text-center text-lg max-w-3xl mx-auto">
-  Whether it ships or it explodes — <strong style="color: #ff6bed">the industry just shifted.</strong>
-</div>
-
 <!--
-[pause]
-
 Exhibit A for why this talk is hard.
 
-Two weeks ago -- Bun, one of the most-hyped JavaScript runtimes,
-got rewritten from Zig to Rust.
+Bun -- one of the most-hyped JS runtimes -- rewritten from Zig to Rust.
+1M lines. 10 days. By an agent.
 
-One million lines of code. Ten days. By an agent.
+Anthropic owns Bun now. Almost entirely Claude. Near-zero human review. 13k unsafe blocks.
+Rust and Zig communities melted down. Reviewers were Claude. Claude flagged a follow-up PR as AI slop.
 
-Bun is owned by Anthropic now. The rewrite was almost entirely Claude.
-Near-zero human review. Thirteen thousand unsafe blocks.
+Triumph or disaster? I don't know yet.
+What I know: this is the world we ship into. Major OSS rewritten in two weeks by a machine.
+The pace is real. Not slowing down.
 
-The Rust community melted down. The Zig community melted down.
-The reviewers were Claude. Claude marked one of the follow-up PRs as AI slop.
-
-Whether this is a triumph or a disaster -- I genuinely don't know yet.
-
-But here is what I do know:
-this is the world we ship into now.
-A major OSS project rewritten in two weeks by a machine.
-
-The times are crazy. The pace is real. This is not slowing down.
-
-TRANSITION: Which brings us to the quote that sums up the whole shift.
+TRANSITION: Which brings us to the quote that sums up the shift.
 -->
 
 ---
@@ -116,7 +78,7 @@ layout: quote
 transition: fade
 ---
 
-<QuoteCard author="Simon Willison" highlight="everything else">
+<QuoteCard author="Simon Willison" source="simonwillison.net, Jan 2026" highlight="everything else">
   Being able to read a detailed specification and transform it into lines of code is the thing that's being automated away. What's left is everything else.
 </QuoteCard>
 
@@ -146,7 +108,7 @@ transition: fade-out
 
 <v-click>
 
-# It only works if your project lets the AI work.
+# Only if your project is built for AI and your devs know what they're doing.
 
 </v-click>
 
@@ -169,11 +131,12 @@ TRANSITION: So the question is...
 -->
 
 ---
-layout: statement
 transition: fade-out
 ---
 
-# Why does AI succeed in some codebases and fail in others?
+<div class="h-full flex items-center justify-center">
+  <img src="/why-ai-succeeds.png" class="max-h-full max-w-full rounded-lg shadow-lg" />
+</div>
 
 <!--
 [hold the silence]
@@ -205,10 +168,10 @@ TRANSITION: Here is what we are going to do.
 <PyramidOutline :items="[
   { title: 'What an Agent Actually Is', subtitle: 'A loop, not a magic box' },
   { title: 'Context', subtitle: 'Does it know why things exist?' },
-  { title: 'Extending the Agent', subtitle: 'Skills and MCP — the agent’s reach' },
+  { title: 'Extending the Agent', subtitle: 'Skills and MCP the agent’s reach' },
   { title: 'Feedback Loops', subtitle: 'Does it know when it is wrong?' },
   { title: 'Discoverability', subtitle: 'Can the agent find the right code?' },
-  { title: 'Where this is heading', subtitle: 'The role merge' }
+  { title: 'Future', subtitle: 'The role merge' }
 ]" />
 
 <!--
@@ -241,11 +204,9 @@ Magic is the wrong mental model.
 
 ---
 
-# How an AI agent works
+<div class="flex justify-center items-center h-full">
 
-<div class="flex justify-center mt-4">
-
-<AgentLoopDemo />
+<img src="/how-an-ai-agent-works.png" alt="How an AI agent works" class="max-h-[85vh] w-auto" />
 
 </div>
 
@@ -289,11 +250,6 @@ const TOOLS = {
 }
 ```
 
-<div class="mt-6 text-center text-lg op-80">
-  Name · description · schema · function.<br/>
-  You hand the list to the LLM. <strong style="color: #ff6bed">It picks which one to call.</strong>
-</div>
-
 <!--
 A tool is a function. That is the whole concept.
 
@@ -327,10 +283,6 @@ async function agentLoop(messages, systemPrompt) {
   )
 }
 ```
-
-<div class="mt-6 text-center text-lg op-80">
-  Call API · run tools · <strong style="color: #ff6bed">repeat until no more tool calls.</strong>
-</div>
 
 <!--
 And the loop is just recursion.
@@ -407,6 +359,21 @@ The three buckets coming up are exactly that work --
 my organizing frame for the same five layers.
 
 TRANSITION: Three things the agent needs from your codebase.
+-->
+
+---
+transition: fade-out
+---
+
+<div class="h-full flex items-center justify-center">
+  <img src="/three-buckets.png" class="max-h-full max-w-full rounded-lg shadow-lg" />
+</div>
+
+<!--
+[reveal beat]
+
+Three buckets. Context, Feedback, Discoverability.
+The rest of the talk lives inside these three.
 -->
 
 ---
@@ -540,14 +507,12 @@ TRANSITION: So what does that look like in practice?
 -->
 
 ---
+layout: two-cols-header
+---
 
-# Bad AGENTS.md · Good AGENTS.md
+# AGENTS.md — same file, two philosophies
 
-<div class="text-center text-sm op-60 mb-4">Same goal. One floods the context. One points at docs.</div>
-
-<div class="grid grid-cols-2 gap-4">
-
-<div>
+::left::
 
 <div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">BAD — the everything dump</div>
 
@@ -574,9 +539,7 @@ TRANSITION: So what does that look like in practice?
 ~2000 lines. Half your context gone before any work starts.
 </div>
 
-</div>
-
-<div>
+::right::
 
 <div class="text-xs font-bold mb-2" style="color: #ff6bed">GOOD — points at the docs</div>
 
@@ -607,11 +570,7 @@ below before starting any task.
 ~50 lines. Loads docs only when relevant.
 </div>
 
-</div>
-
-</div>
-
-<div v-click class="mt-4 text-center text-lg">
+<div v-click class="absolute bottom-4 left-0 right-0 text-center text-lg">
   Progressive disclosure — <strong style="color: #ff6bed">the right context at the right time.</strong>
 </div>
 
@@ -1235,28 +1194,6 @@ git subtree add --prefix=repos/vueuse \
 - `repos/nuxt/` — module & plugin conventions.
 ```
 
-<div v-click class="mt-8 grid grid-cols-2 gap-6">
-
-<Card variant="muted">
-<div class="text-xs op-60 mb-1">Why a subtree?</div>
-<div class="text-sm">Squashed. Self-contained. Reviewable in diff. No submodule pain.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-60 mb-1">Result</div>
-<div class="text-sm">Agent reads REAL VueUse source before writing your composable. VueUse-quality output without copy-paste.</div>
-</Card>
-
-</div>
-
-<div v-click class="mt-6 max-w-4xl mx-auto">
-
-<Callout type="info">
-<strong>Pro tip — stealing feedback loops:</strong> Clone a repo you admire (e.g. <code>github.com/npmx-dev/npmx.dev</code>) and ask the agent <em>"how do they test their Nuxt project?"</em>. Then copy the approach into your repo. Pattern matching beats reading docs.
-</Callout>
-
-</div>
-
 <!--
 One command. Vendors VueUse into your repo as a squashed subtree.
 
@@ -1290,7 +1227,7 @@ transition: fade
 <PartSlide
   part="3"
   title="Extending the Agent"
-  subtitle="Skills and MCP — the agent's reach"
+  subtitle="Skills and MCP the agent's reach"
 />
 
 <!--

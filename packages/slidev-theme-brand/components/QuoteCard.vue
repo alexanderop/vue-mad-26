@@ -8,6 +8,7 @@
     <div class="quote-author">
       <span class="author-dash" />
       <span>{{ author }}</span>
+      <span v-if="source" class="quote-source">{{ source }}</span>
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@ import { computed, useSlots } from 'vue'
 const props = defineProps<{
   author: string
   highlight?: string
+  source?: string
 }>()
 
 const slots = useSlots()
@@ -86,5 +88,16 @@ const highlightedText = computed(() => {
   width: 2rem;
   height: 2px;
   background: var(--brand-accent);
+}
+
+.quote-source {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.95rem;
+  margin-left: 0.5rem;
+}
+
+.quote-source::before {
+  content: '· ';
+  margin-right: 0.25rem;
 }
 </style>
