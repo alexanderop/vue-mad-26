@@ -33,6 +33,22 @@ TRANSITION: Now the talk title...
 />
 
 ---
+
+# About me
+
+<About />
+
+<!--
+Quick intro before we get into it.
+
+Alexander Opalic -- Vue 8+ years
+Otto Payments -- e-commerce
+Blog at alexop.dev -- mostly Vue and AI now
+
+TRANSITION: Now -- here is the world we are shipping into.
+-->
+
+---
 layout: image
 image: /five-levels.png
 backgroundSize: contain
@@ -78,49 +94,7 @@ Triumph or disaster? I don't know yet.
 What I know: this is the world we ship into. Major OSS rewritten in two weeks by a machine.
 The pace is real. Not slowing down.
 
-TRANSITION: Which brings us to the quote that sums up the shift.
--->
-
----
-
-# And the creator defends it
-
-<div class="flex justify-center">
-  <img src="/bun-creator-defense.png" class="max-h-90 rounded-lg shadow-lg" />
-</div>
-
-<!--
-Jarred Sumner, the creator of Bun, jumped in to defend the Rust port.
-
-Smaller binaries: -5.5MB on macOS, -6.8MB on Linux, -3.8MB on Windows.
-
-His response to the critics:
-- The unsafe usage is a deliberate tradeoff -- a port intended to not change behavior. Strictly better than before. Miri in CI soon.
-- The code style looks like Zig because it is intentional -- the team needs to feel at home in the codebase the agent shipped.
-
-That last point is the one. The agent shipped code that humans still have to live with.
-
-TRANSITION: Which brings us to the quote that sums up the shift.
--->
-
----
-layout: quote
-transition: fade
----
-
-<QuoteCard author="Simon Willison" source="simonwillison.net, Jan 2026" highlight="everything else">
-  Being able to read a detailed specification and transform it into lines of code is the thing that's being automated away. What's left is everything else.
-</QuoteCard>
-
-<!--
-QUOTE: Simon Willison -- "developers won't write code by hand"
-
-[slow down]
-Typing the code is the part that gets automated.
-"Everything else" -- the deciding, the architecting, the validating --
-that is what is left.
-
-TRANSITION: So here is the contradiction every Vue dev is feeling.
+TRANSITION: So here is the line everyone keeps repeating.
 -->
 
 ---
@@ -175,65 +149,6 @@ This is the question.
 The rest of the talk is the answer.
 
 TRANSITION: Quick intro -- then how we're going to answer that.
--->
-
----
-
-# About me
-
-<About />
-
-<!--
-Quick intro -- now that you know why you should care.
-
-Alexander Opalic -- Vue 8+ years
-Otto Payments -- e-commerce
-Blog at alexop.dev -- mostly Vue and AI now
-
-TRANSITION: Here is what we are going to do.
--->
-
----
-layout: statement
-transition: fade
----
-
-# Quick show of hands
-
-<div class="mt-12 text-3xl leading-relaxed op-90">
-
-Who is driving with...
-
-</div>
-
-<div class="mt-8 text-2xl leading-loose">
-
-- **Claude Code**
-- **Codex**
-- **Copilot**
-- **Cursor**
-- something else
-
-</div>
-
-<div class="mt-10 text-xl op-60">
-
-Just so I know which harness you live in.
-
-</div>
-
-<!--
-Quick check before we go in.
-
-I want to know which harness you actually use day to day.
-Claude Code -- Codex -- Copilot -- Cursor -- something else.
-
-[count hands per option]
-
-Reason I am asking: the patterns in this talk apply to all of them,
-but the failure modes look different per harness.
-
-TRANSITION: OK -- here is the plan.
 -->
 
 ---
@@ -404,37 +319,6 @@ TRANSITION: First, the official framing -- then three buckets.
 -->
 
 ---
-layout: quote
-transition: fade
----
-
-<QuoteCard author="Anthropic engineering team" highlight="more than the model alone">
-  The ecosystem built around the model — the harness — determines how Claude Code performs more than the model alone.
-</QuoteCard>
-
-<div class="absolute bottom-4 right-6 text-xs op-50">
-  Source: <em>How Claude Code works in large codebases</em> · claude.com/blog · May 2026
-</div>
-
-<!--
-[pause]
-
-That is the Anthropic engineering team. Published this month.
-Not a hype tweet -- the team that ships Claude Code.
-
-The HARNESS matters more than the MODEL.
-Extension points you actually control -- CLAUDE.md, hooks, skills, plugins.
-That is the surface area worth your time.
-
-Stop optimizing prompts. Start configuring the room.
-
-The three buckets coming up are exactly that work --
-my organizing frame for the same layers.
-
-TRANSITION: Three things the agent needs from your codebase.
--->
-
----
 transition: fade-out
 ---
 
@@ -447,64 +331,6 @@ transition: fade-out
 
 Three buckets. Context, Feedback, Discoverability.
 The rest of the talk lives inside these three.
--->
-
----
-
-# The <span style="background: linear-gradient(90deg, #a855f7, #3b82f6, #14b8a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">three</span> buckets
-
-<div class="text-center text-sm op-60 -mt-2 mb-6">A practical framework for building reliable, maintainable agents.</div>
-
-<div class="grid grid-cols-3 gap-6">
-
-<BucketCard
-  number="01"
-  color="purple"
-  title="Context"
-  question="Does the agent know why things exist?"
-  footerText="Docs, AGENTS.md, ADRs, the rules of your house."
-  topIcon="document"
-  footerIcon="document"
-/>
-
-<BucketCard
-  number="02"
-  color="blue"
-  title="Feedback loops"
-  question="Does the agent know when it is wrong?"
-  footerText="Tests, linting, types, your backpressure."
-  topIcon="chat"
-  footerIcon="refresh"
-/>
-
-<BucketCard
-  number="03"
-  color="teal"
-  title="Discoverability"
-  question="Can the agent find the right code?"
-  footerText="Modular monolith, monorepo structure, naming."
-  topIcon="search"
-  footerIcon="sitemap"
-/>
-
-</div>
-
-<!--
-Three buckets. These recur in the whole rest of the talk.
-
-Context FIRST -- the rules of your house.
-Define the structure, the tests, the style guide --
-everything a new dev would also need.
-Once context is solid, the agent can even implement
-the other two buckets for you.
-
-Feedback: does it know when it broke something?
-Discoverability: can it FIND the right code?
-
-A codebase that is hard for HUMANS is hard for agents.
-Same patterns. Different stakes now.
-
-TRANSITION: The quotable moment.
 -->
 
 ---
@@ -675,84 +501,179 @@ TWO -- is it universal, or situational? Situational goes in /docs.
 
 CLICK -- The right context at the right time.
 
-TRANSITION: And the same idea scales to the filesystem.
+TRANSITION: Same idea scales beyond context — to the actions the agent takes.
 -->
 
 ---
-layout: default
+
+# Skills — progressive disclosure for *actions*
+
+<div class="text-center text-sm op-60 mb-5">An open standard: a folder with a <code>SKILL.md</code>. The agent loads it <strong>only when relevant</strong>.</div>
+
+<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+<div>
+
+```text
+.claude/skills/
+└── my-skill/
+    ├── SKILL.md       # name + description + steps
+    ├── scripts/       # optional: code to run
+    ├── references/    # optional: deeper docs
+    └── assets/        # optional: templates
+```
+
+```yaml
 ---
-
-# Every harness ships with "memory" — but it's local
-
-<div class="text-center text-sm op-60 mb-6">Claude Code, Cursor, Codex — they all carry context between sessions. <strong>On your machine.</strong></div>
-
-<div class="grid grid-cols-2 gap-6">
-
-<Card glow>
-<div class="text-xs op-50 mb-2">You write it</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed"><code>CLAUDE.md</code></div>
-<div class="text-xs op-80">Project-level instructions. Loaded every session.</div>
-<div class="mt-2 text-xs op-50">Lives in the repo. Already shared. ✅</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-2">Claude writes it</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Auto-memory</div>
-<div class="text-xs op-80">Claude accumulates corrections, preferences, gotchas.</div>
-<div class="mt-2 text-xs op-50"><code>~/.claude/projects/&lt;proj&gt;/memory/</code> — only on your laptop. ❌</div>
-</Card>
+name: debug-prod
+description: Tail CloudWatch logs and
+  correlate with the file being edited.
+  Use when prod is broken.
+---
+```
 
 </div>
 
-<div v-click class="mt-8 max-w-3xl mx-auto">
-  <div class="text-center text-base mb-3">
-    Your teammate doesn't see it. The cloud agent doesn't see it. The next contributor starts from zero.
-  </div>
-  <div class="text-center text-lg">
-    <strong style="color: #ff6bed">Memory belongs in the repo</strong> — not in <code>~/.claude/</code>.
-  </div>
+<div class="text-sm op-80 leading-relaxed">
+
+<div class="text-base font-bold mb-3" style="color: #ff6bed">Three stages — pay-as-you-go context</div>
+
+<div class="mb-3"><strong style="color: #ff6bed">1. Discovery.</strong> At startup, only <code>name</code> + <code>description</code> load (~100 tokens). The agent knows the skill exists.</div>
+
+<div class="mb-3"><strong style="color: #ff6bed">2. Activation.</strong> When your task matches the description, the full <code>SKILL.md</code> body loads.</div>
+
+<div class="mb-3"><strong style="color: #ff6bed">3. Execution.</strong> Scripts, references, assets — loaded only when steps call for them.</div>
+
+<div class="text-xs op-60 mt-4">Open format from Anthropic. Same <code>SKILL.md</code> runs in Claude Code, Cursor, Codex, Copilot, Gemini CLI — ~30 agents. Browse <code>skills.sh</code> before writing your own — vendors already publish theirs.</div>
+
 </div>
 
-<div v-click class="mt-4 max-w-3xl mx-auto">
-  <div class="text-center text-xs op-60">
-    Same rule for exclusions: commit <code>permissions.deny</code> in <code>.claude/settings.json</code> so <code>dist/</code>, <code>.nuxt/</code>, generated <code>*.d.ts</code> stay out of context — for everyone, not just you. <span class="op-50">(Anthropic, <em>How Claude Code works in large codebases</em>.)</span>
-  </div>
 </div>
 
 <!--
-Every harness has this. Claude Code calls it Memory.
-Cursor calls them Memories. Codex has its own variant.
+AGENTS.md was progressive disclosure for *context*.
+Skills are progressive disclosure for *actions*.
 
-Two halves -- shown right here:
+A skill is just a folder. SKILL.md on top -- YAML frontmatter with
+name + description, markdown instructions below.
 
-LEFT -- CLAUDE.md. The instructions YOU write. Lives in the repo.
-Every teammate gets it. Every cloud agent gets it. This part works.
+At startup the agent reads ONLY name + description -- maybe 100 tokens
+each. So you can have 50 skills loaded and pay almost nothing.
 
-RIGHT -- auto-memory. The corrections and preferences Claude
-accumulates *itself*. Read the Claude docs -- it's a real feature.
-The path is right there: tilde slash dot-claude slash projects.
+When your prompt matches a description -- THEN the body loads.
+When the body says "run scripts/extract.py" -- THAT loads.
+Pay-as-you-go. Same trick as AGENTS.md, applied to actions.
 
-That second half is the problem.
+Open standard. Same SKILL.md runs in Claude Code, Cursor, Codex,
+Copilot -- thirty agents now.
 
-CLICK
+And before you write one -- browse skills.sh. Vendors publish theirs:
+Vercel's React best-practices, Anthropic's frontend-design, Microsoft's
+Azure flows. Free recipes from the platform owners themselves.
 
-Your teammate spins up the repo -- starts from zero.
-The AFK agent in the cloud -- starts from zero.
-You join a new laptop -- start from zero.
-
-The intelligence is real. It's just locked to one machine.
-
-Memory belongs in the repo. Same as CLAUDE.md.
-And that is exactly what the next slide does.
-
-TRANSITION: brainmaxxing commits the missing half.
+TRANSITION: Skills decide what the agent CAN do. Hooks decide what
+it CAN'T -- and run scripts around every tool call.
 -->
 
 ---
 
-# Don't write it yourself — copy `brainmaxxing`
+# Hooks — guards around every tool call
 
-<div class="text-center text-sm op-60 mb-4"><code>github.com/poteto/brainmaxxing</code> — persistent memory + skills + hooks for Claude Code.</div>
+<div class="text-center text-sm op-60 mb-4">Shell scripts the harness runs <strong>before, after, or alongside</strong> tool calls. Exit 2 = blocked, agent tries something else.</div>
+
+<div class="grid grid-cols-2 gap-4">
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">.claude/settings.json</div>
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{
+        "type": "command",
+        "command": ".claude/hooks/block-destructive.sh"
+      }]
+    }]
+  }
+}
+```
+
+<div class="text-xs font-bold mb-2 mt-3" style="color: #ff6bed">block-destructive.sh</div>
+
+```bash
+#!/usr/bin/env bash
+CMD=$(jq -r '.tool_input.command')
+if [[ "$CMD" =~ rm[[:space:]]+-rf|git[[:space:]]+push.*--force ]]; then
+  echo "Blocked: destructive command" >&2
+  exit 2   # tells the agent: NOT allowed, try again
+fi
+```
+
+</div>
+
+<div>
+
+<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">What the agent sees</div>
+
+```text
+Agent: Bash("rm -rf node_modules")
+
+Hook → exit 2
+  stderr: Blocked: destructive command
+
+Agent: "I was blocked. Let me try
+        pnpm store prune instead."
+
+Agent: Bash("pnpm store prune") ✓
+```
+
+<div v-click class="mt-4">
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-1">Events you can hook</div>
+<div class="text-xs op-80"><code>PreToolUse</code> · <code>PostToolUse</code> · <code>SessionStart</code> · <code>UserPromptSubmit</code> — pure bash, no LLM in the loop</div>
+</Card>
+
+</div>
+
+</div>
+
+</div>
+
+<!--
+Skills add abilities. Hooks add GUARDS.
+
+LEFT -- settings.json wires a PreToolUse hook on every Bash call.
+The hook is just a shell script. Reads the command from stdin,
+greps for rm -rf or force push. Exit code 2 = blocked.
+
+Exit 2 is the magic number. The agent sees it as "NOT allowed,
+try something else." Anything non-zero would just be an error.
+
+RIGHT -- what the agent actually sees.
+Tried rm -rf. Got blocked. Reasoned: "okay, try pnpm store prune."
+Ran THAT. Green. The agent ROUTES AROUND the wall.
+
+CLICK -- four event types I use:
+PreToolUse and PostToolUse on Bash and Edit.
+SessionStart to orient -- print branch, project type.
+UserPromptSubmit to log or inject context.
+All pure bash. No LLM in the loop.
+
+Codex got hooks in May 2026. Cursor next. This is the new normal.
+
+TRANSITION: Now you know the two primitives. Skills + hooks.
+The next slide shows what happens when you point both at a shared folder.
+-->
+
+---
+
+# `brainmaxxing` — skills + hooks pointed at one folder
+
+<div class="text-center text-sm op-60 mb-4">You know skills. You know hooks. <strong style="color: #ff6bed"><code>brain/</code></strong> is the new thing — and it lives in the repo.</div>
 
 <div class="flex justify-center mb-6">
   <img src="/brainmaxxing-repo.png" class="max-h-40 rounded-lg shadow-lg" />
@@ -761,24 +682,21 @@ TRANSITION: brainmaxxing commits the missing half.
 <div class="grid grid-cols-3 gap-5">
 
 <Card glow>
-<div class="text-xs op-50 mb-2"><code>brain/</code></div>
-<div class="text-xl font-bold mb-3" style="color: #ff6bed">The vault</div>
-<div class="text-sm op-80">An Obsidian-style markdown vault.</div>
-<div class="mt-3 text-xs op-60">The agent reads it at session start. Writes to it after mistakes. Compounds over time.</div>
+<div class="text-xs op-50 mb-2">The new idea</div>
+<div class="text-xl font-bold mb-3" style="color: #ff6bed"><code>brain/</code></div>
+<div class="text-sm op-80">An Obsidian-style markdown vault. Committed to the repo — every teammate, every cloud agent gets it.</div>
 </Card>
 
-<Card glow>
-<div class="text-xs op-50 mb-2"><code>.claude/skills/</code></div>
-<div class="text-xl font-bold mb-3" style="color: #ff6bed">Six skills</div>
-<div class="text-sm op-80"><code>/reflect</code> distils a session into the vault.</div>
-<div class="mt-3 text-xs op-60">Plus <code>/ruminate</code>, <code>/meditate</code>, <code>/plan</code>, <code>/review</code>, <code>/brain</code>.</div>
+<Card variant="muted">
+<div class="text-xs op-50 mb-2">Already familiar</div>
+<div class="text-xl font-bold mb-3">Six skills</div>
+<div class="text-sm op-80">Wire the loop: <code>/reflect</code> writes, <code>/plan</code> &amp; <code>/review</code> read, <code>/meditate</code> prunes.</div>
 </Card>
 
-<Card glow>
-<div class="text-xs op-50 mb-2"><code>.claude/hooks/</code></div>
-<div class="text-xl font-bold mb-3" style="color: #ff6bed">Two hooks</div>
-<div class="text-sm op-80"><code>SessionStart</code> injects the brain.</div>
-<div class="mt-3 text-xs op-60"><code>PostToolUse</code> re-indexes <code>brain/</code> when files drift. Pure bash, no LLM.</div>
+<Card variant="muted">
+<div class="text-xs op-50 mb-2">Already familiar</div>
+<div class="text-xl font-bold mb-3">Two hooks</div>
+<div class="text-sm op-80"><code>SessionStart</code> injects the vault. <code>PostToolUse</code> re-indexes when files drift.</div>
 </Card>
 
 </div>
@@ -790,28 +708,25 @@ TRANSITION: brainmaxxing commits the missing half.
 </div>
 
 <!--
-You can write AGENTS.md from scratch. Or you can stand on Poteto's shoulders.
+You already know skills. You already know hooks.
+brainmaxxing is what happens when you point both at one shared folder.
 
-brainmaxxing is the strategy in a box. Three pieces:
+That folder is brain/ -- the only NEW idea on this slide.
+An Obsidian-style markdown vault. Committed to the repo.
+Every teammate, every cloud agent, every new laptop -- gets it.
+That solves the local-memory problem from the previous slide.
 
-ONE -- brain/. A markdown vault. Obsidian opens it natively.
-The SessionStart hook cats brain/index.md into every session.
-That is the persistent memory layer the LLM does not have on its own.
+The skills and hooks are the same primitives from two slides ago.
+Six skills wire the loop: /reflect writes lessons in, /plan and
+/review read them out, /meditate prunes what's stale.
+Two hooks plumb it: SessionStart injects the vault index every
+turn, PostToolUse re-indexes when files drift. Pure bash.
 
-TWO -- six skills. /reflect is the killer.
-After a hard session, /reflect distils what the agent learned
-into the vault. Next session it already knows. Compounding leverage.
-
-THREE -- two hooks, both pure bash. No LLM in the loop.
-SessionStart injects the brain. PostToolUse re-indexes when
-files in brain/ change. The factory runs itself.
-
-CLICK -- The install is wild. No npm install. No script.
+CLICK -- the install is wild. No npm install. No script.
 You literally tell Claude "install brainmaxxing from this URL"
 and the agent does the copying.
 
-TRANSITION: But the cards are not the magic. The skills are.
-The six skills are what keep `brain/` alive.
+TRANSITION: Six skills, and each one keeps the vault alive.
 -->
 
 ---
@@ -1201,7 +1116,7 @@ Copy the approach into your repo. Pattern matching beats reading docs.
 I packaged this as a Claude Code skill: clone-repo.
 Vendors any repo, wires it into AGENTS.md, done.
 
-TRANSITION: One more layer to context -- extending the agent itself.
+TRANSITION: Context is the foundation. Now bucket two -- feedback loops.
 -->
 
 ---
@@ -1210,316 +1125,6 @@ transition: fade
 
 <PartSlide
   part="3"
-  title="Extending the Agent"
-  subtitle="Skills wrap the CLIs you already use"
-/>
-
-<!--
-[scan room]
-
-Bucket three. Once context is solid, you can extend the agent.
-Skills are markdown recipes that wrap the CLIs you already run by hand.
-
-The warning -- if the foundation is clean, these multiply leverage.
-If the foundation is messy, they multiply chaos.
--->
-
----
-
-# What is an Agent Skill?
-
-<div class="text-center text-sm op-60 mb-5">An open standard: a folder with a <code>SKILL.md</code> file. Metadata + instructions the agent loads <strong>only when relevant</strong>.</div>
-
-<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
-
-<div>
-
-```text
-.claude/skills/        # or .agents/skills/
-└── my-skill/
-    ├── SKILL.md       # name + description + steps
-    ├── scripts/       # optional: code to run
-    ├── references/    # optional: deeper docs
-    └── assets/        # optional: templates
-```
-
-```yaml
----
-name: debug-prod
-description: Tail CloudWatch logs and
-  correlate with the file being edited.
-  Use when prod is broken.
----
-```
-
-</div>
-
-<div class="text-sm op-80 leading-relaxed">
-
-<div class="text-base font-bold mb-3" style="color: #ff6bed">Progressive disclosure — 3 stages</div>
-
-<div class="mb-3"><strong style="color: #ff6bed">1. Discovery.</strong> At startup, the agent reads only <code>name</code> + <code>description</code> (~100 tokens each). It now knows the skill exists.</div>
-
-<div class="mb-3"><strong style="color: #ff6bed">2. Activation.</strong> When your task matches the description, the full <code>SKILL.md</code> body loads into context.</div>
-
-<div class="mb-3"><strong style="color: #ff6bed">3. Execution.</strong> Scripts, references, and assets load only when the steps call for them.</div>
-
-<div class="text-xs op-60 mt-4">Open format originally by Anthropic — now supported by Claude Code, Cursor, Codex, Copilot, Gemini CLI, Goose, and ~30 others.</div>
-
-</div>
-
-</div>
-
-<!--
-Before the concrete examples -- what IS a skill, really.
-
-A skill is just a folder with a SKILL.md file. YAML frontmatter on top
-(name + description), markdown instructions below. That's the whole spec.
-
-The magic is progressive disclosure. The agent doesn't read every skill
-at startup -- that would blow up context. It reads only the name and
-description -- maybe 100 tokens each. So you can have 50 skills loaded
-and pay almost nothing for the ones you don't use.
-
-When your prompt matches a description, THEN the full body loads.
-When the body says "run scripts/extract.py", THAT loads.
-Pay-as-you-go context.
-
-And it's an open standard. The same SKILL.md works in Claude Code,
-Cursor, Codex, Copilot -- about thirty agents now. Write once, runs
-everywhere.
-
-TRANSITION: So what does that look like in practice? Here are the ones
-I actually use every day.
--->
-
----
-
-# Skills: a markdown file the agent reads on demand
-
-<div class="text-center text-sm op-60 mb-4">A skill is a <code>.md</code> file in <code>.claude/skills/</code> with a trigger phrase. Type the phrase — the agent loads the recipe.</div>
-
-<div class="grid grid-cols-2 gap-3">
-
-<Card variant="muted">
-<div class="font-mono text-sm font-bold" style="color: #ff6bed">/push</div>
-<div class="text-xs op-70 mt-1">Commit staged changes with a real message and push.</div>
-</Card>
-
-<Card variant="muted">
-<div class="font-mono text-sm font-bold" style="color: #ff6bed">/pr</div>
-<div class="text-xs op-70 mt-1">Open a PR with summary + test plan, derived from the diff.</div>
-</Card>
-
-<Card glow>
-<div class="font-mono text-sm font-bold" style="color: #ff6bed">/check</div>
-<div class="text-xs op-70 mt-1"><strong>Vue + a11y + perf reviewers in parallel</strong>, on every diff.</div>
-</Card>
-
-<Card variant="muted">
-<div class="font-mono text-sm font-bold" style="color: #ff6bed">/fix-pipeline</div>
-<div class="text-xs op-70 mt-1">Read failing CI logs, plan a fix, then apply it.</div>
-</Card>
-
-<Card variant="muted">
-<div class="font-mono text-sm font-bold" style="color: #ff6bed">/review-coderabbit</div>
-<div class="text-xs op-70 mt-1">Triage CodeRabbit comments, implement the valid ones.</div>
-</Card>
-
-<Card variant="muted">
-<div class="font-mono text-sm font-bold" style="color: #ff6bed">/research</div>
-<div class="text-xs op-70 mt-1">Spawn a research agent across web + docs + codebase.</div>
-</Card>
-
-<Card variant="muted">
-<div class="font-mono text-sm font-bold" style="color: #ff6bed">/interview</div>
-<div class="text-xs op-70 mt-1">Have the agent grill ME on a plan before I write the spec.</div>
-</Card>
-
-<Card glow>
-<div class="font-mono text-sm font-bold" style="color: #ff6bed">/learn</div>
-<div class="text-xs op-70 mt-1"><strong>The factory-fixer.</strong> Distil today's lessons into <code>AGENTS.md</code>.</div>
-</Card>
-
-</div>
-
-<div v-click class="mt-6 text-center text-xs op-60 max-w-3xl mx-auto">
-  Skills can be <strong style="color: #ff6bed">path-scoped</strong> — drop one in <code>features/workout/.claude/skills/</code> and it only triggers when the agent works inside <code>workout/</code>. <span class="op-50">(Pattern: Anthropic, <em>How Claude Code works in large codebases</em>.)</span>
-</div>
-
-<!--
-A skill is just a markdown file in .claude/skills/.
-You type the trigger phrase. The agent loads the recipe.
-
-/push and /pr -- my two most-used. Remove all friction from shipping.
-/check -- the killer for Vue work. Vue patterns + a11y + perf + tests.
-   All in parallel. Every diff. Before I look at it.
-/fix-pipeline -- reads CI logs and plans the fix BEFORE touching code.
-/review-coderabbit -- triage CodeRabbit comments, only fix the valid ones.
-/research -- subagent across web + docs + codebase.
-/interview -- the agent grills ME until the plan is sharp.
-
-The killer is /learn.
-After a hard session, distil what the agent learned the hard way
-back into AGENTS.md. Fix-the-factory in action.
-
-TRANSITION: But shipped skills are just the start. The real power is writing your OWN.
--->
-
----
-
-# Write your own: wrap the CLI you already use
-
-<div class="text-center text-sm op-60 mb-6">A skill is just a recipe. If you can run it locally, the agent can too.</div>
-
-<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
-
-<div>
-
-```md
----
-description: Debug prod with CloudWatch logs
-trigger: /debug-prod
----
-
-When the user types /debug-prod <feature>:
-
-1. Run `aws logs tail /aws/lambda/<fn> --since 30m`
-2. Grep for ERROR / WARN around the timestamp
-3. Cross-reference with the Vue component
-   the user is editing
-4. Propose a fix as a diff
-```
-
-</div>
-
-<div>
-
-<div class="text-base font-bold mb-3" style="color: #ff6bed">The pattern</div>
-<div class="text-sm op-80 leading-relaxed">
-You already know <code>aws</code>, <code>gh</code>, <code>kubectl</code>.<br/>
-For UI testing: <code>agent-browser</code> — a CLI that drives a real browser, captures screenshots and console.<br/><br/>
-Write a 10-line skill that wraps the flow you do by hand. The agent runs the same commands — and now it can read the output, correlate, and propose a fix.
-</div>
-
-<div v-click class="mt-6">
-
-<Callout type="info">
-<strong>No new infra.</strong> Just markdown + the CLIs already on your laptop.
-</Callout>
-
-</div>
-
-<div class="mt-4 text-xs op-60">
-QA-as-an-agent reference: <code>github.com/alexanderop/explore-qa</code>
-</div>
-
-</div>
-
-</div>
-
-<!--
-This is the unlock.
-
-You don't need a fancy plugin.
-
-If you can run "aws logs tail" in your terminal,
-write a 10-line skill that runs it for you.
-The agent executes the same command, reads the output, correlates with the code.
-
-Same pattern for kubectl, gh, terraform, docker, anything you already use.
-
-For UI testing -- agent-browser is the CLI I reach for.
-Full reference repo: github.com/alexanderop/explore-qa.
-Clone it, see how QA-as-an-agent actually works.
-
-CLICK -- the callout. No new infra. Just markdown.
-
-TRANSITION: And before you write your own from scratch -- somebody has probably already shipped it.
--->
-
----
-
-# Before you write one — browse <code style="color: #ff6bed">skills.sh</code>
-
-<div class="text-center text-sm op-60 mb-5">The open agent-skills leaderboard. Search, copy, adapt. <code>npx skills update</code> to install.</div>
-
-<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
-
-<div>
-
-```text
-SKILLS LEADERBOARD          INSTALLS
-─────────────────────────────────────
-1  find-skills              1.6M
-   vercel-labs/skills
-
-2  frontend-design          429.1K
-   anthropics/skills
-
-3  vercel-react-            409.3K
-   best-practices
-   vercel-labs/agent-skills
-
-4  web-design-guidelines    328.5K
-   vercel-labs/agent-skills
-
-5  microsoft-foundry        328.0K
-   microsoft/azure-skills
-```
-
-</div>
-
-<div class="text-sm op-80 leading-relaxed">
-
-<div class="text-base font-bold mb-3" style="color: #ff6bed">Why browse first</div>
-
-<div class="mb-3"><strong>Vendors already publish skills.</strong> Vercel, Anthropic, Microsoft — they ship the recipes for their own products. <code>vercel-react-best-practices</code>, <code>frontend-design</code>, Azure deploy flows.</div>
-
-<div class="mb-3"><strong>Steal the structure.</strong> Even if you don't install one, open it on GitHub and copy the YAML frontmatter + step format into your own skill.</div>
-
-<div class="mb-3"><strong>Same format, any agent.</strong> Skills written for one tool run in the others — the leaderboard is cross-product by design.</div>
-
-<div v-click class="mt-5">
-
-<Callout type="info">
-<strong>Don't reinvent.</strong> Browse <code>skills.sh</code> → copy what fits → adapt the rest.
-</Callout>
-
-</div>
-
-</div>
-
-</div>
-
-<!--
-Before you write a skill from scratch -- check skills.sh.
-
-It's the open leaderboard. 400,000+ skills.
-And the top of the list is not random hobbyists -- it's the vendors.
-Vercel publishing their own React best-practices skill.
-Anthropic publishing frontend-design. Microsoft publishing Azure deploy flows.
-
-These are the recipes the platform owners THEMSELVES want you running.
-
-Even if you don't install one -- open it on GitHub.
-Look at the YAML frontmatter, look at how they structure the steps.
-That's free training data for writing your own.
-
-And because skills are an open standard -- the same skill runs in
-Claude Code, Cursor, Codex, whatever you use.
-
-CLICK -- callout. Don't reinvent. Browse, copy, adapt.
-
-TRANSITION: OK. Context is the foundation. Now the second bucket -- feedback loops.
--->
-
----
-transition: fade
----
-
-<PartSlide
-  part="4"
   title="Feedback Loops"
   subtitle="Backpressure: tests, types, lint"
 />
@@ -1906,107 +1511,46 @@ holds in CI too.
 The one rule: no --no-verify escape hatches. If a hook fails, FIX IT.
 The whole point of the gate is that it doesn't open.
 
-TRANSITION: But there's a layer EVEN BEFORE commit -- inside the agent loop itself.
+TRANSITION: Lefthook is the gate at commit time. Remember the hooks slide? Same primitive, different job.
 -->
 
 ---
+layout: statement
+---
 
-# Hooks: guards inside the agent
+# Lefthook is the **gate**. Hooks are the **guards**.
 
-<div class="text-center text-sm op-60 mb-4">Lefthook is the gate at commit time. <strong>Hooks are guards mid-loop.</strong></div>
-
-<div class="grid grid-cols-2 gap-4">
-
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">.claude/settings.json</div>
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [{
-      "matcher": "Bash",
-      "hooks": [{
-        "type": "command",
-        "command": ".claude/hooks/block-destructive.sh"
-      }]
-    }]
-  }
-}
-```
-
-<div class="text-xs font-bold mb-2 mt-3" style="color: #ff6bed">block-destructive.sh</div>
-
-```bash
-#!/usr/bin/env bash
-CMD=$(jq -r '.tool_input.command')
-if [[ "$CMD" =~ rm[[:space:]]+-rf|git[[:space:]]+push.*--force ]]; then
-  echo "Blocked: destructive command" >&2
-  exit 2   # tells the agent: NOT allowed, try again
-fi
-```
-
+<div v-click class="mt-8 text-base op-80 max-w-3xl mx-auto text-center leading-relaxed">
+  You met hooks in Part 2. Same primitive — different job:<br/><br/>
+  <strong style="color: #ff6bed">Lefthook</strong> runs at <em>commit time</em>: typecheck, lint, tests, conventional-commit format.<br/>
+  <strong style="color: #ff6bed">Agent hooks</strong> run <em>mid-loop</em>: enforce pnpm, protect <code>.nuxt/</code>, block <code>.env</code>, <code>SessionStart</code> orient, <code>PostToolUse</code> oxfmt.
 </div>
 
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">What the agent sees</div>
-
-```text
-Agent: Bash("rm -rf node_modules")
-
-Hook → exit 2
-  stderr: Blocked: destructive command
-
-Agent: "I was blocked. Let me try
-        pnpm store prune instead."
-
-Agent: Bash("pnpm store prune") ✓
-```
-
-<div v-click class="mt-4">
-
-<Card variant="muted">
-<div class="text-xs op-60 mb-1">Five more guards I run, same pattern</div>
-<div class="text-xs op-80">enforce pnpm · protect <code>.nuxt/</code> &amp; <code>*.d.ts</code> · block <code>.env</code> reads · <code>SessionStart</code> orient · <code>PostToolUse</code> oxfmt — the one carve-out</div>
-</Card>
-
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-4 text-center text-sm op-80 max-w-3xl mx-auto">
-  Don't put typecheck / lint / tests in <code>PostToolUse</code>. <span style="color: #ff6bed">That's what Lefthook is for.</span>
+<div v-click class="mt-8 text-center text-base">
+  <span style="color: #ff6bed">Don't blur them.</span> Typecheck/lint/tests belong in Lefthook — not <code>PostToolUse</code>.
 </div>
 
 <!--
-Lefthook is the gate at commit time.
-Hooks are the GUARDS mid-loop -- inside Claude Code itself.
+Quick callback to the hooks slide from Part 2.
 
-Walk the LEFT slowly.
+Same primitive -- shell script the harness runs around tool calls.
+But TWO different jobs:
 
-settings.json wires a PreToolUse hook on every Bash call.
-The hook is just a shell script. Reads the command from stdin,
-greps for rm -rf or force push. Exit code 2 = blocked.
-Exit 2 is the magic number: the agent sees it as "NOT allowed,
-try something else." Anything non-zero would just be an error.
+Lefthook is the GATE at commit time. Heavy stuff -- typecheck,
+lint, tests, commit-message format. Runs once when you commit.
 
-RIGHT -- what the agent actually sees.
-Tried rm -rf. Got blocked. Reasoned: "okay, try pnpm store prune."
-Ran THAT. Green.
-
-CLICK -- I have five more guards built the same way:
+Agent hooks run MID-LOOP, around every single tool call. So they
+have to be CHEAP. The guards I actually run:
 - Enforce pnpm. No npm/yarn slipping into the lockfile.
 - Protect generated files. Never hand-edit .nuxt/ or components.d.ts.
-- Block .env reads, including cat/head/jq escape hatches. Point at .env.example.
-- SessionStart -- orient the agent: project type, branch, nuxi prepare if stale.
-- The one PostToolUse carve-out: oxfmt. Normalization, not feedback. Milliseconds, not seconds.
+- Block .env reads -- including cat/head/jq escape hatches.
+- SessionStart orient: print branch, project type, nuxi prepare if stale.
+- The one PostToolUse carve-out: oxfmt. Milliseconds. Normalization,
+  not feedback.
 
-CLICK -- The trap: don't put typecheck/lint/tests in PostToolUse.
+CLICK -- the trap. Don't put typecheck or tests in PostToolUse.
 Drift. Intermediate broken state. Context cost. Slow signals.
-That's what Lefthook is for. Hooks are guards. Lefthook is the gate.
+That's what Lefthook is for.
 
 Codex got hooks in May 2026. Cursor next. This is the new normal.
 
@@ -2018,7 +1562,7 @@ transition: fade
 ---
 
 <PartSlide
-  part="5"
+  part="4"
   title="Discoverability"
   subtitle="One folder = one feature"
 />
