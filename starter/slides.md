@@ -416,18 +416,6 @@ transition: fade-out
 
 </v-click>
 
-<div v-click class="mt-12 max-w-3xl mx-auto">
-
-<Card glow>
-<div class="text-sm op-90 text-center">
-200k tokens for Claude. 1M with the extended window. Same story everywhere.<br/><br/>
-<strong style="color: #ff6bed">The more you stuff in, the worse the model gets.</strong>
-</div>
-<div class="text-xs op-60 mt-3 text-center">Long-context degradation is real — HumanLayer calls it the "dumb zone".</div>
-</Card>
-
-</div>
-
 <!--
 The Memento metaphor: no memory between turns.
 The Memento reality: even within a turn, the window is finite.
@@ -448,29 +436,33 @@ TRANSITION: And here is the kicker. The window is not empty when you start.
 
 # The window isn't empty when you start
 
-<div class="text-center text-sm op-60 mb-6">Before you type your first prompt, the provider has already loaded:</div>
+<div class="text-center text-sm op-60 mb-8">Before you type your first prompt, the provider has already loaded:</div>
 
-<div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+<div class="grid grid-cols-2 gap-x-12 gap-y-3 max-w-4xl mx-auto text-base">
 
-<Card glow>
-<div class="text-xs op-50 mb-2">System prompt</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">"You are Claude Code…"</div>
-<div class="text-sm op-80">Anthropic's instructions: how to behave, what to refuse, how to format. <strong>~9k tokens.</strong></div>
-</Card>
+<div>
 
-<Card glow>
-<div class="text-xs op-50 mb-2">Tool definitions</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Read, Edit, Bash, Grep…</div>
-<div class="text-sm op-80">Every tool's name, JSON schema, and description. <strong>~10k tokens.</strong></div>
-</Card>
+- **System prompt** — ~9k tokens
+- "You are Claude Code…"
+- How to behave, refuse, format
 
 </div>
 
-<div v-click class="mt-8 text-center text-base">
-  Baseline cost: <strong style="color: #ff6bed">~20k tokens before you type a word.</strong>
+<div>
+
+- **Tool definitions** — ~10k tokens
+- Read, Edit, Bash, Grep…
+- Name, JSON schema, description
+
 </div>
 
-<div v-click class="mt-6 text-center text-sm op-70 max-w-3xl mx-auto">
+</div>
+
+<div v-click class="mt-10 text-center text-base">
+  Baseline: <strong style="color: #ff6bed">~20k tokens before you type a word.</strong>
+</div>
+
+<div v-click class="mt-4 text-center text-sm op-70 max-w-3xl mx-auto">
   Everything <em>you</em> add — <code>AGENTS.md</code>, skills, MCP servers, sub-agents — spends from what's left.
 </div>
 
@@ -648,7 +640,136 @@ TWO -- is it universal, or situational? Situational goes in /docs.
 CLICK -- The right context at the right time.
 
 TRANSITION: AGENTS.md is the front door. But the agent has two more
-knobs you should know — skills, then hooks. Then we tie all three together.
+knobs you should know — skills, then hooks. The examples come from
+one project: brainmaxxing. Let me show you what that is first.
+-->
+
+---
+
+# Meet `brainmaxxing` — the examples come from here
+
+<div class="text-center text-sm op-70 mt-4 mb-6">
+  An open-source kit by <a href="https://github.com/poteto/brainmaxxing" class="underline" style="color: #ff6bed">poteto</a> — <em>stupid simple persistent memory and skill improvement</em>.
+</div>
+
+<div class="grid grid-cols-3 gap-6 max-w-5xl mx-auto mt-4">
+
+<Card variant="muted">
+<div class="text-base font-bold mb-2" style="color: #ff6bed">A <code>brain/</code> folder</div>
+<div class="text-sm op-80">Markdown vault the agent reads <em>and</em> writes — principles, decisions, gotchas it learned the hard way.</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Six skills</div>
+<div class="text-sm op-80"><code>/reflect</code>, <code>/plan</code>, <code>/review</code>, <code>/meditate</code>, <code>/ruminate</code>, <code>/brain</code> — each reads or writes <code>brain/</code>.</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-base font-bold mb-2" style="color: #ff6bed">A SessionStart hook</div>
+<div class="text-sm op-80">Injects <code>brain/index.md</code> at the start of every session, so the agent boots up oriented.</div>
+</Card>
+
+</div>
+
+<div class="text-center text-xs op-50 mt-8">
+  We'll dissect the whole loop in a few slides. First, the two primitives it's built on — <strong style="color: #ff6bed">skills</strong> and <strong style="color: #ff6bed">hooks</strong>.
+</div>
+
+<!--
+Quick name-check before the next two slides land.
+
+brainmaxxing is an open-source kit from poteto on GitHub.
+192 stars, MIT license, three months old. Tagline:
+"stupid simple persistent memory and skill improvement."
+
+Three pieces:
+ONE -- a brain/ folder. Plain markdown. The agent reads from it
+and writes back to it.
+TWO -- six skills. /reflect, /plan, /review, /meditate, /ruminate, /brain.
+Each one either reads brain/ or writes to it.
+THREE -- a SessionStart hook. Every new session, it injects
+brain/index.md so the agent boots up already knowing the map.
+
+I'm flagging this NOW because the next two slides show
+/reflect and inject-brain.sh as examples. They're from this project.
+
+We'll come back and stitch the whole loop together after.
+-->
+
+---
+
+# What `brain/` actually looks like
+
+<div class="text-center text-sm op-70 mb-6">Just markdown. An <code>index.md</code> that links to a folder of notes.</div>
+
+<div class="grid grid-cols-2 gap-8 max-w-5xl mx-auto">
+
+<div>
+
+<div class="text-xs op-50 mb-2"><code>brain/</code></div>
+
+```
+brain/
+├── index.md
+├── principles.md
+├── principles/
+│   ├── boundary-discipline.md
+│   ├── fix-root-causes.md
+│   ├── guard-the-context-window.md
+│   ├── never-block-on-the-human.md
+│   ├── prove-it-works.md
+│   └── …
+└── plans/
+    └── index.md
+```
+
+</div>
+
+<div>
+
+<div class="text-xs op-50 mb-2"><code>brain/index.md</code></div>
+
+```markdown
+# Brain
+
+## Principles
+- [[principles]]
+- [[principles/boundary-discipline]]
+- [[principles/fix-root-causes]]
+- [[principles/guard-the-context-window]]
+- [[principles/prove-it-works]]
+- …
+
+## Plans
+- [[plans/index]]
+```
+
+</div>
+
+</div>
+
+<div class="text-center text-xs op-50 mt-6">
+  The hook loads <code>index.md</code> at session start. The agent follows links into <code>principles/</code> only when relevant.
+</div>
+
+<!--
+Before we get into skills and hooks, look at what's actually on disk.
+
+brain/ is just a folder of markdown. Nothing exotic.
+
+index.md is the map -- a list of wiki-style links to every note.
+The SessionStart hook injects THIS file (and only this file) at the
+start of every conversation. ~700 bytes.
+
+The agent sees the map. When a principle is relevant -- say it's
+about to delete a legacy API -- it opens
+principles/migrate-callers-then-delete-legacy-apis.md on demand.
+
+Progressive disclosure again. Same pattern as skills:
+load the index, lazy-load the details.
+
+TRANSITION: That's the storage. Now the two primitives that read
+and write it -- skills and hooks.
 -->
 
 ---
@@ -1617,6 +1738,95 @@ The cheap ones at the center run on every save.
 The expensive ones at the edge run in CI or prod.
 
 I wrote up the full stack on my blog -- scan the QR for the deep dive.
+
+TRANSITION: Those 15 are automated. There's one more layer the agent needs.
+-->
+
+---
+transition: fade-out
+---
+
+# Layer 16 — the agent as a user
+
+<div class="text-center text-sm op-60 mb-6">Static checks are green. Did the feature actually <em>work</em> in a browser?</div>
+
+<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+<Card glow>
+<div class="text-xs op-50 mb-1">Setup</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">An agent-runnable Vue app</div>
+
+```bash
+# one command, stable port, predictable URL
+pnpm dev   # → http://localhost:5173
+
+# seed data so the agent isn't fighting auth
+pnpm seed:e2e
+
+# a health endpoint so it knows when it's ready
+curl localhost:5173/__ready
+```
+
+<div class="text-xs op-70 mt-2">Background-runnable. Deterministic. No "click here to dismiss the cookie banner" surprises.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">Tool</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">agent-browser CLI</div>
+
+```bash
+npm i -g agent-browser
+agent-browser install
+
+# the agent drives a real Chromium
+# → clicks, screenshots, console, network
+```
+
+<div class="text-xs op-70 mt-2">A browser CLI shaped for agents. Reads the DOM, takes screenshots, surfaces console errors and network failures — the same signals a human QA would notice.</div>
+</Card>
+
+</div>
+
+<div v-click class="mt-6 max-w-3xl mx-auto">
+
+<Card variant="muted">
+<div class="text-sm op-90 text-center">
+The agent ships the PR <strong style="color: #ff6bed">and</strong> verifies it like a user would.<br/>
+Types passing isn't shipping. <em>Working in a browser</em> is shipping.
+</div>
+</Card>
+
+</div>
+
+<!--
+[breathe]
+
+Fifteen automated layers and they're all green. The PR looks clean.
+
+But did the feature actually WORK? Did the modal open? Did the form submit?
+Did the chart render with the right data? Static checks cannot answer that.
+
+You need the agent to BE the user.
+
+Two ingredients.
+
+ONE -- an agent-runnable Vue app. This sounds obvious but it usually isn't.
+The dev server is ONE command. The port is STABLE. There's a way for the
+agent to know "the server is ready" -- a health endpoint, a wait-on, anything
+better than `sleep 5`. Test data is seeded by a script so the agent doesn't
+hit a login wall. No surprise cookie banners. Deterministic.
+
+TWO -- agent-browser. npm install, one command. It's a browser CLI shaped
+for agents. The agent drives a real Chromium. Clicks. Screenshots. Reads
+console errors. Watches network failures. The same signals a human QA
+notices in the first thirty seconds.
+
+CLICK
+
+So the loop becomes -- agent writes code, types pass, lint passes, tests pass,
+THEN the agent opens the app, runs through the change, screenshots it, reads
+the console. If anything looks wrong, it goes back. Types passing isn't
+shipping. Working in a browser is.
 
 TRANSITION: All those layers are SIGNALS. You still need a GATE.
 -->
