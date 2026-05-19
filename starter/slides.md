@@ -436,34 +436,18 @@ TRANSITION: And here is the kicker. The window is not empty when you start.
 
 # The window isn't empty when you start
 
-<div class="text-center text-sm op-60 mb-8">Before you type your first prompt, the provider has already loaded:</div>
+<div class="h-full flex flex-col items-center justify-center -mt-12">
 
-<div class="grid grid-cols-2 gap-x-12 gap-y-3 max-w-4xl mx-auto text-base">
+<div class="text-7xl font-bold" style="color: #ff6bed">~20k tokens</div>
 
-<div>
+<div class="mt-4 text-lg op-70">spent before you type a word</div>
 
-- **System prompt** — ~9k tokens
-- "You are Claude Code…"
-- How to behave, refuse, format
-
+<div class="mt-10 flex gap-6 text-sm op-60">
+  <span>system prompt <span class="op-80">~9k</span></span>
+  <span>·</span>
+  <span>tool definitions <span class="op-80">~10k</span></span>
 </div>
 
-<div>
-
-- **Tool definitions** — ~10k tokens
-- Read, Edit, Bash, Grep…
-- Name, JSON schema, description
-
-</div>
-
-</div>
-
-<div v-click class="mt-10 text-center text-base">
-  Baseline: <strong style="color: #ff6bed">~20k tokens before you type a word.</strong>
-</div>
-
-<div v-click class="mt-4 text-center text-sm op-70 max-w-3xl mx-auto">
-  Everything <em>you</em> add — <code>AGENTS.md</code>, skills, MCP servers, sub-agents — spends from what's left.
 </div>
 
 <!--
@@ -515,11 +499,6 @@ TRANSITION: Don't believe me? Claude Code shows you exactly.
 </div>
 
 </Card>
-
-<div v-click class="mt-6 text-center text-base op-90">
-  System prompt + tools = <strong style="color: #ff6bed">~19k tokens</strong> before you typed.<br/>
-  Memory files, skills, sub-agents — <strong>all compete for what's left.</strong>
-</div>
 
 <!--
 Type /context in Claude Code. It draws this.
@@ -646,21 +625,15 @@ one project: brainmaxxing. Let me show you what that is first.
 
 ---
 
-# Many ways to doc your agent — this is my current favorite
+# Many shapes work.
 
-<div class="text-center text-base op-70 mt-8 max-w-3xl mx-auto">
-  There's no one right shape for agent docs. <code>AGENTS.md</code>, <code>CLAUDE.md</code>,
-  <code>.cursor/rules</code>, <code>docs/</code> folders, Notion exports, README chains…
-  pick what fits your project.
+<div class="h-full flex items-center justify-center -mt-12">
+
+<div class="text-center">
+  <div class="text-3xl op-70">My current favorite:</div>
+  <div class="text-7xl font-bold mt-6" style="color: #ff6bed">brainmaxxing</div>
 </div>
 
-<div class="text-center text-lg mt-10 max-w-3xl mx-auto">
-  Right now <strong style="color: #ff6bed">brainmaxxing</strong> is the one I keep coming back to —
-  small, opinionated, easy to steal pieces from.
-</div>
-
-<div class="text-center text-xs op-50 mt-10">
-  Not the only answer. Just the clearest example I've found of skills + hooks + a brain folder working together.
 </div>
 
 <!--
@@ -681,33 +654,29 @@ TRANSITION: Here's the project.
 
 ---
 
-# Meet `brainmaxxing` — the examples come from here
+# Meet `brainmaxxing`
 
-<div class="text-center text-sm op-70 mt-4 mb-6">
-  An open-source kit by <a href="https://github.com/poteto/brainmaxxing" class="underline" style="color: #ff6bed">poteto</a> — <em>stupid simple persistent memory and skill improvement</em>.
+<div class="text-center text-sm op-60 mt-2 mb-12">
+  by <a href="https://github.com/poteto/brainmaxxing" class="underline" style="color: #ff6bed">poteto</a>
 </div>
 
-<div class="grid grid-cols-3 gap-6 max-w-5xl mx-auto mt-4">
+<div class="grid grid-cols-3 gap-6 max-w-5xl mx-auto mt-10">
 
 <Card variant="muted">
-<div class="text-base font-bold mb-2" style="color: #ff6bed">A <code>brain/</code> folder</div>
-<div class="text-sm op-80">Markdown vault the agent reads <em>and</em> writes — principles, decisions, gotchas it learned the hard way.</div>
+<div class="text-xl font-bold text-center" style="color: #ff6bed"><code>brain/</code></div>
+<div class="text-sm op-70 text-center mt-2">a markdown vault</div>
 </Card>
 
 <Card variant="muted">
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Six skills</div>
-<div class="text-sm op-80"><code>/reflect</code>, <code>/plan</code>, <code>/review</code>, <code>/meditate</code>, <code>/ruminate</code>, <code>/brain</code> — each reads or writes <code>brain/</code>.</div>
+<div class="text-xl font-bold text-center" style="color: #ff6bed">6 skills</div>
+<div class="text-sm op-70 text-center mt-2">read &amp; write the vault</div>
 </Card>
 
 <Card variant="muted">
-<div class="text-base font-bold mb-2" style="color: #ff6bed">A SessionStart hook</div>
-<div class="text-sm op-80">Injects <code>brain/index.md</code> at the start of every session, so the agent boots up oriented.</div>
+<div class="text-xl font-bold text-center" style="color: #ff6bed">1 hook</div>
+<div class="text-sm op-70 text-center mt-2">loads the map on startup</div>
 </Card>
 
-</div>
-
-<div class="text-center text-xs op-50 mt-8">
-  We'll dissect the whole loop in a few slides. First, the two primitives it's built on — <strong style="color: #ff6bed">skills</strong> and <strong style="color: #ff6bed">hooks</strong>.
 </div>
 
 <!--
@@ -762,82 +731,6 @@ Don't adopt it wholesale -- read it, steal the shape, adapt the brain/ folder
 and the skills to your project. The hook is six lines of shell.
 
 TRANSITION: Okay, now let's actually look inside. Start with brain/.
--->
-
----
-
-# What `brain/` actually looks like
-
-<div class="text-center text-sm op-70 mb-6">Just markdown. An <code>index.md</code> that links to a folder of notes.</div>
-
-<div class="grid grid-cols-2 gap-8 max-w-5xl mx-auto">
-
-<div>
-
-<div class="text-xs op-50 mb-2"><code>brain/</code></div>
-
-```
-brain/
-├── index.md
-├── principles.md
-├── principles/
-│   ├── boundary-discipline.md
-│   ├── fix-root-causes.md
-│   ├── guard-the-context-window.md
-│   ├── never-block-on-the-human.md
-│   ├── prove-it-works.md
-│   └── …
-└── plans/
-    └── index.md
-```
-
-</div>
-
-<div>
-
-<div class="text-xs op-50 mb-2"><code>brain/index.md</code></div>
-
-```markdown
-# Brain
-
-## Principles
-- [[principles]]
-- [[principles/boundary-discipline]]
-- [[principles/fix-root-causes]]
-- [[principles/guard-the-context-window]]
-- [[principles/prove-it-works]]
-- …
-
-## Plans
-- [[plans/index]]
-```
-
-</div>
-
-</div>
-
-<div class="text-center text-xs op-50 mt-6">
-  The hook loads <code>index.md</code> at session start. The agent follows links into <code>principles/</code> only when relevant.
-</div>
-
-<!--
-Before we get into skills and hooks, look at what's actually on disk.
-
-brain/ is just a folder of markdown. Nothing exotic.
-
-index.md is the map -- a list of wiki-style links to every note.
-The SessionStart hook injects THIS file (and only this file) at the
-start of every conversation. ~700 bytes.
-
-The agent sees the map. When a principle is relevant -- say it's
-about to delete a legacy API -- it opens
-principles/migrate-callers-then-delete-legacy-apis.md on demand.
-
-Progressive disclosure again. Same pattern as skills:
-load the index, lazy-load the details.
-
-TRANSITION: That's the storage. Now the two primitives that read
-and write it -- skills and hooks.
 -->
 
 ---
@@ -1120,44 +1013,36 @@ layout: default
 
 # Six skills that keep `brain/` alive
 
-<div class="grid grid-cols-3 gap-3 mt-8">
+<div class="grid grid-cols-3 gap-4 mt-12 max-w-4xl mx-auto">
 
 <Card glow>
-<div class="text-xs op-50 mb-1"><code>/plan</code></div>
-<div class="text-base font-bold mb-1" style="color: #ff6bed">Plan</div>
-<div class="text-xs op-80">Phased plan written to <code>brain/plans/</code>. Planning only — no code.</div>
+<div class="text-2xl font-bold text-center" style="color: #ff6bed">/plan</div>
 </Card>
 
 <Card glow>
-<div class="text-xs op-50 mb-1"><code>/review</code></div>
-<div class="text-base font-bold mb-1" style="color: #ff6bed">Review</div>
-<div class="text-xs op-80">Critique a PR or plan against <code>brain/principles/</code>. No edits.</div>
+<div class="text-2xl font-bold text-center" style="color: #ff6bed">/review</div>
 </Card>
 
 <Card glow>
-<div class="text-xs op-50 mb-1"><code>/reflect</code></div>
-<div class="text-base font-bold mb-1" style="color: #ff6bed">Reflect</div>
-<div class="text-xs op-80">Distil session learnings back into <code>brain/</code>.</div>
+<div class="text-2xl font-bold text-center" style="color: #ff6bed">/reflect</div>
 </Card>
 
 <Card glow>
-<div class="text-xs op-50 mb-1"><code>/meditate</code></div>
-<div class="text-base font-bold mb-1" style="color: #ff6bed">Meditate</div>
-<div class="text-xs op-80">Audit the vault. Prune stale notes.</div>
+<div class="text-2xl font-bold text-center" style="color: #ff6bed">/meditate</div>
 </Card>
 
 <Card glow>
-<div class="text-xs op-50 mb-1"><code>/ruminate</code></div>
-<div class="text-base font-bold mb-1" style="color: #ff6bed">Ruminate</div>
-<div class="text-xs op-80">Mine past conversations for missed patterns.</div>
+<div class="text-2xl font-bold text-center" style="color: #ff6bed">/ruminate</div>
 </Card>
 
 <Card glow>
-<div class="text-xs op-50 mb-1"><code>/brain</code></div>
-<div class="text-base font-bold mb-1" style="color: #ff6bed">Brain</div>
-<div class="text-xs op-80">Direct read/write of vault files. The primitive.</div>
+<div class="text-2xl font-bold text-center" style="color: #ff6bed">/brain</div>
 </Card>
 
+</div>
+
+<div class="text-center text-sm op-60 mt-10">
+  Each one reads, writes, or cleans <code>brain/</code>.
 </div>
 
 <!--
@@ -1275,10 +1160,6 @@ TRANSITION: And the bonus -- it ships with 16 principles built in.
   <div class="text-sm op-80">serialize-shared-state-mutations</div>
 </div>
 
-</div>
-
-<div v-click class="mt-8 text-center text-sm op-70">
-  <strong style="color: #ff6bed">Photograph this slide.</strong>
 </div>
 
 <!--
@@ -1418,24 +1299,14 @@ TRANSITION: One more thing -- tune the room so humans don't trip over it.
 
 </div>
 
-<div>
+<div class="flex flex-col justify-center">
 
-<div class="text-sm op-60 mb-2">Then ask the agent to distill it:</div>
+<div class="text-sm op-60 mb-3">Then distill it once:</div>
 
 ```
-Read repos/vueuse. Write
-agent-patterns/vueuse.md with
-the idioms an agent should
-follow when writing composables
-in this project.
+Read repos/vueuse.
+Write agent-patterns/vueuse.md.
 ```
-
-<div class="mt-4 text-xs op-60">
-A reusable artifact the agent
-comes back to — instead of
-rediscovering the same patterns
-every session.
-</div>
 
 </div>
 
@@ -1543,11 +1414,6 @@ const user = User.parse(await res.json())
 
 </div>
 
-<div v-click class="mt-6 text-center text-base op-80">
-TypeScript trusts the types you write.<br/>
-<strong style="color: #ff6bed">Zod / Valibot / ArkType check that runtime data still matches.</strong>
-</div>
-
 <!--
 Layer 1 -- type safety.
 
@@ -1638,11 +1504,6 @@ describe("formatPrice", () => {
 })
 ```
 
-<div v-click class="mt-6 text-center text-base op-80">
-Pure functions, hooks, stores, composables.<br/>
-<strong style="color: #ff6bed">The cheapest signal. Most logic lives here.</strong>
-</div>
-
 <!--
 Layer 3 -- unit tests with Vitest.
 
@@ -1732,11 +1593,6 @@ export const handlers = [
   <Card glow><div class="font-bold">Browser mode</div></Card>
   <Card glow><div class="font-bold">Playwright</div></Card>
   <Card glow><div class="font-bold">Dev server</div></Card>
-</div>
-
-<div class="mt-4 text-base op-80">
-One source of truth.<br/>
-<strong style="color: #ff6bed">Not three drifting fixture folders.</strong>
 </div>
 
 </div>
@@ -2095,6 +1951,147 @@ TRANSITION: Now watch what the agent does in each.
 -->
 
 ---
+
+# Convert flat → feature-sliced
+
+<div class="text-center text-sm op-60 mb-4">Same files. Same code. Different addressing.</div>
+
+````md magic-move {lines: true}
+```ts
+// src/
+//   components/
+//     WorkoutActiveMode.vue
+//     WorkoutHeader.vue
+//     TimerDisplay.vue
+//     ExerciseList.vue
+//     SettingsForm.vue
+//   composables/
+//     useWorkoutMode.ts
+//     useRestTimer.ts
+//     useExercises.ts
+//     useSettings.ts
+//   stores/
+//     workout.ts
+//     timers.ts
+//     settings.ts
+```
+
+```ts
+// src/
+//   components/
+//     WorkoutActiveMode.vue    // → workout
+//     WorkoutHeader.vue        // → workout
+//     TimerDisplay.vue         // → timers
+//     ExerciseList.vue         // → exercises
+//     SettingsForm.vue         // → settings
+//   composables/
+//     useWorkoutMode.ts        // → workout
+//     useRestTimer.ts          // → timers
+//     useExercises.ts          // → exercises
+//     useSettings.ts           // → settings
+//   stores/
+//     workout.ts               // → workout
+//     timers.ts                // → timers
+//     settings.ts              // → settings
+```
+
+```ts
+// src/features/
+//   workout/
+//     components/WorkoutActiveMode.vue
+//     components/WorkoutHeader.vue
+//     composables/useWorkoutMode.ts
+//     store.ts
+//   timers/
+//     components/TimerDisplay.vue
+//     composables/useRestTimer.ts
+//     store.ts
+//   exercises/
+//     components/ExerciseList.vue
+//     composables/useExercises.ts
+//   settings/
+//     components/SettingsForm.vue
+//     composables/useSettings.ts
+//     store.ts
+```
+````
+
+<!--
+[click] State 1 -- typical mid-size Vue app. Components, composables,
+stores. Grouped by what files ARE, not what they DO. A change to "workout"
+touches three folders.
+
+[click] State 2 -- same files, annotated with the feature each one belongs
+to. Four features mixed across three buckets. The agent grep across folders
+to find anything related to one thing.
+
+[click] State 3 -- I just regrouped. Same files. Same code.
+workout/ is one folder. timers/ is one folder.
+The agent finds everything by name. So do you.
+
+TRANSITION: That regrouping is not cosmetic. It changes what the agent sees.
+-->
+
+---
+
+# What the agent sees
+
+<div class="text-center text-sm op-60 mb-6">Same prompt: <em>"Add a streak counter to the active workout"</em></div>
+
+<div class="grid grid-cols-2 gap-6">
+
+<div>
+
+<div class="text-xs op-50 mb-2">FLAT — agent greps across folders</div>
+
+<div class="space-y-1 text-sm font-mono">
+<div><span class="text-red-400">✗</span> components/SettingsForm.vue</div>
+<div><span class="text-green-400">✓</span> components/WorkoutActiveMode.vue</div>
+<div><span class="text-green-400">✓</span> components/WorkoutHeader.vue</div>
+<div><span class="text-red-400">✗</span> components/TimerDisplay.vue</div>
+<div><span class="text-red-400">✗</span> composables/useSettings.ts</div>
+<div><span class="text-green-400">✓</span> composables/useWorkoutMode.ts</div>
+<div><span class="text-red-400">✗</span> stores/timers.ts</div>
+</div>
+
+<div class="mt-4 text-xs op-70"><strong style="color: #ff6bed">~40% relevant.</strong> The rest crowds the window.</div>
+
+</div>
+
+<div>
+
+<div class="text-xs op-50 mb-2">FEATURE — agent <code>ls features/workout/</code></div>
+
+<div class="space-y-1 text-sm font-mono">
+<div><span class="text-green-400">✓</span> workout/components/WorkoutActiveMode.vue</div>
+<div><span class="text-green-400">✓</span> workout/components/WorkoutHeader.vue</div>
+<div><span class="text-green-400">✓</span> workout/composables/useWorkoutMode.ts</div>
+<div><span class="text-green-400">✓</span> workout/store.ts</div>
+</div>
+
+<div class="mt-4 text-xs"><strong style="color: #ff6bed">100% relevant.</strong> One folder is the answer.</div>
+
+</div>
+
+</div>
+
+<!--
+The folder structure is the agent's first read.
+
+LEFT -- in a flat layout, "streak counter on the workout" sends the agent
+scanning components/ and composables/. Most of what it pulls is unrelated --
+SettingsForm, TimerDisplay, useSettings. The window fills with noise the
+agent has to think past.
+
+RIGHT -- in a feature layout, "workout" maps to features/workout/.
+The agent lists one folder and gets exactly the files that matter.
+No grep. No guess. Same outcome as a good AGENTS.md -- a narrow window
+into the right code, so the tokens go to output instead of search.
+
+TRANSITION: But folders alone won't keep the agent honest. You need rules.
+-->
+
+---
 transition: fade-out
 ---
 
@@ -2134,31 +2131,19 @@ TRANSITION: Here's the machine.
 
 <div class="text-xs font-bold mb-2" style="color: #ff6bed">ESLint — the real <code>eslint.config.ts</code></div>
 
-```ts {*}{maxHeight:'360px'}
-// workoutTracker/eslint.config.ts
-{
-  name: 'app/feature-boundaries',
-  files: ['src/**/*.{ts,vue}'],
-  rules: {
-    'import-x/no-restricted-paths': ['error', {
-      zones: [
-        // cross-feature isolation
-        { target: './src/features/workout',
-          from: './src/features',
-          except: ['./workout'] },
-        { target: './src/features/timers',
-          from: './src/features',
-          except: ['./timers'] },
-        // ...one per feature
+```ts {all|3-6|8-10}
+'import-x/no-restricted-paths': ['error', {
+  zones: [
+    // workout can only be imported by itself
+    { target: './src/features/workout',
+      from:   './src/features',
+      except: ['./workout'] },
 
-        // shared can't reach into features
-        { target: ['./src/components', './src/composables',
-                   './src/lib', './src/stores'],
-          from: ['./src/features', './src/views'] },
-      ],
-    }],
-  },
-}
+    // shared layers can't reach into features
+    { target: ['./src/components', './src/lib', './src/stores'],
+      from:   ['./src/features', './src/views'] },
+  ],
+}]
 ```
 
 </div>
