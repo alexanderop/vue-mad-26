@@ -168,7 +168,7 @@ TRANSITION: Here is what we are going to do.
 <PyramidOutline :items="[
   { title: 'What an Agent Actually Is', subtitle: 'A loop, not a magic box' },
   { title: 'Context', subtitle: 'Does it know why things exist?' },
-  { title: 'Extending the Agent', subtitle: 'Skills and MCP the agent’s reach' },
+  { title: 'Extending the Agent', subtitle: 'Skills and CLIs extend the agent’s reach' },
   { title: 'Feedback Loops', subtitle: 'Does it know when it is wrong?' },
   { title: 'Discoverability', subtitle: 'Can the agent find the right code?' },
   { title: 'Future', subtitle: 'The role merge' }
@@ -350,13 +350,13 @@ That is the Anthropic engineering team. Published this month.
 Not a hype tweet -- the team that ships Claude Code.
 
 The HARNESS matters more than the MODEL.
-Five extension points they name -- CLAUDE.md, hooks, skills, plugins, MCP.
-That is what you actually control.
+Extension points you actually control -- CLAUDE.md, hooks, skills, plugins.
+That is the surface area worth your time.
 
 Stop optimizing prompts. Start configuring the room.
 
 The three buckets coming up are exactly that work --
-my organizing frame for the same five layers.
+my organizing frame for the same layers.
 
 TRANSITION: Three things the agent needs from your codebase.
 -->
@@ -1227,18 +1227,86 @@ transition: fade
 <PartSlide
   part="3"
   title="Extending the Agent"
-  subtitle="Skills and MCP the agent's reach"
+  subtitle="Skills wrap the CLIs you already use"
 />
 
 <!--
 [scan room]
 
 Bucket three. Once context is solid, you can extend the agent.
-Two layers: skills (recipes for your repo and local CLIs)
-and MCP servers (eyes outside the repo).
+Skills are markdown recipes that wrap the CLIs you already run by hand.
 
 The warning -- if the foundation is clean, these multiply leverage.
 If the foundation is messy, they multiply chaos.
+-->
+
+---
+
+# What is an Agent Skill?
+
+<div class="text-center text-sm op-60 mb-5">An open standard: a folder with a <code>SKILL.md</code> file. Metadata + instructions the agent loads <strong>only when relevant</strong>.</div>
+
+<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+<div>
+
+```text
+.claude/skills/        # or .agents/skills/
+└── my-skill/
+    ├── SKILL.md       # name + description + steps
+    ├── scripts/       # optional: code to run
+    ├── references/    # optional: deeper docs
+    └── assets/        # optional: templates
+```
+
+```yaml
+---
+name: debug-prod
+description: Tail CloudWatch logs and
+  correlate with the file being edited.
+  Use when prod is broken.
+---
+```
+
+</div>
+
+<div class="text-sm op-80 leading-relaxed">
+
+<div class="text-base font-bold mb-3" style="color: #ff6bed">Progressive disclosure — 3 stages</div>
+
+<div class="mb-3"><strong style="color: #ff6bed">1. Discovery.</strong> At startup, the agent reads only <code>name</code> + <code>description</code> (~100 tokens each). It now knows the skill exists.</div>
+
+<div class="mb-3"><strong style="color: #ff6bed">2. Activation.</strong> When your task matches the description, the full <code>SKILL.md</code> body loads into context.</div>
+
+<div class="mb-3"><strong style="color: #ff6bed">3. Execution.</strong> Scripts, references, and assets load only when the steps call for them.</div>
+
+<div class="text-xs op-60 mt-4">Open format originally by Anthropic — now supported by Claude Code, Cursor, Codex, Copilot, Gemini CLI, Goose, and ~30 others.</div>
+
+</div>
+
+</div>
+
+<!--
+Before the concrete examples -- what IS a skill, really.
+
+A skill is just a folder with a SKILL.md file. YAML frontmatter on top
+(name + description), markdown instructions below. That's the whole spec.
+
+The magic is progressive disclosure. The agent doesn't read every skill
+at startup -- that would blow up context. It reads only the name and
+description -- maybe 100 tokens each. So you can have 50 skills loaded
+and pay almost nothing for the ones you don't use.
+
+When your prompt matches a description, THEN the full body loads.
+When the body says "run scripts/extract.py", THAT loads.
+Pay-as-you-go context.
+
+And it's an open standard. The same SKILL.md works in Claude Code,
+Cursor, Codex, Copilot -- about thirty agents now. Write once, runs
+everywhere.
+
+TRANSITION: So what does that look like in practice? Here are the ones
+I actually use every day.
 -->
 
 ---
@@ -1353,7 +1421,7 @@ Write a 10-line skill that wraps the flow you do by hand. The agent runs the sam
 <div v-click class="mt-6">
 
 <Callout type="info">
-<strong>No MCP server needed.</strong> No new infra. Just markdown + the CLIs on your laptop.
+<strong>No new infra.</strong> Just markdown + the CLIs already on your laptop.
 </Callout>
 
 </div>
@@ -1369,7 +1437,6 @@ QA-as-an-agent reference: <code>github.com/alexanderop/explore-qa</code>
 <!--
 This is the unlock.
 
-You don't need an MCP server for every integration.
 You don't need a fancy plugin.
 
 If you can run "aws logs tail" in your terminal,
@@ -1382,70 +1449,85 @@ For UI testing -- agent-browser is the CLI I reach for.
 Full reference repo: github.com/alexanderop/explore-qa.
 Clone it, see how QA-as-an-agent actually works.
 
-CLICK -- the callout. No MCP needed. Just markdown.
+CLICK -- the callout. No new infra. Just markdown.
 
-TRANSITION: That said -- for some things, MCP servers ARE the right tool.
+TRANSITION: And before you write your own from scratch -- somebody has probably already shipped it.
 -->
 
 ---
 
-# MCP servers: the agent's eyes outside the repo
+# Before you write one — browse <code style="color: #ff6bed">skills.sh</code>
 
-<div class="text-center text-sm op-60 mb-6">Use these when the data lives in a system, not behind a CLI.</div>
+<div class="text-center text-sm op-60 mb-5">The open agent-skills leaderboard. Search, copy, adapt. <code>npx skills update</code> to install.</div>
 
-<div class="grid grid-cols-2 gap-4 max-w-5xl mx-auto">
+<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
 
-<Card glow>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">context7</div>
-<div class="text-sm op-80 mt-1">Live docs for Vue, Nuxt, Vite, Pinia, VueUse. No more agents writing against 2-year-old APIs.</div>
-</Card>
+<div>
 
-<Card glow>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Figma</div>
-<div class="text-sm op-80 mt-1">Designer hands you a frame URL — agent reads tokens, spacing, variants, scaffolds the <code>&lt;script setup&gt;</code> component.</div>
-</Card>
+```text
+SKILLS LEADERBOARD          INSTALLS
+─────────────────────────────────────
+1  find-skills              1.6M
+   vercel-labs/skills
 
-<Card variant="muted">
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Sentry</div>
-<div class="text-sm op-80 mt-1">Agent reads the stack trace, breadcrumbs, and user context — then opens the file it crashed in.</div>
-</Card>
+2  frontend-design          429.1K
+   anthropics/skills
 
-<Card variant="muted">
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Linear / GitHub</div>
-<div class="text-sm op-80 mt-1">Pull ticket context, parent epics, related PRs — without you pasting them into chat.</div>
-</Card>
+3  vercel-react-            409.3K
+   best-practices
+   vercel-labs/agent-skills
+
+4  web-design-guidelines    328.5K
+   vercel-labs/agent-skills
+
+5  microsoft-foundry        328.0K
+   microsoft/azure-skills
+```
 
 </div>
 
-<div v-click class="mt-8 text-center max-w-3xl mx-auto">
+<div class="text-sm op-80 leading-relaxed">
 
-<Callout type="warn">
-<strong>Rule of thumb:</strong> if there's a CLI for it, write a skill. If there isn't, reach for an MCP server.
+<div class="text-base font-bold mb-3" style="color: #ff6bed">Why browse first</div>
+
+<div class="mb-3"><strong>Vendors already publish skills.</strong> Vercel, Anthropic, Microsoft — they ship the recipes for their own products. <code>vercel-react-best-practices</code>, <code>frontend-design</code>, Azure deploy flows.</div>
+
+<div class="mb-3"><strong>Steal the structure.</strong> Even if you don't install one, open it on GitHub and copy the YAML frontmatter + step format into your own skill.</div>
+
+<div class="mb-3"><strong>Same format, any agent.</strong> Skills written for one tool run in the others — the leaderboard is cross-product by design.</div>
+
+<div v-click class="mt-5">
+
+<Callout type="info">
+<strong>Don't reinvent.</strong> Browse <code>skills.sh</code> → copy what fits → adapt the rest.
 </Callout>
 
 </div>
 
+</div>
+
+</div>
+
 <!--
-MCP servers are for data behind a UI, not data behind a CLI.
+Before you write a skill from scratch -- check skills.sh.
 
-context7 is the one I use every day for Vue work.
-The agent's training data is months old. Vue, Nuxt, Vite move faster than that.
-context7 pulls LIVE docs at query time. No more code against deprecated APIs.
+It's the open leaderboard. 400,000+ skills.
+And the top of the list is not random hobbyists -- it's the vendors.
+Vercel publishing their own React best-practices skill.
+Anthropic publishing frontend-design. Microsoft publishing Azure deploy flows.
 
-Figma is the design-handoff killer.
-Frame URL goes in, scaffolded Vue component comes out.
-Tokens, spacing, variants -- the agent reads them straight from the design.
+These are the recipes the platform owners THEMSELVES want you running.
 
-Sentry MCP pulls the stack trace, breadcrumbs, and user context.
-The agent jumps straight to the file that crashed.
-For browser testing -- use the agent-browser CLI as a skill, not an MCP.
+Even if you don't install one -- open it on GitHub.
+Look at the YAML frontmatter, look at how they structure the steps.
+That's free training data for writing your own.
 
-Linear and GitHub MCP pull ticket context without copy-paste.
+And because skills are an open standard -- the same skill runs in
+Claude Code, Cursor, Codex, whatever you use.
 
-CLICK -- the rule of thumb.
-CLI? Write a skill. No CLI? MCP server.
+CLICK -- callout. Don't reinvent. Browse, copy, adapt.
 
-TRANSITION: Context is the foundation. Now the second bucket -- feedback loops.
+TRANSITION: OK. Context is the foundation. Now the second bucket -- feedback loops.
 -->
 
 ---
