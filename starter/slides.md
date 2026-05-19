@@ -646,6 +646,41 @@ one project: brainmaxxing. Let me show you what that is first.
 
 ---
 
+# Many ways to doc your agent — this is my current favorite
+
+<div class="text-center text-base op-70 mt-8 max-w-3xl mx-auto">
+  There's no one right shape for agent docs. <code>AGENTS.md</code>, <code>CLAUDE.md</code>,
+  <code>.cursor/rules</code>, <code>docs/</code> folders, Notion exports, README chains…
+  pick what fits your project.
+</div>
+
+<div class="text-center text-lg mt-10 max-w-3xl mx-auto">
+  Right now <strong style="color: #ff6bed">brainmaxxing</strong> is the one I keep coming back to —
+  small, opinionated, easy to steal pieces from.
+</div>
+
+<div class="text-center text-xs op-50 mt-10">
+  Not the only answer. Just the clearest example I've found of skills + hooks + a brain folder working together.
+</div>
+
+<!--
+Before I show you brainmaxxing, quick disclaimer.
+
+There are many ways to give an agent docs. AGENTS.md, CLAUDE.md,
+cursor rules, a docs/ folder, README chains, even Notion exports.
+None of them are wrong. Pick what fits your team.
+
+I'm showing you brainmaxxing because right now it's MY favorite.
+It's small. It's opinionated. The pieces are easy to steal even
+if you don't adopt the whole thing.
+
+Treat the next few slides as one concrete example, not the one true way.
+
+TRANSITION: Here's the project.
+-->
+
+---
+
 # Meet `brainmaxxing` — the examples come from here
 
 <div class="text-center text-sm op-70 mt-4 mb-6">
@@ -694,6 +729,39 @@ I'm flagging this NOW because the next two slides show
 /reflect and inject-brain.sh as examples. They're from this project.
 
 We'll come back and stitch the whole loop together after.
+-->
+
+---
+
+# Steal it — `poteto/brainmaxxing`
+
+<div class="text-center text-sm op-70 mb-6">MIT-licensed, three months old, ~200 stars. Clone it, rip it apart, make it yours.</div>
+
+<div class="grid grid-cols-[1fr_auto] gap-8 items-center max-w-5xl mx-auto">
+
+<div>
+  <img src="/brainmaxxing-repo.png" class="rounded-lg shadow-2xl" />
+</div>
+
+<div class="flex flex-col items-center gap-3">
+  <img src="/qr-brainmaxxing.png" class="w-44 h-44 bg-white p-2 rounded-lg" />
+  <div class="text-xs op-70 text-center max-w-44">
+    <span style="color: #ff6bed">github.com/<br/>poteto/brainmaxxing</span>
+  </div>
+</div>
+
+</div>
+
+<!--
+The repo is right here. Scan or type the URL.
+
+MIT-licensed. ~200 stars. Three months old. Tiny enough to read end-to-end
+in an afternoon.
+
+Don't adopt it wholesale -- read it, steal the shape, adapt the brain/ folder
+and the skills to your project. The hook is six lines of shell.
+
+TRANSITION: Okay, now let's actually look inside. Start with brain/.
 -->
 
 ---
@@ -1730,52 +1798,50 @@ TRANSITION: Those 15 are automated. There's one more layer the agent needs.
 transition: fade-out
 ---
 
-# Layer 16 — the agent as a user
+# Meet `agent-browser`
 
-<div class="text-center text-sm op-60 mb-6">Static checks are green. Did the feature actually <em>work</em> in a browser?</div>
-
-<div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
-
-<Card glow>
-<div class="text-xs op-50 mb-1">Setup</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">An agent-runnable Vue app</div>
-
-```bash
-# one command, stable port, predictable URL
-pnpm dev   # → http://localhost:5173
-
-# seed data so the agent isn't fighting auth
-pnpm seed:e2e
-
-# a health endpoint so it knows when it's ready
-curl localhost:5173/__ready
-```
-
-<div class="text-xs op-70 mt-2">Background-runnable. Deterministic. No "click here to dismiss the cookie banner" surprises.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-1">Tool</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">agent-browser CLI</div>
+<div class="text-center text-sm op-60 mb-6">A browser CLI shaped for AI agents.</div>
 
 ```bash
 npm i -g agent-browser
-agent-browser install
+agent-browser install              # downloads Chromium
 
-# the agent drives a real Chromium
-# → clicks, screenshots, console, network
+agent-browser open localhost:5173
+agent-browser snapshot -i          # DOM tree with @refs
+agent-browser click @e2            # click by ref
+agent-browser fill @e3 "hello"     # type into input
+agent-browser screenshot --annotate
+agent-browser console              # read page console
 ```
 
-<div class="text-xs op-70 mt-2">A browser CLI shaped for agents. Reads the DOM, takes screenshots, surfaces console errors and network failures — the same signals a human QA would notice.</div>
-</Card>
+<!--
+[breathe]
 
-</div>
+One npm install. One binary download. The agent now has a real Chromium
+it can drive from the command line.
 
-<div v-click class="mt-6 max-w-3xl mx-auto">
+Snapshot returns the DOM as plain text with @refs. Click by ref, fill by
+ref. Screenshots come back annotated. Console errors come back as text.
+
+TRANSITION: So once the project runs locally AND the agent has this...
+-->
+
+---
+clicks: 3
+transition: fade-out
+---
+
+# Layer 16 — the agent as a user
+
+<div class="text-center text-sm op-60 mb-4">Static checks are green. Did it actually <em>work</em> in a browser?</div>
+
+<AgentBrowserLoop :step="$clicks" />
+
+<div v-after class="mt-4 max-w-3xl mx-auto">
 
 <Card variant="muted">
 <div class="text-sm op-90 text-center">
-The agent ships the PR <strong style="color: #ff6bed">and</strong> verifies it like a user would.<br/>
+Run the app locally <strong style="color: #ff6bed">+</strong> drive a real browser <strong style="color: #ff6bed">=</strong> the agent verifies its own PR like a user.<br/>
 Types passing isn't shipping. <em>Working in a browser</em> is shipping.
 </div>
 </Card>
@@ -1817,9 +1883,9 @@ TRANSITION: All those layers are SIGNALS. You still need a GATE.
 
 ---
 
-# The commit-time gate: Lefthook
+# Lefthook: the commit-time gate
 
-<div class="text-center text-sm op-60 mb-4">15 layers are signals. <strong>Lefthook is the gate.</strong></div>
+<div class="text-center text-sm op-70 mb-4">Use <strong>Husky</strong> or <strong>Lefthook</strong> so every commit automatically runs tests, lint, and typecheck.</div>
 
 ```yaml
 # lefthook.yml
@@ -1827,30 +1893,9 @@ pre-commit:
   parallel: true
   jobs:
     - run: pnpm oxlint
-    - run: pnpm oxfmt --check
     - run: pnpm vue-tsc --build
     - run: pnpm vitest related --run {staged_files}
-
-commit-msg:
-  jobs:
-    - run: |
-        grep -qE '^(feat|fix|chore|refactor|test|docs)(\(.+\))?!?: .+' {1} \
-          || (echo "Conventional commit required"; exit 1)
 ```
-
-<div class="mt-6 grid grid-cols-2 gap-6">
-
-<Card glow>
-<div class="text-xs op-60 mb-1">Why Lefthook, not Husky</div>
-<div class="text-sm">Parallel jobs. YAML the agent can READ and edit. No shell-script soup.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs op-60 mb-1">The one rule</div>
-<div class="text-sm">No <code>--no-verify</code>. If a hook fails, <strong>fix the underlying issue.</strong></div>
-</Card>
-
-</div>
 
 <!--
 [pause]
@@ -1871,49 +1916,6 @@ The one rule: no --no-verify escape hatches. If a hook fails, FIX IT.
 The whole point of the gate is that it doesn't open.
 
 TRANSITION: Lefthook is the gate at commit time. Remember the hooks slide? Same primitive, different job.
--->
-
----
-layout: statement
----
-
-# Lefthook is the **gate**. Hooks are the **guards**.
-
-<div v-click class="mt-8 text-base op-80 max-w-3xl mx-auto text-center leading-relaxed">
-  You met hooks in Part 2. Same primitive — different job:<br/><br/>
-  <strong style="color: #ff6bed">Lefthook</strong> runs at <em>commit time</em>: typecheck, lint, tests, conventional-commit format.<br/>
-  <strong style="color: #ff6bed">Agent hooks</strong> run <em>mid-loop</em>: enforce pnpm, protect <code>.nuxt/</code>, block <code>.env</code>, <code>SessionStart</code> orient, <code>PostToolUse</code> oxfmt.
-</div>
-
-<div v-click class="mt-8 text-center text-base">
-  <span style="color: #ff6bed">Don't blur them.</span> Typecheck/lint/tests belong in Lefthook — not <code>PostToolUse</code>.
-</div>
-
-<!--
-Quick callback to the hooks slide from Part 2.
-
-Same primitive -- shell script the harness runs around tool calls.
-But TWO different jobs:
-
-Lefthook is the GATE at commit time. Heavy stuff -- typecheck,
-lint, tests, commit-message format. Runs once when you commit.
-
-Agent hooks run MID-LOOP, around every single tool call. So they
-have to be CHEAP. The guards I actually run:
-- Enforce pnpm. No npm/yarn slipping into the lockfile.
-- Protect generated files. Never hand-edit .nuxt/ or components.d.ts.
-- Block .env reads -- including cat/head/jq escape hatches.
-- SessionStart orient: print branch, project type, nuxi prepare if stale.
-- The one PostToolUse carve-out: oxfmt. Milliseconds. Normalization,
-  not feedback.
-
-CLICK -- the trap. Don't put typecheck or tests in PostToolUse.
-Drift. Intermediate broken state. Context cost. Slow signals.
-That's what Lefthook is for.
-
-Codex got hooks in May 2026. Cursor next. This is the new normal.
-
-TRANSITION: Last bucket -- discoverability. Can the agent find the right code?
 -->
 
 ---
@@ -2093,86 +2095,6 @@ TRANSITION: Now watch what the agent does in each.
 -->
 
 ---
-
-# The agent traces
-
-<div class="grid grid-cols-2 gap-4 mt-2">
-
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">LEFT — flat structure</div>
-
-```text
-Grep("workout")              → 80+ hits, 9 folders
-Read WorkoutActiveMode.vue   → not the state
-Read WorkoutHeader.vue       → wrong file
-Grep("useWorkout")           → 30 hits, half tests
-Read composables/useWorkout  → found state
-Read stores/workout.ts       → found mutations
-Read composables/useRest...  → timer coupling?
-Edit WorkoutActiveMode.vue
-Edit useWorkoutMode.ts
-Edit stores/workout.ts
-Bash: vitest                 → 90s, 2 fails
-Read timers.spec.ts          → coupling via store
-Edit useAmrapTimer.ts        → fix coupling
-Bash: vitest                 → 90s, green
-```
-
-<div class="mt-3 text-center">
-  <span class="text-lg font-bold" style="color: #ef4444">12 tool calls · ~3 min</span>
-  <div class="text-xs op-60 mt-1">+ one accidental coupling</div>
-</div>
-
-</div>
-
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">RIGHT — modular monolith</div>
-
-```text
-Glob("src/features/workout/**") → 31 files
-Read features/workout/
-     composables/useWorkoutMode.ts
-Read features/workout/
-     components/WorkoutActiveMode.vue
-Edit useWorkoutMode.ts
-Edit WorkoutActiveMode.vue
-Bash: vitest src/features/workout → 4s, green
-```
-
-<div class="mt-3 text-center">
-  <span class="text-lg font-bold" style="color: #ff6bed">6 tool calls · ~30 sec</span>
-  <div class="text-xs op-60 mt-1">blast radius = one folder</div>
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-6 text-center text-lg">
-  You didn't make the agent <em>smarter</em>.<br/>
-  <strong style="color: #ff6bed">You made the codebase legible.</strong>
-</div>
-
-<!--
-Walk through LEFT slowly. Let the audience feel the waste.
-
-47 grep hits. The agent reads three files before finding state.
-Tests take 90 seconds. Two unrelated tests fail because cart and
-checkout share a composable that nobody documented.
-
-Click to RIGHT.
-
-Same task. Six tool calls. Vitest in 4 seconds because we scope it.
-
-CLICK -- The point: you didn't make the agent smarter.
-You made the codebase LEGIBLE.
-
-TRANSITION: So what are the actual rules? Let me draw them.
--->
-
----
 transition: fade-out
 ---
 
@@ -2258,176 +2180,33 @@ import from features or views.
 That is the contract. Every PR -- mine, the agent's --
 fails CI the moment workout reaches into timers.
 
-TRANSITION: But what if you have already switched to oxlint?
--->
-
----
-
-# On oxlint? Write the wall yourself.
-
-<div class="text-center text-sm op-60 mb-4">No <code>no-restricted-paths</code> rule — so generate a JS plugin.</div>
-
-<div class="grid grid-cols-2 gap-6">
-
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">Prompt the agent</div>
-
-```text {*}{maxHeight:'150px'}
-Generate scripts/oxlint-plugin-boundaries.mjs:
- 1. Read tsconfig paths.
- 2. Classify importer + target by layer.
- 3. Block cross-feature imports.
- 4. Block upward imports (lib → features).
-Wire it via jsPlugins.
-```
-
-<div class="text-xs font-bold mt-3 mb-2" style="color: #ff6bed">Wire it: <code>.oxlintrc.json</code></div>
-
-```json
-{
-  "jsPlugins": [
-    "./scripts/oxlint-plugin-boundaries.mjs"
-  ],
-  "rules": {
-    "boundaries/no-cross-feature": "error"
-  }
-}
-```
-
-</div>
-
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">200 lines later — the agent ships</div>
-
-```js {*}{maxHeight:'340px'}
-// scripts/oxlint-plugin-boundaries.mjs
-const noCrossFeature = {
-  create(context) {
-    return {
-      ImportDeclaration(node) {
-        const from = classify(context.filename)
-        const to   = classify(node.source.value)
-        if (!allowed(from, to)) {
-          context.report({
-            node,
-            message: `${from.layer} → ${to.layer} forbidden`,
-          })
-        }
-      },
-    }
-  },
-}
-
-export default {
-  meta: { name: 'boundaries' },
-  rules: { 'no-cross-feature': noCrossFeature },
-}
-```
-
-</div>
-
-</div>
-
-<div class="mt-4 text-center text-sm op-70">
-  The agent wrote the rule. <strong style="color: #ff6bed">Now the rule polices the agent.</strong>
-</div>
-
-<!--
-If you have already switched to oxlint, you hit a wall:
-it does not ship no-restricted-paths.
-
-So I told the agent: generate a custom oxlint JS plugin.
-
-oxlint exposes a JS plugin API. ESLint-compatible visitor
-pattern -- create(context) returns node visitors,
-context.report flags violations. Export a plugin with rules,
-register it under jsPlugins, turn the rule on.
-
-200 lines, one prompt, committed.
-
-The point is the loop, not the linter.
-The agent wrote the rule.
-Now the rule polices the agent.
-
 TRANSITION: That's the three buckets. Zoom out -- where is this all heading?
 -->
 
 ---
+clicks: 5
 transition: fade-out
 ---
 
-# Make the codebase agent-ready
+# The four moves compound
 
-<div class="text-center text-sm op-60 mb-6">Four moves. They compound.</div>
+<div class="text-center text-sm op-60 mb-6">Click in each piece. The center lights up when they're all there.</div>
 
-<div class="grid grid-cols-2 gap-4 max-w-5xl mx-auto">
-
-<Card glow>
-<div class="text-xs op-50 mb-1">01</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Write a real AGENTS.md / CLAUDE.md</div>
-<div class="text-sm op-80">Stack, structure, gotchas, conventions. The first file every agent reads — make it earn the context window.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-1">02</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Brainmaxxing: skills + hooks + brain/</div>
-<div class="text-sm op-80">Slash commands for the recipes you repeat. Hooks for the rules you can't trust the model to remember. A <code>brain/</code> vault that compounds.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-1">03</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Stack feedback loops into the pipeline</div>
-<div class="text-sm op-80">Types, lint, unit, component, API mocks, E2E, a11y, visual, perf. Every layer is a signal the agent can chase until it's green.</div>
-</Card>
-
-<Card glow>
-<div class="text-xs op-50 mb-1">04</div>
-<div class="text-base font-bold mb-2" style="color: #ff6bed">Feature-based architecture at scale</div>
-<div class="text-sm op-80">One folder = one feature. Executable boundaries via lint rules. The agent traces a vertical slice instead of a horizontal layer cake.</div>
-</Card>
-
-</div>
-
-<div v-click class="mt-8 max-w-3xl mx-auto">
-
-<Card variant="muted">
-<div class="text-sm op-90 text-center">
-A better codebase for agents <strong style="color: #ff6bed">is</strong> a better codebase for humans.<br/>
-Discoverability, feedback, context — the same three buckets, all the way down.
-</div>
-</Card>
-
-</div>
+<AgentReadyPie :step="$clicks" />
 
 <!--
-[breathe]
+[pause]
 
-Recap before we look forward.
-
-ONE -- AGENTS.md. Or CLAUDE.md, same file. Stack, structure, gotchas.
-This is the first thing every agent reads. Spend an afternoon on it,
-not five minutes. It pays back every prompt for the rest of the project.
-
-TWO -- brainmaxxing. Skills are the recipes you find yourself repeating.
-Hooks are the rules you cannot trust the model to remember. brain/ is
-the vault that compounds session over session. Together they turn the
-agent from a generic assistant into your senior teammate.
-
-THREE -- the quality pipeline. Fifteen layers in mine. You don't need
-fifteen on day one. You need MORE than zero. Every layer is a signal
-the agent uses to course-correct without you in the loop.
-
-FOUR -- once the codebase grows, feature-based architecture. One folder
-per feature. Boundaries enforced by lint, not by hope. The agent traces
-a vertical slice and stays in one place.
-
-CLICK
-
-And the punchline -- a better codebase for agents IS a better codebase
-for humans. Discoverability. Feedback. Context. Same three buckets all
-the way down.
+CLICK 1 -- AGENTS.md. The foundation. Without it, every other move
+           leaks context every session.
+CLICK 2 -- brainmaxxing. Skills, hooks, brain/. The agent stops
+           re-learning the same recipes.
+CLICK 3 -- feedback pipeline. Signals the agent can chase to green
+           on its own.
+CLICK 4 -- feature architecture. Vertical slices instead of horizontal
+           layers. The agent stays in one folder.
+CLICK 5 -- the center lights up. Agent-ready isn't one move -- it's
+           the compound.
 
 TRANSITION: That's the toolkit. Now -- where is this heading?
 -->
