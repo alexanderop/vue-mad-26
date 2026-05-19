@@ -19,6 +19,14 @@ image: /madvue-2026.png
 backgroundSize: contain
 ---
 
+<!--
+Vue MAD 2026 -- Madrid.
+
+TRANSITION: Now the talk title...
+-->
+
+---
+
 <PartSlide
   title="Clean Code Is Sexy Again"
   subtitle="Making Your Vue Project AI-Ready · Vue MAD 2026 · Alexander Opalic"
@@ -668,95 +676,6 @@ TWO -- is it universal, or situational? Situational goes in /docs.
 CLICK -- The right context at the right time.
 
 TRANSITION: And the same idea scales to the filesystem.
--->
-
----
-
-# AGENTS.md is hierarchical
-
-<div class="text-center text-sm op-60 mb-4">Root for the big picture. Per-feature files for local gotchas. <strong>Claude walks the tree.</strong></div>
-
-<div class="grid grid-cols-2 gap-4">
-
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">Root — <code>AGENTS.md</code></div>
-
-```md
-# Project
-Run `pnpm lint && pnpm typecheck`.
-
-## Stack
-Vue 3, Pinia, Vitest, Vite
-
-## Structure
-- `src/features/*` — feature-sliced
-- `src/lib/` — shared layers
-
-## Further reading
-- `docs/testing-strategy.md`
-- `docs/data-model.md`
-```
-
-</div>
-
-<div>
-
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">Feature — <code>features/workout/AGENTS.md</code></div>
-
-```md
-# Workout feature
-
-Active state lives in `useWorkoutMode`
-— NOT in the Pinia store.
-
-## Gotchas
-- Use `usePersistedRestTimer()` —
-  never read `restTimer.value` raw.
-- New components → `./components/`.
-- No imports from `../timers/`.
-```
-
-</div>
-
-</div>
-
-<div v-click class="mt-6 max-w-4xl mx-auto">
-
-<Callout type="info">
-Editing <code>features/workout/...</code>? Claude loads <strong>root + workout/AGENTS.md</strong>. <code>timers/AGENTS.md</code> never enters context. Progressive disclosure — built into the filesystem.
-</Callout>
-
-</div>
-
-<div class="absolute bottom-3 right-6 text-xs op-50">
-  Pattern: Anthropic, <em>How Claude Code works in large codebases</em> · claude.com/blog
-</div>
-
-<!--
-[breathe]
-
-The Bad/Good slide showed ONE AGENTS.md. The real strategy is HIERARCHICAL.
-
-Anthropic published this pattern this month -- the official playbook
-for large codebases. Root file for the big picture, subdirectory files
-for local conventions.
-
-Root AGENTS.md = stack, tooling, structure. Pointers only.
-Each feature/ gets its OWN AGENTS.md = local gotchas, store shape, rules.
-
-When the agent edits features/workout/something.vue, it walks UP the tree:
-- loads root AGENTS.md
-- loads features/workout/AGENTS.md
-- ignores timers, exercises, settings.
-
-CLICK -- Progressive disclosure baked into the filesystem.
-The folder boundary that contains the CODE also contains its DOCS.
-
-This pairs perfectly with feature-sliced architecture --
-we'll see the feature folders in the Discoverability section.
-
-TRANSITION: But the harness already has half of this built in.
 -->
 
 ---
