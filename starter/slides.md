@@ -402,7 +402,155 @@ That is AGENTS.md.
 The tattoo your agent reads every single turn,
 because tomorrow it will not remember today.
 
-TRANSITION: So what does that look like in practice?
+TRANSITION: But the tattoo space is finite — and most of it is already used before you write a word.
+-->
+
+---
+layout: statement
+transition: fade-out
+---
+
+# Every model has a context window.
+
+<v-click>
+
+# And it works best when it's <em>not</em> full.
+
+</v-click>
+
+<div v-click class="mt-12 max-w-3xl mx-auto">
+
+<Card glow>
+<div class="text-sm op-90 text-center">
+200k tokens for Claude. 1M with the extended window. Same story everywhere.<br/><br/>
+<strong style="color: #ff6bed">The more you stuff in, the worse the model gets.</strong>
+</div>
+<div class="text-xs op-60 mt-3 text-center">Long-context degradation is real — HumanLayer calls it the "dumb zone".</div>
+</Card>
+
+</div>
+
+<!--
+The Memento metaphor: no memory between turns.
+The Memento reality: even within a turn, the window is finite.
+
+200k tokens at Anthropic. 1M with the extended Opus window.
+OpenAI, Gemini, all the same shape -- a budget.
+
+CLICK -- And it works BEST when it's not full.
+Models degrade as the window fills. Recall drops. Reasoning slips.
+The agent starts confusing files.
+
+This is the "dumb zone" HumanLayer talks about.
+
+TRANSITION: And here is the kicker. The window is not empty when you start.
+-->
+
+---
+
+# The window isn't empty when you start
+
+<div class="text-center text-sm op-60 mb-6">Before you type your first prompt, the provider has already loaded:</div>
+
+<div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+<Card glow>
+<div class="text-xs op-50 mb-2">System prompt</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">"You are Claude Code…"</div>
+<div class="text-sm op-80">Anthropic's instructions: how to behave, what to refuse, how to format. <strong>~9k tokens.</strong></div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-2">Tool definitions</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Read, Edit, Bash, Grep…</div>
+<div class="text-sm op-80">Every tool's name, JSON schema, and description. <strong>~10k tokens.</strong></div>
+</Card>
+
+</div>
+
+<div v-click class="mt-8 text-center text-base">
+  Baseline cost: <strong style="color: #ff6bed">~20k tokens before you type a word.</strong>
+</div>
+
+<div v-click class="mt-6 text-center text-sm op-70 max-w-3xl mx-auto">
+  Everything <em>you</em> add — <code>AGENTS.md</code>, skills, MCP servers, sub-agents — spends from what's left.
+</div>
+
+<!--
+Every provider does this. OpenAI, Anthropic, Gemini -- same shape.
+
+System prompt -- "You are a helpful coding assistant, here are the rules,
+here is how to format, here is what to refuse." ~9k at Anthropic.
+
+Tool definitions -- every tool the harness exposes (Read, Edit, Bash, Grep,
+Glob, WebFetch...) gets a name, JSON schema, description. ~10k before you
+have done anything.
+
+CLICK -- 20k gone. Your budget is what's LEFT.
+
+CLICK -- And then AGENTS.md, skills, MCP servers, sub-agents -- they all
+spend from the SAME pool. That is why a 2000-line AGENTS.md is not just
+noise -- it is tokens that could have held real code.
+
+TRANSITION: Don't believe me? Claude Code shows you exactly.
+-->
+
+---
+
+# `/context` — see your budget
+
+<div class="text-center text-sm op-60 mb-5">Claude Code ships a slash command that shows exactly what's eating your window.</div>
+
+<Card variant="muted" class="max-w-4xl mx-auto">
+
+<div class="font-mono text-xs op-50 mb-3">> /context</div>
+
+<div class="flex h-8 rounded overflow-hidden mb-1 border border-white/10">
+  <div style="width: 32.4%; background: #ff6bed"></div>
+  <div style="width: 35.2%; background: #60a5fa"></div>
+  <div style="width: 4.6%; background: #a78bfa"></div>
+  <div style="width: 5.7%; background: #fb923c"></div>
+  <div style="width: 21.7%; background: #fbbf24"></div>
+  <div style="width: 0.4%; background: rgba(255,255,255,0.15)"></div>
+</div>
+<div class="text-center text-xs op-60 mb-5">28k of 1M tokens used — share of the <strong>used</strong> portion</div>
+
+<div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+  <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-sm" style="background: #ff6bed"></span> System prompt <span class="op-50 ml-auto">9.1k <span class="op-50">(0.9%)</span></span></div>
+  <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-sm" style="background: #60a5fa"></span> System tools <span class="op-50 ml-auto">9.9k <span class="op-50">(1.0%)</span></span></div>
+  <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-sm" style="background: #a78bfa"></span> Custom agents <span class="op-50 ml-auto">1.3k <span class="op-50">(0.1%)</span></span></div>
+  <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-sm" style="background: #fb923c"></span> Memory files (AGENTS.md) <span class="op-50 ml-auto">1.6k <span class="op-50">(0.2%)</span></span></div>
+  <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-sm" style="background: #fbbf24"></span> Skills <span class="op-50 ml-auto">6.1k <span class="op-50">(0.6%)</span></span></div>
+  <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-sm" style="background: rgba(255,255,255,0.15)"></span> Free space <span class="op-50 ml-auto">972k <span class="op-50">(97.2%)</span></span></div>
+</div>
+
+</Card>
+
+<div v-click class="mt-6 text-center text-base op-90">
+  System prompt + tools = <strong style="color: #ff6bed">~19k tokens</strong> before you typed.<br/>
+  Memory files, skills, sub-agents — <strong>all compete for what's left.</strong>
+</div>
+
+<!--
+Type /context in Claude Code. It draws this.
+
+Read the bar:
+- Pink + Blue = system prompt + tools = ~19k. The provider's baseline.
+- Yellow = skills = 6k. I had a handful loaded.
+- Orange = memory files = AGENTS.md + CLAUDE.md = 1.6k.
+- Purple = custom sub-agents.
+- White slice = everything else, free.
+
+3% used in this session. Lots of room.
+
+But notice -- skills, memory, sub-agents ALL eat from the same window.
+That is why "I'll just add it to AGENTS.md" stops working at scale.
+Each addition spends from a shared pool.
+
+CLICK -- 19k spent before you typed. The rest is a budget you have to
+spend wisely.
+
+TRANSITION: So how do you spend the budget wisely? Start with AGENTS.md.
 -->
 
 ---
@@ -501,7 +649,84 @@ TWO -- is it universal, or situational? Situational goes in /docs.
 
 CLICK -- The right context at the right time.
 
-TRANSITION: Same idea scales beyond context — to the actions the agent takes.
+TRANSITION: This is what a thin AGENTS.md looks like in practice — it points at brain/.
+-->
+
+---
+
+# `brainmaxxing` — `brain/` is the agent's docs
+
+<div class="text-center text-sm op-60 mb-6">A thin <code>AGENTS.md</code> points at <code>brain/</code>. The agent reads, writes, and maintains <code>brain/</code> itself.</div>
+
+<div class="flex justify-center mb-6">
+  <img src="/brainmaxxing-repo.png" class="max-h-32 rounded-lg shadow-lg" />
+</div>
+
+<div class="grid grid-cols-2 gap-5 mb-4">
+
+<Card glow>
+<div class="text-xs op-50 mb-2">Top level</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed"><code>AGENTS.md</code></div>
+<div class="text-sm op-80">Stack. Commands. Folder map. Then one line: <em>"Look up <code>brain/index.md</code>."</em></div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-2">The depth</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed"><code>brain/</code></div>
+<div class="text-sm op-80">Principles, plans, lessons, codebase notes. Markdown in the repo. <strong>Docs for the agent itself.</strong></div>
+</Card>
+
+</div>
+
+<div class="grid grid-cols-2 gap-5">
+
+<Card variant="muted">
+<div class="text-xs op-50 mb-2">How the agent <em>uses</em> brain/</div>
+<div class="text-base font-bold mb-2">Skills</div>
+<div class="text-sm op-80"><code>/plan</code> reads principles. <code>/reflect</code> writes lessons. <code>/meditate</code> cleans up.</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-xs op-50 mb-2">How brain/ stays connected</div>
+<div class="text-base font-bold mb-2">Hooks</div>
+<div class="text-sm op-80"><code>SessionStart</code> injects <code>index.md</code>. File hooks rebuild it when notes change.</div>
+</Card>
+
+</div>
+
+<div v-click class="mt-6 text-center">
+  <div class="text-xs op-60 mb-1">Install</div>
+  <div class="text-sm"><code style="color: #ff6bed">"Install brainmaxxing from github.com/poteto/brainmaxxing into this project."</code></div>
+  <div class="text-xs op-50 mt-1">No script. Just tell Claude. It copies the files and merges <code>settings.json</code>.</div>
+</div>
+
+<!--
+This is the umbrella. Four pieces. One loop.
+
+AGENTS.md stays THIN. Stack, commands, folder map. Then the magic line:
+"Look up brain/index.md before any task."
+
+brain/ is where the depth lives. Markdown notes in the repo: principles, plans,
+codebase knowledge, lessons learned. Think of it as docs for the agent --
+the same way a senior dev keeps personal docs. Humans can read it in Obsidian.
+Because it lives in git, every teammate, cloud agent, and new laptop gets the
+same memory.
+
+Skills are how the agent USES brain/. The buttons:
+/plan reads principles. /reflect writes lessons back. /meditate cleans
+contradictions. /review critiques against principles.
+
+Hooks are how brain/ stays CONNECTED. The plumbing:
+SessionStart cats index.md into context at every conversation start.
+File-change hooks rebuild the index when notes move.
+
+So the loop is: work with Claude, reflect what mattered into brain/, and
+the next session starts from that sharper memory.
+
+CLICK -- install is wild. No npm install. No script. You literally tell
+Claude "install brainmaxxing from this URL" and the agent does the copying.
+
+TRANSITION: I keep saying skills and hooks. Let's look at each. First: skills.
 -->
 
 ---
@@ -679,9 +904,10 @@ UserPromptSubmit can enrich or reject a user prompt.
 
 Codex got hooks in May 2026. Cursor next. This is the new normal.
 
-TRANSITION: Skills are manual buttons. Hooks are automatic plumbing.
-Brainmaxxing is what happens when both read and write the same memory
-folder.
+Brainmaxxing wires SessionStart to cat brain/index.md into every
+conversation -- that is how the agent always knows the map.
+
+TRANSITION: There are dozens of hook events. Don't memorize them. Know they exist.
 -->
 
 ---
@@ -698,79 +924,7 @@ will hand you JSON and let you decide what happens next.
 The four I use daily are SessionStart, PreToolUse, PostToolUse, UserPromptSubmit.
 The rest are there when you need them.
 
-TRANSITION: Skills are buttons. Hooks are plumbing. Brainmaxxing is what
-happens when both read and write the same memory folder.
--->
-
----
-
-# `brainmaxxing` — shared memory for the agent
-
-<div class="text-center text-sm op-60 mb-4">One repo folder stores what the agent should remember. Skills are the buttons. Hooks are the plumbing.</div>
-
-<div class="flex justify-center mb-6">
-  <img src="/brainmaxxing-repo.png" class="max-h-40 rounded-lg shadow-lg" />
-</div>
-
-<div class="grid grid-cols-3 gap-5">
-
-<Card glow>
-<div class="text-xs op-50 mb-2">Memory</div>
-<div class="text-xl font-bold mb-3" style="color: #ff6bed"><code>brain/</code></div>
-<div class="text-sm op-80">Markdown notes in the repo: principles, lessons, plans, project knowledge. Humans can read it in Obsidian.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs op-50 mb-2">Buttons</div>
-<div class="text-xl font-bold mb-3">Skills</div>
-<div class="text-sm op-80"><code>/reflect</code> writes lessons. <code>/plan</code> and <code>/review</code> read principles. <code>/meditate</code> cleans up.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs op-50 mb-2">Plumbing</div>
-<div class="text-xl font-bold mb-3">Hooks</div>
-<div class="text-sm op-80"><code>SessionStart</code> gives the agent the brain index. File hooks rebuild it when notes change.</div>
-</Card>
-
-</div>
-
-<div v-click class="mt-7 text-center">
-  <div class="text-sm op-80">The loop: use Claude → <code style="color: #ff6bed">/reflect</code> captures learning → <code style="color: #ff6bed">brain/</code> updates → next session starts smarter.</div>
-</div>
-
-<div v-click class="mt-10 text-center">
-  <div class="text-xs op-60 mb-2">Install</div>
-  <div class="text-base"><code style="color: #ff6bed">"Install brainmaxxing from github.com/poteto/brainmaxxing into this project."</code></div>
-  <div class="text-xs op-50 mt-2">No script. Just tell Claude. It copies the files and merges <code>settings.json</code>.</div>
-</div>
-
-<!--
-This is the key explanation:
-Brainmaxxing is not a third primitive. It is skills plus hooks plus one
-shared folder.
-
-The folder is brain/. It is just markdown, committed to the repo.
-It holds principles, plans, project notes, and lessons learned.
-Because it lives in git, every teammate, cloud agent, and new laptop
-gets the same memory.
-
-Skills are how you intentionally use the memory:
-/reflect writes lessons in.
-/plan and /review read principles out.
-/meditate cleans contradictions and stale notes.
-
-Hooks are how the memory becomes automatic:
-SessionStart gives the agent the brain index at the beginning.
-File-change hooks rebuild the index when notes move.
-
-So the loop is simple: work with Claude, reflect what mattered into
-brain/, and the next session starts from that sharper memory.
-
-CLICK -- the install is wild. No npm install. No script.
-You literally tell Claude "install brainmaxxing from this URL"
-and the agent does the copying.
-
-TRANSITION: Six skills, and each one keeps the vault alive.
+TRANSITION: Now the six skills brainmaxxing ships — all wired around brain/.
 -->
 
 ---
