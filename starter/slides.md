@@ -156,18 +156,16 @@ TRANSITION: Quick intro -- then how we're going to answer that.
 <PyramidOutline :items="[
   { title: 'What an Agent Actually Is', subtitle: 'A loop, not a magic box' },
   { title: 'Context', subtitle: 'Does it know why things exist?' },
-  { title: 'Extending the Agent', subtitle: 'Skills and CLIs extend the agent’s reach' },
   { title: 'Feedback Loops', subtitle: 'Does it know when it is wrong?' },
   { title: 'Discoverability', subtitle: 'Can the agent find the right code?' },
   { title: 'Future', subtitle: 'The role merge' }
 ]" />
 
 <!--
-Six beats.
+Five beats.
 
 Start with what an agent really is.
 Then three buckets you can act on Monday -- Context, Feedback, Discoverability.
-Extending the agent layers on top.
 Close with where this is heading.
 
 TRANSITION: Let's start with what an agent is.
@@ -2163,6 +2161,84 @@ TRANSITION: That's the three buckets. Zoom out -- where is this all heading?
 -->
 
 ---
+transition: fade-out
+---
+
+# Make the codebase agent-ready
+
+<div class="text-center text-sm op-60 mb-6">Four moves. They compound.</div>
+
+<div class="grid grid-cols-2 gap-4 max-w-5xl mx-auto">
+
+<Card glow>
+<div class="text-xs op-50 mb-1">01</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Write a real AGENTS.md / CLAUDE.md</div>
+<div class="text-sm op-80">Stack, structure, gotchas, conventions. The first file every agent reads — make it earn the context window.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">02</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Brainmaxxing: skills + hooks + brain/</div>
+<div class="text-sm op-80">Slash commands for the recipes you repeat. Hooks for the rules you can't trust the model to remember. A <code>brain/</code> vault that compounds.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">03</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Stack feedback loops into the pipeline</div>
+<div class="text-sm op-80">Types, lint, unit, component, API mocks, E2E, a11y, visual, perf. Every layer is a signal the agent can chase until it's green.</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">04</div>
+<div class="text-base font-bold mb-2" style="color: #ff6bed">Feature-based architecture at scale</div>
+<div class="text-sm op-80">One folder = one feature. Executable boundaries via lint rules. The agent traces a vertical slice instead of a horizontal layer cake.</div>
+</Card>
+
+</div>
+
+<div v-click class="mt-8 max-w-3xl mx-auto">
+
+<Card variant="muted">
+<div class="text-sm op-90 text-center">
+A better codebase for agents <strong style="color: #ff6bed">is</strong> a better codebase for humans.<br/>
+Discoverability, feedback, context — the same three buckets, all the way down.
+</div>
+</Card>
+
+</div>
+
+<!--
+[breathe]
+
+Recap before we look forward.
+
+ONE -- AGENTS.md. Or CLAUDE.md, same file. Stack, structure, gotchas.
+This is the first thing every agent reads. Spend an afternoon on it,
+not five minutes. It pays back every prompt for the rest of the project.
+
+TWO -- brainmaxxing. Skills are the recipes you find yourself repeating.
+Hooks are the rules you cannot trust the model to remember. brain/ is
+the vault that compounds session over session. Together they turn the
+agent from a generic assistant into your senior teammate.
+
+THREE -- the quality pipeline. Fifteen layers in mine. You don't need
+fifteen on day one. You need MORE than zero. Every layer is a signal
+the agent uses to course-correct without you in the loop.
+
+FOUR -- once the codebase grows, feature-based architecture. One folder
+per feature. Boundaries enforced by lint, not by hope. The agent traces
+a vertical slice and stays in one place.
+
+CLICK
+
+And the punchline -- a better codebase for agents IS a better codebase
+for humans. Discoverability. Feedback. Context. Same three buckets all
+the way down.
+
+TRANSITION: That's the toolkit. Now -- where is this heading?
+-->
+
+---
 transition: fade
 ---
 
@@ -2290,6 +2366,24 @@ discoverability, feedback, context.
 Every PR review teaches the factory.
 
 The codebase gets smarter over time. You get more leverage every week.
+
+TRANSITION: Thank you.
+-->
+
+---
+layout: iframe
+url: https://alexanderop.github.io/vue-ink/playground
+transition: fade
+---
+
+<!--
+One more thing before we close -- vue-ink.
+
+A Vue port of Ink, the React library for terminal UIs.
+Built mostly AFK, with the loop I just walked you through.
+Spec, slice, ralph, refactor, QA, review.
+
+Play with it after the talk -- live playground right here.
 
 TRANSITION: Thank you.
 -->
