@@ -1479,6 +1479,76 @@ Run it as the fast first pass; keep ESLint for the rules Oxlint doesn't ship yet
 CLICK -- Vite+ is VoidZero's unified toolchain. One CLI, one config,
 wraps Vite, Rolldown, Vitest, Oxlint, Oxfmt, Tsdown.
 
+TRANSITION: Speed matters — but what you lint FOR matters more. Two Vue rules in particular.
+-->
+
+---
+transition: fade-out
+---
+
+# Vue lint rules that keep components small
+
+<div class="text-center text-sm op-60 mb-6">Two caps that stop the 2000-line component before it starts.</div>
+
+<div class="grid grid-cols-[1fr_auto] gap-8 items-start">
+
+<div class="space-y-4">
+
+<Card glow>
+<div class="text-xs op-60 mb-1"><code>vue/max-template-depth</code></div>
+<div class="text-sm mb-2">Cap template nesting. Forces extraction into smaller components.</div>
+
+```ts
+'vue/max-template-depth': ['error', { maxDepth: 8 }]
+```
+</Card>
+
+<Card glow>
+<div class="text-xs op-60 mb-1"><code>vue/max-props</code></div>
+<div class="text-sm mb-2">Cap props per component. A 12-prop component is a god object pretending to be one.</div>
+
+```ts
+'vue/max-props': ['error', { maxProps: 6 }]
+```
+</Card>
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-1">Bonus — dead-code detection</div>
+<div class="text-xs op-80"><code>vue/no-unused-properties</code> · <code>vue/no-unused-refs</code> · <code>vue/no-unused-emit-declarations</code></div>
+</Card>
+
+</div>
+
+<div class="flex flex-col items-center gap-3">
+  <img src="/qr-eslint.png" class="w-44 h-44 bg-white p-2 rounded-lg" />
+  <div class="text-xs op-70 text-center max-w-44">
+    Full opinionated setup<br/>
+    <span style="color: #ff6bed">alexop.dev/posts/<br/>opinionated-eslint-<br/>setup-vue-projects</span>
+  </div>
+</div>
+
+</div>
+
+<!--
+Speed is one thing -- what you LINT for is another.
+
+Two Vue rules in particular keep components agent-friendly.
+
+ONE: vue/max-template-depth. Cap nesting at 8.
+The moment your template goes deeper than that, ESLint screams.
+That's how you avoid the 800-line component with seven layers of divs --
+the kind the agent gets lost in.
+
+TWO: vue/max-props. Cap props at 6.
+A component with 12 props isn't a component -- it's a god object pretending
+to be one. The lint rule forces composition before it's too late.
+
+Plus the dead-code trio -- vue/no-unused-properties, no-unused-refs,
+no-unused-emit-declarations. Catch the slop the agent leaves behind.
+
+Full writeup -- 20+ rules, Oxlint config, feature boundaries, custom
+local rules -- on the QR. alexop.dev/posts/opinionated-eslint-setup-vue-projects.
+
 TRANSITION: Layer 3 -- the tests themselves.
 -->
 
