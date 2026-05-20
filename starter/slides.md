@@ -2363,33 +2363,7 @@ transition: fade-out
 
 # Agent did it wrong?
 
-<v-click>
-
 # Fix the factory, not the PR.
-
-</v-click>
-
-<div v-click class="mt-12 max-w-3xl mx-auto">
-
-<Card glow>
-<div class="text-sm op-90">
-A bug isn't a bug. It's a factory defect.<br/><br/>
-Don't just patch the PR — <strong style="color: #ff6bed">add the ESLint rule</strong>, <strong style="color: #ff6bed">update AGENTS.md</strong>, <strong style="color: #ff6bed">tighten the slash command</strong>. So the same mistake can't ship next week.
-</div>
-</Card>
-
-</div>
-
-<div v-click class="mt-6 max-w-3xl mx-auto">
-
-<Card variant="muted">
-<div class="text-sm op-80">
-The reverse also matters: <strong style="color: #ff6bed">delete rules newer models have outgrown.</strong> A constraint that helped an older model can hold a newer one back.
-</div>
-<div class="text-xs op-50 mt-3">Anthropic recommends a "meaningful configuration review every three to six months" — <em>How Claude Code works in large codebases</em>.</div>
-</Card>
-
-</div>
 
 <!--
 [pause]
