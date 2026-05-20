@@ -818,9 +818,7 @@ you press anything or not.
 
 # Hooks — code that runs around agent events
 
-<div class="grid grid-cols-2 gap-6 mt-6">
-
-<div>
+<div class="mt-6">
 
 <div class="text-xs op-50 mb-2"><code>.claude/settings.json</code></div>
 
@@ -845,32 +843,6 @@ you press anything or not.
 INDEX="$CLAUDE_PROJECT_DIR/brain/index.md"
 [ -f "$INDEX" ] && cat "$INDEX"
 ```
-
-</div>
-
-<div>
-
-<div class="text-base font-bold mb-4" style="color: #ff6bed">When + what fires</div>
-
-```text
-session starts
-   │
-   ▼
-SessionStart hook fires
-   │   (cats brain/index.md)
-   ▼
-agent reads it as context
-   │
-   ▼
-first reply is grounded in brain/
-```
-
-<Card variant="muted" class="mt-5">
-<div class="text-xs op-60 mb-1">Other events</div>
-<div class="text-xs op-80"><code>PreToolUse</code> block bad calls · <code>PostToolUse</code> react after writes · <code>UserPromptSubmit</code> rewrite prompts</div>
-</Card>
-
-</div>
 
 </div>
 
@@ -1192,6 +1164,55 @@ CLICK -- A year of rediscovery. Saved.
 This is what my AGENTS.md strategy actually is:
 a thin AGENTS.md that points at /docs (progressive disclosure)
 plus brainmaxxing's vault + skills + principles underneath.
+
+TRANSITION: One principle, opened up — so you see what's actually inside.
+-->
+
+---
+
+# Example — `boundary-discipline`
+
+<div class="text-sm op-60 mb-4">What's inside <em>one</em> of those principle files.</div>
+
+<div class="text-base mb-6 max-w-4xl">
+Validation, type narrowing, and error handling live at <strong style="color: #ff6bed">system boundaries</strong>.<br/>
+Inside the system: trust the types. Business logic is pure; the shell is thin.
+</div>
+
+<div class="grid grid-cols-2 gap-6 max-w-5xl">
+
+<Card glow>
+<div class="text-xs op-60 mb-1">At the boundary</div>
+<div class="text-sm op-90">CLI args · config files · external APIs · network responses</div>
+<div class="text-xs op-70 mt-2">→ validate, return errors, handle defensively</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-1">Inside</div>
+<div class="text-sm op-90">typed data · error propagation · no re-validation</div>
+<div class="text-xs op-70 mt-2">→ trust the types</div>
+</Card>
+
+</div>
+
+<div class="mt-6 text-sm op-70 max-w-4xl">
+<strong>Why:</strong> Validation scattered everywhere is noisy and gives false safety. Validate once, at the edge — logic stays pure and testable without the framework.
+</div>
+
+<!--
+This is what ONE of those sixteen files actually contains.
+Not just a name -- a rule, a reason, and a test you can apply.
+
+The rule: validate at the edges, trust the inside.
+
+Two columns -- the boundary and the inside. The agent learns
+WHERE to spend defensive effort and where to stop.
+
+The Why line matters: the principle file always explains the reason,
+so the agent (and you) can judge edge cases instead of blindly
+following the rule.
+
+Multiply this slide by 16. That's the vault.
 
 TRANSITION: But there is one trick that is even bigger.
 -->

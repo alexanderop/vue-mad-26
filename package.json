@@ -17,10 +17,5 @@
   ],
   "author": "Alexander Opalic",
   "license": "MIT",
-  "packageManager": "pnpm@11.1.2",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  }
+  "packageManager": "pnpm@11.1.2"
 }

@@ -1,5 +1,5 @@
 packages:
   - 'packages/*'
   - 'starter'
-onlyBuiltDependencies:
-  - esbuild
+allowBuilds:
+  esbuild: true
