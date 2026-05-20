@@ -508,14 +508,10 @@ TRANSITION: So how do you spend the budget wisely? Start with AGENTS.md.
 -->
 
 ---
-layout: two-cols-header
----
 
-# AGENTS.md — same file, two philosophies
+# AGENTS.md — the everything dump
 
-::left::
-
-<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">BAD — the everything dump</div>
+<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">BAD</div>
 
 ```md
 # AGENTS.md
@@ -536,19 +532,32 @@ layout: two-cols-header
 ...100 lines...
 ```
 
-<div class="mt-2 text-xs" style="color: #ef4444">
+<div class="mt-4 text-base" style="color: #ef4444">
 ~2000 lines. Half your context gone before any work starts.
 </div>
 
-::right::
+<!--
+[breathe]
 
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">GOOD — points at the docs</div>
+The instinct everyone has on day one.
+Dump everything. Style rules ESLint already enforces.
+Bug post-mortems. Every gotcha you ever hit.
+2000 lines. Half your context window gone before any work starts.
+HumanLayer calls this the dumb zone -- the model degrades when context is noisy.
+
+TRANSITION: There is a version that survives.
+-->
+
+---
+
+# AGENTS.md — points at the docs
+
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">GOOD</div>
 
 ```md
 # AGENTS.md
 
-Run `pnpm lint:fix && pnpm typecheck`
-after code changes.
+Run `pnpm lint:fix && pnpm typecheck` after code changes.
 
 ## Stack
 Nuxt 4, @nuxt/content v3, @nuxt/ui v3
@@ -559,15 +568,14 @@ Nuxt 4, @nuxt/content v3, @nuxt/ui v3
 
 ## Further reading
 
-**IMPORTANT:** read the relevant doc
-below before starting any task.
+**IMPORTANT:** read the relevant doc below before starting any task.
 
 - `docs/nuxt-content-gotchas.md`
 - `docs/testing-strategy.md`
 - `docs/SYSTEM_KNOWLEDGE_MAP.md`
 ```
 
-<div class="mt-2 text-xs" style="color: #ff6bed">
+<div class="mt-4 text-base" style="color: #ff6bed">
 ~50 lines. Loads docs only when relevant.
 </div>
 
@@ -578,15 +586,6 @@ below before starting any task.
 <!--
 [breathe]
 
-Two AGENTS.md files. Same goal.
-
-LEFT -- the instinct everyone has on day one.
-Dump everything. Style rules ESLint already enforces.
-Bug post-mortems. Every gotcha you ever hit.
-2000 lines. Half your context window gone before any work starts.
-HumanLayer calls this the dumb zone -- the model degrades when context is noisy.
-
-RIGHT -- the version that survives.
 ONE LINE for tooling: "Run pnpm lint:fix and pnpm typecheck after changes."
 The agent runs the build, reads the error, fixes itself.
 That is backpressure -- you stop being the linter.
