@@ -895,8 +895,6 @@ TRANSITION: Skills you call. Hooks fire. Now combine both with a folder. That's 
 clicks: 7
 ---
 
-# `brainmaxxing` — skills + hooks + a `brain/` folder
-
 <BrainmaxxingLoop :step="$clicks" />
 
 <!--
@@ -2191,62 +2189,70 @@ TRANSITION: Now watch what the agent does in each.
 <div class="text-center text-sm op-60 mb-4">Same files. Same code. Different addressing.</div>
 
 ````md magic-move {lines: true}
-```ts
-// src/
-//   components/
-//     WorkoutActiveMode.vue
-//     WorkoutHeader.vue
-//     TimerDisplay.vue
-//     ExerciseList.vue
-//     SettingsForm.vue
-//   composables/
-//     useWorkoutMode.ts
-//     useRestTimer.ts
-//     useExercises.ts
-//     useSettings.ts
-//   stores/
-//     workout.ts
-//     timers.ts
-//     settings.ts
+```text
+📁 src/
+├── 📁 components/
+│   ├── 📄 WorkoutActiveMode.vue
+│   ├── 📄 WorkoutHeader.vue
+│   ├── 📄 TimerDisplay.vue
+│   ├── 📄 ExerciseList.vue
+│   └── 📄 SettingsForm.vue
+├── 📁 composables/
+│   ├── 📄 useWorkoutMode.ts
+│   ├── 📄 useRestTimer.ts
+│   ├── 📄 useExercises.ts
+│   └── 📄 useSettings.ts
+└── 📁 stores/
+    ├── 📄 workout.ts
+    ├── 📄 timers.ts
+    └── 📄 settings.ts
 ```
 
-```ts
-// src/
-//   components/
-//     WorkoutActiveMode.vue    // → workout
-//     WorkoutHeader.vue        // → workout
-//     TimerDisplay.vue         // → timers
-//     ExerciseList.vue         // → exercises
-//     SettingsForm.vue         // → settings
-//   composables/
-//     useWorkoutMode.ts        // → workout
-//     useRestTimer.ts          // → timers
-//     useExercises.ts          // → exercises
-//     useSettings.ts           // → settings
-//   stores/
-//     workout.ts               // → workout
-//     timers.ts                // → timers
-//     settings.ts              // → settings
+```text
+📁 src/
+├── 📁 components/
+│   ├── 📄 WorkoutActiveMode.vue    → workout
+│   ├── 📄 WorkoutHeader.vue        → workout
+│   ├── 📄 TimerDisplay.vue         → timers
+│   ├── 📄 ExerciseList.vue         → exercises
+│   └── 📄 SettingsForm.vue         → settings
+├── 📁 composables/
+│   ├── 📄 useWorkoutMode.ts        → workout
+│   ├── 📄 useRestTimer.ts          → timers
+│   ├── 📄 useExercises.ts          → exercises
+│   └── 📄 useSettings.ts           → settings
+└── 📁 stores/
+    ├── 📄 workout.ts               → workout
+    ├── 📄 timers.ts                → timers
+    └── 📄 settings.ts              → settings
 ```
 
-```ts
-// src/features/
-//   workout/
-//     components/WorkoutActiveMode.vue
-//     components/WorkoutHeader.vue
-//     composables/useWorkoutMode.ts
-//     store.ts
-//   timers/
-//     components/TimerDisplay.vue
-//     composables/useRestTimer.ts
-//     store.ts
-//   exercises/
-//     components/ExerciseList.vue
-//     composables/useExercises.ts
-//   settings/
-//     components/SettingsForm.vue
-//     composables/useSettings.ts
-//     store.ts
+```text
+📁 src/features/
+├── 📁 workout/
+│   ├── 📁 components/
+│   │   ├── 📄 WorkoutActiveMode.vue
+│   │   └── 📄 WorkoutHeader.vue
+│   ├── 📁 composables/
+│   │   └── 📄 useWorkoutMode.ts
+│   └── 📄 store.ts
+├── 📁 timers/
+│   ├── 📁 components/
+│   │   └── 📄 TimerDisplay.vue
+│   ├── 📁 composables/
+│   │   └── 📄 useRestTimer.ts
+│   └── 📄 store.ts
+├── 📁 exercises/
+│   ├── 📁 components/
+│   │   └── 📄 ExerciseList.vue
+│   └── 📁 composables/
+│       └── 📄 useExercises.ts
+└── 📁 settings/
+    ├── 📁 components/
+    │   └── 📄 SettingsForm.vue
+    ├── 📁 composables/
+    │   └── 📄 useSettings.ts
+    └── 📄 store.ts
 ```
 ````
 

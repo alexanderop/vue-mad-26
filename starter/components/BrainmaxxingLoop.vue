@@ -73,16 +73,8 @@ function classFor(n: number) {
         <text x="248" y="112" text-anchor="middle" class="xs muted">at session end</text>
         <!-- /reflect → brain/ (writes, pink) -->
         <path d="M 260 158 L 330 195" fill="none" stroke="#ff6bed" stroke-width="2" marker-end="url(#bm-arrow-pink)" />
-        <g transform="translate(266,158)">
-          <rect width="58" height="18" rx="4" fill="#ff6bed" />
-          <text x="29" y="13" text-anchor="middle" class="xs bold chip-on-pink">writes</text>
-        </g>
         <!-- /ruminate → brain/ (mines, pink) -->
         <path d="M 260 242 L 330 245" fill="none" stroke="#ff6bed" stroke-width="2" marker-end="url(#bm-arrow-pink)" />
-        <g transform="translate(266,226)">
-          <rect width="58" height="18" rx="4" fill="#ff6bed" />
-          <text x="29" y="13" text-anchor="middle" class="xs bold chip-on-pink">mines</text>
-        </g>
       </g>
 
       <!-- STEP 3: brain/ vault -->
@@ -124,7 +116,6 @@ function classFor(n: number) {
         </g>
         <!-- /plan + /review → work with Claude (next session) -->
         <path d="M 740 128 Q 740 60 570 50" fill="none" stroke="rgba(234,237,243,0.7)" stroke-width="1.5" marker-end="url(#bm-arrow-light)" />
-        <text x="690" y="84" text-anchor="middle" class="xs muted">next session</text>
       </g>
 
       <!-- STEP 5: /meditate prunes -->
@@ -143,19 +134,21 @@ function classFor(n: number) {
 
       <!-- STEP 6: hooks — the glue that makes the loop automatic -->
       <g :class="classFor(6)">
-        <!-- PostToolUse hook badge — sits between the writes/mines arrows, just left of brain/ -->
-        <g transform="translate(258,192)">
-          <rect width="70" height="18" rx="4" fill="rgba(160,210,255,0.22)" stroke="rgba(160,210,255,0.9)" stroke-width="1.2" stroke-dasharray="3 2" />
-          <text x="35" y="13" text-anchor="middle" class="xs bold chip-hook">PostToolUse</text>
+        <!-- PostToolUse hook — sits between writes/mines, just left of brain/. -->
+        <g transform="translate(212,196)">
+          <rect width="116" height="38" rx="6" fill="rgba(160,210,255,0.22)" stroke="rgba(160,210,255,0.9)" stroke-width="1.3" stroke-dasharray="3 2" />
+          <text x="58" y="15" text-anchor="middle" class="xs bold chip-hook">PostToolUse hook</text>
+          <text x="58" y="29" text-anchor="middle" class="hook-trigger">fires on every brain/ write</text>
         </g>
-        <text x="293" y="225" text-anchor="middle" class="xs muted">re-indexes brain/</text>
 
-        <!-- SessionStart hook badge — sits on the next-session arc -->
-        <g transform="translate(660,64)">
-          <rect width="76" height="18" rx="4" fill="rgba(160,210,255,0.22)" stroke="rgba(160,210,255,0.9)" stroke-width="1.2" stroke-dasharray="3 2" />
-          <text x="38" y="13" text-anchor="middle" class="xs bold chip-hook">SessionStart</text>
+        <!-- SessionStart hook — sits above the next-session arc. -->
+        <g transform="translate(590,6)">
+          <rect width="170" height="38" rx="6" fill="rgba(160,210,255,0.22)" stroke="rgba(160,210,255,0.9)" stroke-width="1.3" stroke-dasharray="3 2" />
+          <text x="85" y="15" text-anchor="middle" class="xs bold chip-hook">SessionStart hook</text>
+          <text x="85" y="29" text-anchor="middle" class="hook-trigger">fires on every new session</text>
         </g>
-        <text x="698" y="98" text-anchor="middle" class="xs muted">cats brain/index.md into context</text>
+        <!-- short dashed connector from SessionStart chip down to the arc -->
+        <line x1="675" y1="44" x2="675" y2="64" stroke="rgba(160,210,255,0.75)" stroke-width="1.2" stroke-dasharray="2 2" />
       </g>
 
       <!-- legend (always visible) -->
@@ -179,12 +172,15 @@ function classFor(n: number) {
 .brainmaxxing-loop {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  height: 100%;
 }
 
 .brainmaxxing-loop svg {
   width: 100%;
-  max-width: 820px;
+  max-width: 100%;
+  max-height: 100%;
   height: auto;
 }
 
@@ -212,6 +208,12 @@ function classFor(n: number) {
 .brainmaxxing-loop :deep(.chip-on-pink) { fill: #212737; }
 .brainmaxxing-loop :deep(.chip-on-light) { fill: #212737; }
 .brainmaxxing-loop :deep(.chip-hook) { fill: #d8ecff; }
+.brainmaxxing-loop :deep(.hook-trigger) {
+  fill: #d8ecff;
+  font-size: 9.5px;
+  opacity: 0.78;
+  font-style: italic;
+}
 
 /* step highlighting */
 .brainmaxxing-loop :deep(.step) {
