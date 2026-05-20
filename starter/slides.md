@@ -1816,6 +1816,11 @@ agent-browser screenshot --annotate
 agent-browser console              # read page console
 ```
 
+<div class="absolute bottom-6 right-8 flex flex-col items-center gap-2">
+  <img src="/qr-agent-browser.png" class="w-28 h-28 bg-white p-2 rounded-lg" />
+  <div class="text-xs op-70" style="color: #ff6bed">github.com/vercel-labs/agent-browser</div>
+</div>
+
 <!--
 [breathe]
 
