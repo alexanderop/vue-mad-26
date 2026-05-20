@@ -1958,14 +1958,10 @@ Once context is in place, the agent can help you carve the structure too.
 -->
 
 ---
-layout: intro
+layout: statement
 ---
 
 # Most Vue apps start flat
-
-<div class="text-lg op-80 mt-6">
-Files grouped by what they <strong style="color: #ff6bed">are</strong> &mdash; <code>components/</code>, <code>composables/</code>, <code>stores/</code> &mdash; not by the feature they belong to.
-</div>
 
 <!--
 A definition before we get to the agent angle.
@@ -2077,7 +2073,7 @@ class: 'text-center'
 # Feature-sliced flips it
 
 <div class="text-lg op-80 mt-6">
-Group by what files <span v-mark.underline.red="1" style="color: #ff6bed">do</span>, not by what they <span v-mark.underline.red="2">are</span>.
+Group by what files <span style="color: #ff6bed">do</span>, not by what they are.
 </div>
 
 <!--
@@ -2180,80 +2176,6 @@ to find anything related to one thing.
 workout/ is one folder. timers/ is one folder.
 The agent finds everything by name. So do you.
 
-TRANSITION: Here is what that looks like in a real project.
--->
-
----
-
-# One folder = one feature
-
-<div class="text-center text-xs op-50 mb-3">Real layout from <code>alexanderop/workoutTracker</code></div>
-
-<div class="grid grid-cols-2 gap-8 mt-2">
-
-<div>
-
-<FolderTree
-  root
-  title="src/"
-  :structure="`src/
-  views/
-  router/
-  components/
-  composables/
-  lib/
-  db/
-  stores/
-  types/
-  features/
-    workout/
-      components/
-      composables/
-      utils/
-    timers/
-      components/
-      composables/
-    exercises/
-    settings/
-    templates/`"
-/>
-
-</div>
-
-<div class="flex flex-col justify-center gap-4">
-
-<Card variant="muted">
-<div class="text-sm op-80">Shared layers stay shared: <code>components</code>, <code>composables</code>, <code>lib</code>, <code>db</code>, <code>stores</code>, <code>types</code>.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-sm op-80">Each feature is one folder. <code>workout/</code> alone has 24 components and 7 composables.</div>
-</Card>
-
-<Card glow>
-<div class="text-sm"><strong style="color: #ff6bed">No <code>workout</code> imports from <code>timers</code>.</strong> The folder boundary <em>is</em> the contract.</div>
-</Card>
-
-</div>
-
-</div>
-
-<!--
-The regroup, grounded in a real project.
-
-This is the actual src/ layout of my workout tracker today.
-Ten features under features/. Shared layers above.
-Views and router at the top.
-
-The workout feature alone is 24 components and 7 composables.
-That used to be 24 components scattered across src/components/workout/
-and 7 composables in src/composables/. The agent had to grep across
-three folders to find anything related to workouts.
-
-Now workout/ is one folder. timers/ is one folder.
-And critically -- workout does NOT import from timers.
-If they need to share something, it goes up to lib/ or composables/.
-
 TRANSITION: Let me show you what that wall does to the agent.
 -->
 
@@ -2341,67 +2263,26 @@ shell. Nothing else gets that view.
 
 If you can keep these three rules in your head, the codebase
 stays navigable. But you won't -- and the agent definitely won't.
-So we make a machine enforce them.
-
-TRANSITION: Here's the machine.
--->
-
----
-
-# Make the boundary executable
-
-<div class="text-center text-sm op-60 mb-4">A convention is a vibe. A lint rule is a wall.</div>
-
-<div class="max-w-3xl mx-auto">
-
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">ESLint: the real <code>eslint.config.ts</code></div>
-
-```ts {all|3-6|8-10}
-'import-x/no-restricted-paths': ['error', {
-  zones: [
-    // workout can only be imported by itself
-    { target: './src/features/workout',
-      from:   './src/features',
-      except: ['./workout'] },
-
-    // shared layers can't reach into features
-    { target: ['./src/components', './src/lib', './src/stores'],
-      from:   ['./src/features', './src/views'] },
-  ],
-}]
-```
-
-</div>
-
-<div class="mt-4 text-center text-sm op-70">
-  Every PR, mine or the agent's, fails CI the moment <strong style="color: #ff6bed">workout reaches into timers.</strong>
-</div>
-
-<!--
-A convention is a vibe.
-A lint rule is a wall.
-
-This is the actual eslint.config.ts in my workout tracker.
-import-x/no-restricted-paths. One zone per feature
-saying "you can be imported from yourself and nothing else
-under features/". Plus the inverse: shared layers cannot
-import from features or views.
-
-That is the contract. Every PR -- mine, the agent's --
-fails CI the moment workout reaches into timers.
 
 TRANSITION: That's the three buckets. Zoom out -- where is this all heading?
 -->
 
 ---
-clicks: 5
+clicks: 4
 transition: fade-out
 ---
 
 # The four moves compound
 
+<v-clicks>
 
-<AgentReadyPie :step="$clicks" />
+- **AGENTS.md** the foundation
+- **brainmaxxing** skills, hooks, brain/
+- **feedback pipeline** signals to chase
+- **feature architecture** vertical slices
+
+</v-clicks>
+
 <!--
 [pause]
 
@@ -2413,8 +2294,6 @@ CLICK 3 -- feedback pipeline. Signals the agent can chase to green
            on its own.
 CLICK 4 -- feature architecture. Vertical slices instead of horizontal
            layers. The agent stays in one folder.
-CLICK 5 -- the center lights up. Agent-ready isn't one move -- it's
-           the compound.
 
 TRANSITION: That's the toolkit. Now -- where is this heading?
 -->
