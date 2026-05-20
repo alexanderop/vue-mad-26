@@ -317,21 +317,6 @@ TRANSITION: First, the official framing -- then three buckets.
 -->
 
 ---
-transition: fade-out
----
-
-<div class="h-full flex items-center justify-center">
-  <img src="/three-buckets.png" class="max-h-full max-w-full rounded-lg shadow-lg" />
-</div>
-
-<!--
-[reveal beat]
-
-Three buckets. Context, Feedback, Discoverability.
-The rest of the talk lives inside these three.
--->
-
----
 layout: statement
 transition: fade-out
 ---
