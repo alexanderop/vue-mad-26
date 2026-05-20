@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm --filter starter exec slidev build --base /${{ github.event.repository.name }}/
+        run: pnpm --filter slidev-starter exec slidev build --base /${{ github.event.repository.name }}/
 
       - uses: actions/configure-pages@v4
 
