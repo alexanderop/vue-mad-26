@@ -1,12 +1,15 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{ step?: number }>(), { step: 0 })
 
-const TOTAL_STEPS = 5
+const TOTAL_STEPS = 6
+const HOOKS_STEP = 6
 
 function classFor(n: number) {
   // Click 0 (initial) and click TOTAL_STEPS+1 (final) show the whole diagram.
   if (props.step === 0 || props.step > TOTAL_STEPS) return 'step'
   if (props.step === n) return 'step is-active'
+  // On the hooks reveal, keep the rest of the loop fully visible — hooks live ON the existing edges.
+  if (props.step === HOOKS_STEP) return 'step'
   return 'step is-dim'
 }
 </script>
@@ -138,6 +141,23 @@ function classFor(n: number) {
         </g>
       </g>
 
+      <!-- STEP 6: hooks — the glue that makes the loop automatic -->
+      <g :class="classFor(6)">
+        <!-- PostToolUse hook badge — sits between the writes/mines arrows, just left of brain/ -->
+        <g transform="translate(258,192)">
+          <rect width="70" height="18" rx="4" fill="rgba(160,210,255,0.22)" stroke="rgba(160,210,255,0.9)" stroke-width="1.2" stroke-dasharray="3 2" />
+          <text x="35" y="13" text-anchor="middle" class="xs bold chip-hook">PostToolUse</text>
+        </g>
+        <text x="293" y="225" text-anchor="middle" class="xs muted">re-indexes brain/</text>
+
+        <!-- SessionStart hook badge — sits on the next-session arc -->
+        <g transform="translate(660,64)">
+          <rect width="76" height="18" rx="4" fill="rgba(160,210,255,0.22)" stroke="rgba(160,210,255,0.9)" stroke-width="1.2" stroke-dasharray="3 2" />
+          <text x="38" y="13" text-anchor="middle" class="xs bold chip-hook">SessionStart</text>
+        </g>
+        <text x="698" y="98" text-anchor="middle" class="xs muted">cats brain/index.md into context</text>
+      </g>
+
       <!-- legend (always visible) -->
       <g transform="translate(60,388)">
         <circle cx="6" cy="6" r="5" fill="#ff6bed" />
@@ -145,6 +165,10 @@ function classFor(n: number) {
         <g transform="translate(150,0)">
           <line x1="0" y1="6" x2="14" y2="6" stroke="rgba(234,237,243,0.7)" stroke-width="1.5" stroke-dasharray="3 2" />
           <text x="22" y="10" class="xs">reads from brain/</text>
+        </g>
+        <g transform="translate(300,0)">
+          <rect x="0" y="1" width="14" height="10" rx="2" fill="rgba(160,210,255,0.22)" stroke="rgba(160,210,255,0.9)" stroke-dasharray="2 1" />
+          <text x="22" y="10" class="xs">hook fires automatically</text>
         </g>
       </g>
     </svg>
@@ -187,6 +211,7 @@ function classFor(n: number) {
 .brainmaxxing-loop :deep(.tab-label) { fill: #212737; }
 .brainmaxxing-loop :deep(.chip-on-pink) { fill: #212737; }
 .brainmaxxing-loop :deep(.chip-on-light) { fill: #212737; }
+.brainmaxxing-loop :deep(.chip-hook) { fill: #d8ecff; }
 
 /* step highlighting */
 .brainmaxxing-loop :deep(.step) {

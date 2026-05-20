@@ -892,7 +892,7 @@ TRANSITION: Skills you call. Hooks fire. Now combine both with a folder. That's 
 -->
 
 ---
-clicks: 6
+clicks: 7
 ---
 
 # `brainmaxxing` — skills + hooks + a `brain/` folder
@@ -914,7 +914,13 @@ CLICK 4 -- /plan and /review READ principles back out. Apply them in the next
            session. Loop closed.
 CLICK 5 -- /meditate. Not just housekeeping -- it audits your skills against
            the brain, evolves principles, and prunes stale notes.
-CLICK 6 -- zoom out. The whole loop, lit up. That's brainmaxxing.
+CLICK 6 -- the hooks. Skills are buttons you press; hooks fire automatically.
+           PostToolUse re-indexes brain/ every time /reflect or /ruminate
+           writes -- the map stays in sync without you. SessionStart cats
+           brain/index.md into the next session, so the agent boots up
+           already knowing what's in the vault. The arrows you've seen
+           are wishes. The hooks are the mechanism.
+CLICK 7 -- zoom out. The whole loop, lit up. That's brainmaxxing.
 
 TRANSITION: Here is what brain/ actually looks like on disk.
 -->
@@ -1206,7 +1212,145 @@ Applications and Tests: how the agent recognises where to apply it.
 
 Multiply this by 16. That's the vault.
 
-TRANSITION: But there is one trick that is even bigger.
+TRANSITION: Zoom out for a second — where is all this going?
+-->
+
+---
+transition: fade
+---
+
+# My take — soon, every harness ships this
+
+<div class="text-sm op-70 text-center mb-6 max-w-3xl mx-auto">
+Claude Code already shipped <code>auto memory</code> + <code>auto dream</code>.
+</div>
+
+<div class="grid grid-cols-2 gap-6">
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-2">The memory store on disk</div>
+
+```text
+~/.claude/projects/blog-astro/memory/
+├── MEMORY.md
+├── feedback_lefthook_not_husky.md
+├── feedback_hooks_feedback_at_done.md
+└── feedback_no_blog_reverse_links.md
+```
+
+</Card>
+
+<Card glow>
+<div class="text-xs op-60 mb-2"><code>feedback_lefthook_not_husky.md</code></div>
+
+```md
+---
+name: feedback-lefthook-not-husky
+description: Alexander uses Lefthook (not
+  Husky) across his Vue/Nuxt projects.
+metadata:
+  type: feedback
+---
+
+Lefthook, not Husky, is the pre-commit gate
+in every Vue/Nuxt repo he ships.
+
+Why: verified across his repos in a 2026-05-18
+audit — husky is not present in any of them.
+He picks lefthook because it runs commands in
+parallel and the YAML is easier for the agent.
+
+How to apply: in blog posts and AGENTS.md
+templates, name lefthook. Mention husky only
+as an alternative readers might use.
+```
+
+</Card>
+
+</div>
+
+<!--
+Quick zoom-out before we leave brainmaxxing.
+
+Two weeks ago, Anthropic shipped this whole pattern into Claude Code
+itself. Auto memory writes notes during your session -- like /reflect.
+Auto dream consolidates them every 24 hours and five sessions -- like
+/meditate. The REM-sleep analogy is theirs, not mine. v2.1.59. On by
+default. No skills, no hooks.
+
+My bet -- Cursor next. Codex right after. Within a year, "your agent
+has persistent memory" is a checkbox feature, not a project you adopt.
+
+But here is the open question I do not have a clean answer for yet.
+Built-in memory is machine-local. It lives under ~/.claude/projects.
+Files are not shared across machines or cloud environments.
+
+So *my* agent gets smarter from *my* mistakes. Yours gets smarter
+from yours. The new hire on Monday starts from zero.
+
+brainmaxxing solves this by accident -- brain/ is just a folder in
+the repo. Check it in. The whole team's agent boots up with the same
+vault on day one.
+
+Even when the built-in version arrives everywhere, you may still want
+the checked-in version on top. That is the bet I am making.
+
+TRANSITION: But there is one trick even bigger than memory.
+-->
+
+---
+transition: fade
+---
+
+# What is a <span style="color: #ff6bed">dream</span>?
+
+<div class="text-sm op-70 text-center mb-6 max-w-3xl mx-auto">
+Async job. Reads your memory store + past sessions, writes a new, reorganized store. Input is never modified.
+</div>
+
+<div class="grid grid-cols-[1fr_auto_1fr] gap-4 items-center">
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-2">In</div>
+<div class="text-sm">
+<code>memory_store</code><br>
+<span class="op-60">+</span><br>
+1–100 <code>sessions</code>
+</div>
+</Card>
+
+<div class="text-3xl op-60 text-center">→</div>
+
+<Card glow>
+<div class="text-xs op-60 mb-2">Out — a new <code>memory_store</code></div>
+<div class="text-sm">
+• duplicates <strong>merged</strong><br>
+• stale entries <strong>replaced</strong><br>
+• new insights <strong>surfaced</strong>
+</div>
+</Card>
+
+</div>
+
+<div class="text-xs op-50 text-center mt-6">
+REM sleep for your agent. Runs every 24h / 5 sessions.
+</div>
+
+<!--
+Memory writes are local and incremental. Over many sessions
+the store accumulates duplicates, contradictions, stale entries.
+
+Dream is the consolidator. Async job. Takes the existing store
+plus 1–100 past session transcripts, produces a NEW store —
+duplicates merged, contradictions resolved with the latest value,
+new patterns surfaced as fresh memories.
+
+The input store is never touched. You review the output, attach
+it to future sessions, or throw it away.
+
+Anthropic's own framing -- this is REM sleep for the agent.
+
+TRANSITION: But there is one trick even bigger than memory.
 -->
 
 ---
