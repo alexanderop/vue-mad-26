@@ -34,6 +34,29 @@ TRANSITION: Now the talk title...
 
 ---
 
+# No need to take notes
+
+<div class="flex flex-col items-center gap-6 mt-8">
+  <img src="/qr-slides.png" class="w-56 h-56 bg-white p-3 rounded-lg" />
+  <div class="text-lg op-80">
+    Scan to follow along — these are my slides.
+  </div>
+  <div class="text-sm op-60">
+    <span style="color: #ff6bed">alexanderop.github.io/vue-mad-26</span>
+  </div>
+</div>
+
+<!--
+Quick housekeeping before we start.
+
+No need to take notes. No need to screenshot.
+Scan this -- these are the slides, live, with every link.
+
+TRANSITION: Now -- quick intro.
+-->
+
+---
+
 # About me
 
 <About />
