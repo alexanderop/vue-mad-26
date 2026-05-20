@@ -1170,49 +1170,41 @@ TRANSITION: One principle, opened up — so you see what's actually inside.
 
 ---
 
-# Example — `boundary-discipline`
+# Inside one principle file
 
-<div class="text-sm op-60 mb-4">What's inside <em>one</em> of those principle files.</div>
+<div class="text-xs op-50 mb-2"><code>brain/principles/boundary-discipline.md</code></div>
 
-<div class="text-base mb-6 max-w-4xl">
-Validation, type narrowing, and error handling live at <strong style="color: #ff6bed">system boundaries</strong>.<br/>
-Inside the system: trust the types. Business logic is pure; the shell is thin.
-</div>
+```md
+# Boundary Discipline
 
-<div class="grid grid-cols-2 gap-6 max-w-5xl">
+Place validation, type narrowing, and error handling at system
+boundaries. Trust internal code unconditionally. Business logic
+lives in pure functions; the shell is thin and mechanical.
 
-<Card glow>
-<div class="text-xs op-60 mb-1">At the boundary</div>
-<div class="text-sm op-90">CLI args · config files · external APIs · network responses</div>
-<div class="text-xs op-70 mt-2">→ validate, return errors, handle defensively</div>
-</Card>
+**Why:** Validation scattered throughout is noisy, redundant, and
+gives a false sense of safety. Concentrating it at boundaries means
+each piece of data is validated exactly once. ...
 
-<Card variant="muted">
-<div class="text-xs op-60 mb-1">Inside</div>
-<div class="text-sm op-90">typed data · error propagation · no re-validation</div>
-<div class="text-xs op-70 mt-2">→ trust the types</div>
-</Card>
+**The Pattern:**
 
-</div>
+- **At boundaries** (CLI args, config files, external APIs, network
+  protocols): validate, return errors, handle defensively
+- **Inside the system**: typed data, error propagation, no
+  re-validation. Trust the types.
 
-<div class="mt-6 text-sm op-70 max-w-4xl">
-<strong>Why:</strong> Validation scattered everywhere is noisy and gives false safety. Validate once, at the edge — logic stays pure and testable without the framework.
-</div>
+**Applications:** ...
+```
 
 <!--
-This is what ONE of those sixteen files actually contains.
-Not just a name -- a rule, a reason, and a test you can apply.
+This is what ONE of those sixteen files looks like on disk.
+Not just a name -- a rule, a Why, a pattern, applications, tests.
 
-The rule: validate at the edges, trust the inside.
+Rule at the top: validate at the edges, trust the inside.
+Why: so the agent can judge edge cases instead of blindly following.
+Pattern: the concrete split -- boundaries vs inside.
+Applications and Tests: how the agent recognises where to apply it.
 
-Two columns -- the boundary and the inside. The agent learns
-WHERE to spend defensive effort and where to stop.
-
-The Why line matters: the principle file always explains the reason,
-so the agent (and you) can judge edge cases instead of blindly
-following the rule.
-
-Multiply this slide by 16. That's the vault.
+Multiply this by 16. That's the vault.
 
 TRANSITION: But there is one trick that is even bigger.
 -->
