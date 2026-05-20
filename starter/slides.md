@@ -20,9 +20,7 @@ backgroundSize: contain
 ---
 
 <!--
-Vue MAD 2026 -- Madrid.
-
-TRANSITION: Now the talk title...
+Vue MAD 2026 -- Madrid. One breath, then title.
 -->
 
 ---
@@ -178,10 +176,10 @@ TRANSITION: Quick intro -- then how we're going to answer that.
 
 <PyramidOutline :items="[
   { title: 'What an Agent Actually Is', subtitle: 'A loop, not a magic box' },
-  { title: 'Context', subtitle: 'Does it know why things exist?' },
-  { title: 'Feedback Loops', subtitle: 'Does it know when it is wrong?' },
-  { title: 'Discoverability', subtitle: 'Can the agent find the right code?' },
-  { title: 'Future', subtitle: 'The role merge' }
+  { title: 'Context', subtitle: 'What the agent knows before it starts' },
+  { title: 'Feedback Loops', subtitle: 'How it knows when it is wrong' },
+  { title: 'Discoverability', subtitle: 'How it finds the right code' },
+  { title: 'Where this is heading', subtitle: 'The role merge' }
 ]" />
 
 <!--
@@ -199,7 +197,6 @@ transition: fade
 ---
 
 <PartSlide
-  part="1"
   title="What an Agent Actually Is"
   subtitle="A new engineer joining your team"
 />
@@ -373,7 +370,7 @@ transition: fade
 ---
 
 <PartSlide
-  part="2"
+  part="1"
   title="Context"
   subtitle="AGENTS.md is the unlock"
 />
@@ -532,9 +529,13 @@ TRANSITION: So how do you spend the budget wisely? Start with AGENTS.md.
 
 ---
 
-# AGENTS.md: the everything dump
+# AGENTS.md: dump vs. doorway
 
-<div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">BAD</div>
+<div class="grid grid-cols-2 gap-6 mt-2">
+
+<Card variant="muted" dashed>
+
+<div class="text-xs font-bold mb-2" style="color: #ef4444">BAD · ~2000 lines</div>
 
 ```md
 # AGENTS.md
@@ -555,32 +556,20 @@ TRANSITION: So how do you spend the budget wisely? Start with AGENTS.md.
 ...100 lines...
 ```
 
-<div class="mt-4 text-base" style="color: #ef4444">
-~2000 lines. Half your context gone before any work starts.
+<div class="mt-2 text-xs" style="color: #ef4444">
+Half your context gone before any work starts.
 </div>
 
-<!--
-[breathe]
+</Card>
 
-The instinct everyone has on day one.
-Dump everything. Style rules ESLint already enforces.
-Bug post-mortems. Every gotcha you ever hit.
-2000 lines. Half your context window gone before any work starts.
-HumanLayer calls this the dumb zone -- the model degrades when context is noisy.
+<Card glow>
 
-TRANSITION: There is a version that survives.
--->
-
----
-
-# AGENTS.md: points at the docs
-
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">GOOD</div>
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">GOOD · ~50 lines</div>
 
 ```md
 # AGENTS.md
 
-Run `pnpm lint:fix && pnpm typecheck` after code changes.
+Run `pnpm lint:fix && pnpm typecheck` after changes.
 
 ## Stack
 Nuxt 4, @nuxt/content v3, @nuxt/ui v3
@@ -591,15 +580,20 @@ Nuxt 4, @nuxt/content v3, @nuxt/ui v3
 
 ## Further reading
 
-**IMPORTANT:** read the relevant doc below before starting any task.
+**IMPORTANT:** read the relevant doc below
+before starting any task.
 
 - `docs/nuxt-content-gotchas.md`
 - `docs/testing-strategy.md`
 - `docs/SYSTEM_KNOWLEDGE_MAP.md`
 ```
 
-<div class="mt-4 text-base" style="color: #ff6bed">
-~50 lines. Loads docs only when relevant.
+<div class="mt-2 text-xs" style="color: #ff6bed">
+Loads docs only when relevant.
+</div>
+
+</Card>
+
 </div>
 
 <div v-click class="absolute bottom-4 left-0 right-0 text-center text-lg">
@@ -608,6 +602,14 @@ Nuxt 4, @nuxt/content v3, @nuxt/ui v3
 
 <!--
 [breathe]
+
+LEFT -- the instinct everyone has on day one. Dump everything. Style
+rules ESLint already enforces. Bug post-mortems. Every gotcha you ever
+hit. 2000 lines. Half your context window gone before any work starts.
+HumanLayer calls this the dumb zone -- the model degrades when context
+is noisy.
+
+RIGHT -- the version that survives.
 
 ONE LINE for tooling: "Run pnpm lint:fix and pnpm typecheck after changes."
 The agent runs the build, reads the error, fixes itself.
@@ -632,91 +634,37 @@ one project: brainmaxxing. Let me show you what that is first.
 
 ---
 
-# Many shapes work.
+# Meet `brainmaxxing` (steal it)
 
-<div class="h-full flex items-center justify-center -mt-12">
-
-<div class="text-center">
-  <div class="text-3xl op-70">My current favorite:</div>
-  <div class="text-7xl font-bold mt-6" style="color: #ff6bed">brainmaxxing</div>
+<div class="text-center text-xs op-50 mb-6">
+  Many shapes work — this is my current favorite. MIT, ~200 stars, three months old.
 </div>
 
-</div>
-
-<!--
-Before I show you brainmaxxing, quick disclaimer.
-
-There are many ways to give an agent docs. AGENTS.md, CLAUDE.md,
-cursor rules, a docs/ folder, README chains, even Notion exports.
-None of them are wrong. Pick what fits your team.
-
-I'm showing you brainmaxxing because right now it's MY favorite.
-It's small. It's opinionated. The pieces are easy to steal even
-if you don't adopt the whole thing.
-
-Treat the next few slides as one concrete example, not the one true way.
-
-TRANSITION: Here's the project.
--->
-
----
-
-# Meet `brainmaxxing`
-
-<div class="text-center text-sm op-60 mt-2 mb-12">
-  by <a href="https://github.com/poteto/brainmaxxing" class="underline" style="color: #ff6bed">poteto</a>
-</div>
-
-<div class="grid grid-cols-3 gap-6 max-w-5xl mx-auto mt-10">
-
-<Card variant="muted">
-<div class="text-xl font-bold text-center" style="color: #ff6bed"><code>brain/</code></div>
-<div class="text-sm op-70 text-center mt-2">a markdown vault</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xl font-bold text-center" style="color: #ff6bed">6 skills</div>
-<div class="text-sm op-70 text-center mt-2">read &amp; write the vault</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xl font-bold text-center" style="color: #ff6bed">1 hook</div>
-<div class="text-sm op-70 text-center mt-2">loads the map on startup</div>
-</Card>
-
-</div>
-
-<!--
-Quick name-check before the next two slides land.
-
-brainmaxxing is an open-source kit from poteto on GitHub.
-192 stars, MIT license, three months old. Tagline:
-"stupid simple persistent memory and skill improvement."
-
-Three pieces:
-ONE -- a brain/ folder. Plain markdown. The agent reads from it
-and writes back to it.
-TWO -- six skills. /reflect, /plan, /review, /meditate, /ruminate, /brain.
-Each one either reads brain/ or writes to it.
-THREE -- a SessionStart hook. Every new session, it injects
-brain/index.md so the agent boots up already knowing the map.
-
-I'm flagging this NOW because the next two slides show
-/reflect and inject-brain.sh as examples. They're from this project.
-
-We'll come back and stitch the whole loop together after.
--->
-
----
-
-# Steal it: `poteto/brainmaxxing`
-
-<div class="text-center text-sm op-70 mb-6">MIT-licensed, three months old, ~200 stars. Clone it, rip it apart, make it yours.</div>
-
-<div class="grid grid-cols-[1fr_auto] gap-8 items-center max-w-5xl mx-auto">
+<div class="grid grid-cols-[1fr_auto] gap-8 items-center max-w-6xl mx-auto">
 
 <div>
-  <img src="/brainmaxxing-repo.png" class="rounded-lg shadow-2xl" />
+
+<div class="grid grid-cols-3 gap-4 mb-6">
+
+<Card variant="muted">
+<div class="text-lg font-bold text-center" style="color: #ff6bed"><code>brain/</code></div>
+<div class="text-xs op-70 text-center mt-1">a markdown vault</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-lg font-bold text-center" style="color: #ff6bed">6 skills</div>
+<div class="text-xs op-70 text-center mt-1">read &amp; write the vault</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-lg font-bold text-center" style="color: #ff6bed">1 hook</div>
+<div class="text-xs op-70 text-center mt-1">loads the map on startup</div>
+</Card>
+
+</div>
+
+<img src="/brainmaxxing-repo.png" class="rounded-lg shadow-2xl" />
+
 </div>
 
 <div class="flex flex-col items-center gap-3">
@@ -729,15 +677,26 @@ We'll come back and stitch the whole loop together after.
 </div>
 
 <!--
-The repo is right here. Scan or type the URL.
+Many shapes work -- AGENTS.md alone, cursor rules, docs/ folders, Notion
+exports. None wrong. This one is just my current favorite.
 
-MIT-licensed. ~200 stars. Three months old. Tiny enough to read end-to-end
-in an afternoon.
+brainmaxxing is an open-source kit from poteto. MIT, ~200 stars, three
+months old. Tagline: "stupid simple persistent memory and skill improvement."
 
-Don't adopt it wholesale -- read it, steal the shape, adapt the brain/ folder
-and the skills to your project. The hook is six lines of shell.
+Three pieces:
+ONE -- a brain/ folder. Plain markdown. The agent reads from it and
+writes back to it.
+TWO -- six skills. /reflect, /plan, /review, /meditate, /ruminate, /brain.
+Each one either reads brain/ or writes to it.
+THREE -- a SessionStart hook. Every new session, it injects brain/index.md
+so the agent boots up already knowing the map.
 
-TRANSITION: Okay, now let's actually look inside. Start with brain/.
+The repo is right there. Scan, or read it end-to-end in an afternoon.
+Don't adopt it wholesale -- steal the shape, adapt the vault to your
+project. The hook is six lines of shell.
+
+TRANSITION: The next two slides show /reflect and inject-brain.sh from
+this project. Start with skills.
 -->
 
 ---
@@ -818,7 +777,9 @@ you press anything or not.
 
 # Hooks: code that runs around agent events
 
-<div class="mt-6">
+<div class="grid grid-cols-2 gap-6 mt-6">
+
+<div>
 
 <div class="text-xs op-50 mb-2"><code>.claude/settings.json</code></div>
 
@@ -843,6 +804,26 @@ you press anything or not.
 INDEX="$CLAUDE_PROJECT_DIR/brain/index.md"
 [ -f "$INDEX" ] && cat "$INDEX"
 ```
+
+</div>
+
+<div class="flex flex-col gap-3">
+
+<div class="text-xs op-50 mb-1">The 4 events you'll actually use</div>
+
+<Card variant="muted" size="sm">
+<div class="text-sm"><strong style="color: #ff6bed">SessionStart</strong> — inject context (what brainmaxxing does)</div>
+</Card>
+
+<Card variant="muted" size="sm">
+<div class="text-sm"><strong style="color: #ff6bed">PreToolUse</strong> — gate destructive Bash, lock down paths</div>
+</Card>
+
+<Card variant="muted" size="sm">
+<div class="text-sm"><strong style="color: #ff6bed">PostToolUse</strong> — re-lint or re-index after writes</div>
+</Card>
+
+</div>
 
 </div>
 
@@ -1069,78 +1050,42 @@ TRANSITION: And the bonus -- it ships with 16 principles built in.
 
 # 16 principles you don't have to write
 
-<div class="grid grid-cols-2 gap-x-8 gap-y-3 max-w-5xl mx-auto mt-6">
+<div class="text-center text-sm op-60 mb-4">The four I lean on every day:</div>
 
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">01</div>
-  <div class="text-sm" style="color: #ff6bed">guard-the-context-window</div>
-</div>
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">02</div>
-  <div class="text-sm" style="color: #ff6bed">fix-root-causes</div>
-</div>
+<div class="grid grid-cols-2 gap-4 max-w-4xl mx-auto">
 
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">03</div>
-  <div class="text-sm" style="color: #ff6bed">subtract-before-you-add</div>
-</div>
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">04</div>
-  <div class="text-sm" style="color: #ff6bed">prove-it-works</div>
-</div>
+<Card glow>
+<div class="text-xs op-50 mb-1">01</div>
+<div class="text-lg font-bold" style="color: #ff6bed">guard-the-context-window</div>
+</Card>
 
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">05</div>
-  <div class="text-sm op-80">encode-lessons-in-structure</div>
-</div>
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">06</div>
-  <div class="text-sm op-80">redesign-from-first-principles</div>
+<Card glow>
+<div class="text-xs op-50 mb-1">02</div>
+<div class="text-lg font-bold" style="color: #ff6bed">fix-root-causes</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">03</div>
+<div class="text-lg font-bold" style="color: #ff6bed">subtract-before-you-add</div>
+</Card>
+
+<Card glow>
+<div class="text-xs op-50 mb-1">04</div>
+<div class="text-lg font-bold" style="color: #ff6bed">prove-it-works</div>
+</Card>
+
 </div>
 
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">07</div>
-  <div class="text-sm op-80">never-block-on-the-human</div>
-</div>
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">08</div>
-  <div class="text-sm op-80">exhaust-the-design-space</div>
+<div class="mt-6 grid grid-cols-[1fr_auto] gap-6 max-w-5xl mx-auto items-center">
+
+<div class="text-xs op-50 leading-relaxed">
+<span class="op-70">+ 12 more:</span>
+encode-lessons-in-structure · redesign-from-first-principles · never-block-on-the-human · exhaust-the-design-space · outcome-oriented-execution · boundary-discipline · cost-aware-delegation · foundational-thinking · experience-first · make-operations-idempotent · migrate-callers-then-delete-legacy-apis · serialize-shared-state-mutations
 </div>
 
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">09</div>
-  <div class="text-sm op-80">outcome-oriented-execution</div>
-</div>
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">10</div>
-  <div class="text-sm op-80">boundary-discipline</div>
-</div>
-
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">11</div>
-  <div class="text-sm op-80">cost-aware-delegation</div>
-</div>
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">12</div>
-  <div class="text-sm op-80">foundational-thinking</div>
-</div>
-
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">13</div>
-  <div class="text-sm op-80">experience-first</div>
-</div>
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">14</div>
-  <div class="text-sm op-80">make-operations-idempotent</div>
-</div>
-
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">15</div>
-  <div class="text-sm op-80">migrate-callers-then-delete-legacy-apis</div>
-</div>
-<div class="flex items-start gap-3">
-  <div class="text-xs font-mono op-40 mt-0.5">16</div>
-  <div class="text-sm op-80">serialize-shared-state-mutations</div>
+<div class="flex flex-col items-center gap-1">
+  <img src="/qr-brainmaxxing.png" class="w-20 h-20 bg-white p-1.5 rounded" />
+  <div class="text-[10px] op-50">full vault</div>
 </div>
 
 </div>
@@ -1148,12 +1093,7 @@ TRANSITION: And the bonus -- it ships with 16 principles built in.
 <!--
 Sixteen principles. Built in.
 
-[scan room]
-
-I am not going to read all of them. I want you to PHOTOGRAPH this slide
-and read it on the train home.
-
-But the top four are the ones I lean on every day:
+The four big cards are the ones I lean on every day:
 
 guard-the-context-window -- the whole reason we keep AGENTS.md small.
 fix-root-causes -- when the agent ships a bug, fix the factory not the PR.
@@ -1163,7 +1103,8 @@ prove-it-works -- if there is no test, it does not work.
 These are not novel ideas. They are the things every senior engineer
 learned the hard way. brainmaxxing wrote them down for you.
 
-CLICK -- A year of rediscovery. Saved.
+The other twelve are listed below -- scan the QR for the full vault.
+A year of rediscovery. Saved.
 
 This is what my AGENTS.md strategy actually is:
 a thin AGENTS.md that points at /docs (progressive disclosure)
@@ -1348,7 +1289,8 @@ it to future sessions, or throw it away.
 
 Anthropic's own framing -- this is REM sleep for the agent.
 
-TRANSITION: But there is one trick even bigger than memory.
+TRANSITION: Dream consolidates what the agent already saw. The next move
+changes what it sees in the first place.
 -->
 
 ---
@@ -1495,7 +1437,7 @@ transition: fade
 ---
 
 <PartSlide
-  part="3"
+  part="2"
   title="Feedback Loops"
   subtitle="Backpressure: tests, types, lint"
 />
@@ -1793,7 +1735,8 @@ The expensive ones at the edge run in CI or prod.
 
 I wrote up the full stack on my blog -- scan the QR for the deep dive.
 
-TRANSITION: Those 15 are automated. There's one more layer the agent needs.
+TRANSITION: Those 15 are automated. There's one more, and it's
+qualitatively different.
 -->
 
 ---
@@ -1858,7 +1801,7 @@ clicks: 3
 transition: fade-out
 ---
 
-# Layer 16: the agent as a user
+# Beyond the 15: the agent as a user
 
 <div class="text-center text-sm op-60 mb-4">Static checks are green. Did it <em>work</em> in a browser?</div>
 
@@ -1912,7 +1855,7 @@ TRANSITION: All those layers are SIGNALS. You still need a GATE.
 
 # Lefthook: the commit-time gate
 
-<div class="text-center text-sm op-70 mb-4">Use <strong>Husky</strong> or <strong>Lefthook</strong> to run tests, lint, and typecheck on every commit.</div>
+<div class="text-center text-sm op-70 mb-4">Use <strong>Lefthook</strong> at commit time to run tests, lint, and typecheck.</div>
 
 ```yaml
 # lefthook.yml
@@ -1950,7 +1893,7 @@ transition: fade
 ---
 
 <PartSlide
-  part="4"
+  part="3"
   title="Discoverability"
   subtitle="One folder = one feature"
 />
@@ -2273,34 +2216,36 @@ TRANSITION: That's the three buckets. Zoom out -- where is this all heading?
 -->
 
 ---
-clicks: 4
+clicks: 3
 transition: fade-out
 ---
 
-# The four moves compound
+# The three buckets compound
 
 <v-clicks>
 
-- **AGENTS.md** the foundation
-- **brainmaxxing** skills, hooks, brain/
-- **feedback pipeline** signals to chase
-- **feature architecture** vertical slices
+- **Context** — AGENTS.md, skills, hooks, brain/ keep the window tight
+- **Feedback** — 15 layers + the agent as a user keep it honest
+- **Discoverability** — vertical slices keep it local
 
 </v-clicks>
 
 <!--
 [pause]
 
-CLICK 1 -- AGENTS.md. The foundation. Without it, every other move
-           leaks context every session.
-CLICK 2 -- brainmaxxing. Skills, hooks, brain/. The agent stops
-           re-learning the same recipes.
-CLICK 3 -- feedback pipeline. Signals the agent can chase to green
+CLICK 1 -- Context. AGENTS.md, skills, hooks, brain/. Without it,
+           every other move leaks tokens every session.
+CLICK 2 -- Feedback. 15 layers of automated checks plus agent-browser
+           as the sixteenth. Signals the agent can chase to green
            on its own.
-CLICK 4 -- feature architecture. Vertical slices instead of horizontal
-           layers. The agent stays in one folder.
+CLICK 3 -- Discoverability. Vertical slices instead of horizontal
+           layers. The agent stays in one folder, the window stays full
+           of relevant code.
 
-TRANSITION: That's the toolkit. Now -- where is this heading?
+Same three words as the pyramid. Same three parts you just walked through.
+That's the toolkit.
+
+TRANSITION: Now -- where is this heading?
 -->
 
 ---
@@ -2308,6 +2253,7 @@ transition: fade
 ---
 
 <PartSlide
+  icon="→"
   title="Where this is heading"
   subtitle="The role merge"
 />
