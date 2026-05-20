@@ -8,12 +8,12 @@ mdc: true
 drawings:
   persist: false
 info: |
-  ## Clean Code Is Sexy Again — Making Your Vue Project AI-Ready
+  ## Clean Code Is Sexy Again. Making Your Vue Project AI-Ready
 
-  Clean code went from nice-to-have to business-critical, because AI agents
-  work the same way good engineers do — and your codebase is their UX.
+  Clean code is business-critical now. AI agents work the same way good
+  engineers do, and your codebase is their UX.
 
-  By Alexander Opalic — alexop.dev
+  By Alexander Opalic. alexop.dev
 layout: image
 image: /madvue-2026.png
 backgroundSize: contain
@@ -39,7 +39,7 @@ TRANSITION: Now the talk title...
 <div class="flex flex-col items-center gap-6 mt-8">
   <img src="/qr-slides.png" class="w-56 h-56 bg-white p-3 rounded-lg" />
   <div class="text-lg op-80">
-    Scan to follow along — these are my slides.
+    Scan to follow along. These are my slides.
   </div>
   <div class="text-sm op-60">
     <span style="color: #ff6bed">alexanderop.github.io/vue-mad-26</span>
@@ -479,9 +479,9 @@ TRANSITION: Don't believe me? Claude Code shows you exactly.
 
 ---
 
-# `/context` — see your budget
+# `/context`: see your budget
 
-<div class="text-center text-sm op-60 mb-5">Claude Code ships a slash command that shows exactly what's eating your window.</div>
+<div class="text-center text-sm op-60 mb-5">Claude Code ships a slash command that shows what's eating your window.</div>
 
 <Card variant="muted" class="max-w-4xl mx-auto">
 
@@ -495,7 +495,7 @@ TRANSITION: Don't believe me? Claude Code shows you exactly.
   <div style="width: 21.7%; background: #fbbf24"></div>
   <div style="width: 0.4%; background: rgba(255,255,255,0.15)"></div>
 </div>
-<div class="text-center text-xs op-60 mb-5">28k of 1M tokens used — share of the <strong>used</strong> portion</div>
+<div class="text-center text-xs op-60 mb-5">28k of 1M tokens used. Share of the <strong>used</strong> portion.</div>
 
 <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
   <div class="flex items-center gap-3"><span class="w-3 h-3 rounded-sm" style="background: #ff6bed"></span> System prompt <span class="op-50 ml-auto">9.1k <span class="op-50">(0.9%)</span></span></div>
@@ -532,7 +532,7 @@ TRANSITION: So how do you spend the budget wisely? Start with AGENTS.md.
 
 ---
 
-# AGENTS.md — the everything dump
+# AGENTS.md: the everything dump
 
 <div class="text-xs font-bold mb-2" style="color: rgba(255,255,255,0.6)">BAD</div>
 
@@ -573,7 +573,7 @@ TRANSITION: There is a version that survives.
 
 ---
 
-# AGENTS.md — points at the docs
+# AGENTS.md: points at the docs
 
 <div class="text-xs font-bold mb-2" style="color: #ff6bed">GOOD</div>
 
@@ -603,7 +603,7 @@ Nuxt 4, @nuxt/content v3, @nuxt/ui v3
 </div>
 
 <div v-click class="absolute bottom-4 left-0 right-0 text-center text-lg">
-  Progressive disclosure — <strong style="color: #ff6bed">the right context at the right time.</strong>
+  Progressive disclosure. <strong style="color: #ff6bed">The right context at the right time.</strong>
 </div>
 
 <!--
@@ -709,7 +709,7 @@ We'll come back and stitch the whole loop together after.
 
 ---
 
-# Steal it — `poteto/brainmaxxing`
+# Steal it: `poteto/brainmaxxing`
 
 <div class="text-center text-sm op-70 mb-6">MIT-licensed, three months old, ~200 stars. Clone it, rip it apart, make it yours.</div>
 
@@ -742,7 +742,7 @@ TRANSITION: Okay, now let's actually look inside. Start with brain/.
 
 ---
 
-# Skills — recipes the agent opens when triggered
+# Skills: recipes the agent opens when triggered
 
 <div class="grid grid-cols-2 gap-8 max-w-5xl mx-auto mt-8">
 
@@ -779,7 +779,7 @@ learnings to `brain/`.
 
 <div class="mb-3"><strong style="color: #ff6bed">3.</strong> Scripts and references load only if the body opens them.</div>
 
-<div class="text-xs op-50 mt-6">Open format. Same <code>SKILL.md</code> runs in Claude Code, Cursor, Codex, Copilot — ~30 agents.</div>
+<div class="text-xs op-50 mt-6">Open format. Same <code>SKILL.md</code> runs in Claude Code, Cursor, Codex, Copilot. ~30 agents.</div>
 
 </div>
 
@@ -816,7 +816,7 @@ you press anything or not.
 
 ---
 
-# Hooks — code that runs around agent events
+# Hooks: code that runs around agent events
 
 <div class="mt-6">
 
@@ -925,7 +925,7 @@ TRANSITION: Here is what brain/ actually looks like on disk.
 
 ---
 
-# What `brain/` actually looks like
+# Inside `brain/`
 
 <div class="grid grid-cols-2 gap-6 mt-6">
 
@@ -950,7 +950,7 @@ brain/
 </Card>
 
 <Card glow>
-<div class="text-xs op-60 mb-2"><code>index.md</code> — the only file always loaded</div>
+<div class="text-xs op-60 mb-2"><code>index.md</code>. The only file always loaded.</div>
 
 ```md
 # Brain
@@ -1217,7 +1217,7 @@ TRANSITION: Zoom out for a second — where is all this going?
 transition: fade
 ---
 
-# My take — soon, every harness ships this
+# My take: soon, every harness ships this
 
 <div class="text-sm op-70 text-center mb-6 max-w-3xl mx-auto">
 Claude Code already shipped <code>auto memory</code> + <code>auto dream</code>.
@@ -1300,10 +1300,10 @@ TRANSITION: But there is one trick even bigger than memory.
 transition: fade
 ---
 
-# What is a <span style="color: #ff6bed">dream</span>?
+# Anatomy of a <span style="color: #ff6bed">dream</span>
 
 <div class="text-sm op-70 text-center mb-6 max-w-3xl mx-auto">
-Async job. Reads your memory store + past sessions, writes a new, reorganized store. Input is never modified.
+Async job. Reads your memory store + past sessions. Writes a new, reorganized store. Leaves the input untouched.
 </div>
 
 <div class="grid grid-cols-[1fr_auto_1fr] gap-4 items-center">
@@ -1320,7 +1320,7 @@ Async job. Reads your memory store + past sessions, writes a new, reorganized st
 <div class="text-3xl op-60 text-center">→</div>
 
 <Card glow>
-<div class="text-xs op-60 mb-2">Out — a new <code>memory_store</code></div>
+<div class="text-xs op-60 mb-2">Out: a new <code>memory_store</code></div>
 <div class="text-sm">
 • duplicates <strong>merged</strong><br>
 • stale entries <strong>replaced</strong><br>
@@ -1537,7 +1537,7 @@ TRANSITION: Let's walk the first 5 layers. Modern frontend tooling.
 
 ---
 
-# Layer 1 — Type safety
+# Layer 1: Type safety
 
 <div class="text-sm op-60 mb-4">The first lie-detector. Catch the bug before it runs.</div>
 
@@ -1597,7 +1597,7 @@ TRANSITION: Layer 2 -- lint and format. Fast enough to run on every keystroke.
 
 ---
 
-# Layer 2 — Lint & format
+# Layer 2: Lint & format
 
 <div class="text-sm op-60 mb-4">Oxlint + Oxfmt. Fast enough to run on every keystroke.</div>
 
@@ -1675,7 +1675,7 @@ transition: fade-out
 </Card>
 
 <Card variant="muted">
-<div class="text-xs op-60 mb-1">Bonus — dead-code detection</div>
+<div class="text-xs op-60 mb-1">Bonus: dead-code detection</div>
 <div class="text-xs op-80"><code>vue/no-unused-properties</code> · <code>vue/no-unused-refs</code> · <code>vue/no-unused-emit-declarations</code></div>
 </Card>
 
@@ -1716,7 +1716,7 @@ TRANSITION: Layer 3 -- the tests themselves.
 
 ---
 
-# Layer 3 — Unit tests
+# Layer 3: Unit tests
 
 <div class="text-sm op-60 mb-4">Vitest. Watch mode. ESM-native. Same matchers as Jest.</div>
 
@@ -1754,7 +1754,7 @@ TRANSITION: Layer 4 -- components, but in a REAL browser.
 
 ---
 
-# Layer 4 — Component tests
+# Layer 4: Component tests
 
 <div class="text-sm op-60 mb-4">Vitest browser mode. Real Chromium via Playwright. No more jsdom.</div>
 
@@ -1770,20 +1770,6 @@ test("shows tooltip on hover", async () => {
   await expect.element(screen.getByText("Save")).toBeVisible()
 })
 ```
-
-<div v-click class="mt-6 grid grid-cols-2 gap-4">
-
-<Card glow>
-<div class="text-xs op-60 mb-1">Works in browser mode</div>
-<div class="text-sm">Hover, focus, layout, intersection observers, scroll.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-xs op-60 mb-1">Broken in jsdom</div>
-<div class="text-sm">All of the above. Half your CSS. Most pointer events.</div>
-</Card>
-
-</div>
 
 <!--
 Layer 4 -- component tests in a REAL browser.
@@ -1803,7 +1789,7 @@ TRANSITION: Layer 5 -- mock the network ONCE.
 
 ---
 
-# Layer 5 — API mocking
+# Layer 5: API mocking
 
 <div class="text-sm op-60 mb-4">MSW. Define handlers once. Use them everywhere.</div>
 
@@ -1817,17 +1803,6 @@ export const handlers = [
   ),
 ]
 ```
-
-<div v-click class="mt-6 text-center">
-
-<div class="inline-grid grid-cols-4 gap-3 text-xs">
-  <Card glow><div class="font-bold">Vitest</div></Card>
-  <Card glow><div class="font-bold">Browser mode</div></Card>
-  <Card glow><div class="font-bold">Playwright</div></Card>
-  <Card glow><div class="font-bold">Dev server</div></Card>
-</div>
-
-</div>
 
 <!--
 Layer 5 -- API mocking with MSW.
@@ -1939,9 +1914,9 @@ clicks: 3
 transition: fade-out
 ---
 
-# Layer 16 — the agent as a user
+# Layer 16: the agent as a user
 
-<div class="text-center text-sm op-60 mb-4">Static checks are green. Did it actually <em>work</em> in a browser?</div>
+<div class="text-center text-sm op-60 mb-4">Static checks are green. Did it <em>work</em> in a browser?</div>
 
 <AgentBrowserLoop :step="$clicks" />
 
@@ -1993,7 +1968,7 @@ TRANSITION: All those layers are SIGNALS. You still need a GATE.
 
 # Lefthook: the commit-time gate
 
-<div class="text-center text-sm op-70 mb-4">Use <strong>Husky</strong> or <strong>Lefthook</strong> so every commit automatically runs tests, lint, and typecheck.</div>
+<div class="text-center text-sm op-70 mb-4">Use <strong>Husky</strong> or <strong>Lefthook</strong> to run tests, lint, and typecheck on every commit.</div>
 
 ```yaml
 # lefthook.yml
@@ -2087,7 +2062,7 @@ Once context is in place, the agent can help you carve the structure too.
 </Card>
 
 <Card variant="muted">
-<div class="text-sm op-80">Each feature is one folder — <code>workout/</code> alone has 24 components and 7 composables.</div>
+<div class="text-sm op-80">Each feature is one folder. <code>workout/</code> alone has 24 components and 7 composables.</div>
 </Card>
 
 <Card glow>
@@ -2121,13 +2096,13 @@ TRANSITION: Let me show you what that wall does to the agent.
 
 # Same task, two structures
 
-<div class="text-center text-sm op-60 mb-4">"Add a rest-timer reminder to the active workout" — same agent, same task</div>
+<div class="text-center text-sm op-60 mb-4">"Add a rest-timer reminder to the active workout". Same agent, same task.</div>
 
 <div class="grid grid-cols-2 gap-6">
 
 <div>
 
-<div class="text-xs op-50 mb-2">LEFT — Flat (the old layout)</div>
+<div class="text-xs op-50 mb-2">LEFT: Flat (the old layout)</div>
 
 <FolderTree
   root
@@ -2154,7 +2129,7 @@ TRANSITION: Let me show you what that wall does to the agent.
 
 <div>
 
-<div class="text-xs op-50 mb-2">RIGHT — Feature-sliced (today)</div>
+<div class="text-xs op-50 mb-2">RIGHT: Feature-sliced (today)</div>
 
 <FolderTree
   root
@@ -2302,7 +2277,7 @@ TRANSITION: That regrouping is not cosmetic. It changes what the agent sees.
 
 <div>
 
-<div class="text-xs op-50 mb-2">FLAT — agent greps across folders</div>
+<div class="text-xs op-50 mb-2">FLAT: agent greps across folders</div>
 
 <div class="space-y-1 text-sm font-mono">
 <div><span class="text-red-400">✗</span> components/SettingsForm.vue</div>
@@ -2320,7 +2295,7 @@ TRANSITION: That regrouping is not cosmetic. It changes what the agent sees.
 
 <div>
 
-<div class="text-xs op-50 mb-2">FEATURE — agent <code>ls features/workout/</code></div>
+<div class="text-xs op-50 mb-2">FEATURE: agent <code>ls features/workout/</code></div>
 
 <div class="space-y-1 text-sm font-mono">
 <div><span class="text-green-400">✓</span> workout/components/WorkoutActiveMode.vue</div>
@@ -2389,7 +2364,7 @@ TRANSITION: Here's the machine.
 
 <div class="max-w-3xl mx-auto">
 
-<div class="text-xs font-bold mb-2" style="color: #ff6bed">ESLint — the real <code>eslint.config.ts</code></div>
+<div class="text-xs font-bold mb-2" style="color: #ff6bed">ESLint: the real <code>eslint.config.ts</code></div>
 
 ```ts {all|3-6|8-10}
 'import-x/no-restricted-paths': ['error', {
@@ -2409,7 +2384,7 @@ TRANSITION: Here's the machine.
 </div>
 
 <div class="mt-4 text-center text-sm op-70">
-  Every PR — mine, the agent's — fails CI the moment <strong style="color: #ff6bed">workout reaches into timers.</strong>
+  Every PR, mine or the agent's, fails CI the moment <strong style="color: #ff6bed">workout reaches into timers.</strong>
 </div>
 
 <!--
@@ -2435,10 +2410,8 @@ transition: fade-out
 
 # The four moves compound
 
-<div class="text-center text-sm op-60 mb-6">Click in each piece. The center lights up when they're all there.</div>
 
 <AgentReadyPie :step="$clicks" />
-
 <!--
 [pause]
 
