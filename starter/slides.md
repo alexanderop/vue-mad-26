@@ -1958,162 +1958,139 @@ Once context is in place, the agent can help you carve the structure too.
 -->
 
 ---
+layout: intro
+---
 
-# One folder = one feature
+# Most Vue apps start flat
 
-<div class="text-center text-xs op-50 mb-3">Real layout from <code>alexanderop/workoutTracker</code></div>
-
-<div class="grid grid-cols-2 gap-8 mt-2">
-
-<div>
-
-<FolderTree
-  root
-  title="src/"
-  :structure="`src/
-  views/
-  router/
-  components/
-  composables/
-  lib/
-  db/
-  stores/
-  types/
-  features/
-    workout/
-      components/
-      composables/
-      utils/
-    timers/
-      components/
-      composables/
-    exercises/
-    settings/
-    templates/`"
-/>
-
-</div>
-
-<div class="flex flex-col justify-center gap-4">
-
-<Card variant="muted">
-<div class="text-sm op-80">Shared layers stay shared: <code>components</code>, <code>composables</code>, <code>lib</code>, <code>db</code>, <code>stores</code>, <code>types</code>.</div>
-</Card>
-
-<Card variant="muted">
-<div class="text-sm op-80">Each feature is one folder. <code>workout/</code> alone has 24 components and 7 composables.</div>
-</Card>
-
-<Card glow>
-<div class="text-sm"><strong style="color: #ff6bed">No <code>workout</code> imports from <code>timers</code>.</strong> The folder boundary <em>is</em> the contract.</div>
-</Card>
-
-</div>
-
+<div class="text-lg op-80 mt-6">
+Files grouped by what they <strong style="color: #ff6bed">are</strong> &mdash; <code>components/</code>, <code>composables/</code>, <code>stores/</code> &mdash; not by the feature they belong to.
 </div>
 
 <!--
-The big idea, grounded in a real project.
+A definition before we get to the agent angle.
 
-This is the actual src/ layout of my workout tracker.
-Ten features under features/. Shared layers above.
-Views and router at the top.
+Flat structure groups files by file type.
+Components live in components/. Composables live in composables/.
+A store is a store, so it goes in stores/.
 
-The workout feature alone is 24 components and 7 composables.
-That used to be 24 components scattered across src/components/workout/
-and 7 composables in src/composables/. The agent had to grep across
-three folders to find anything related to workouts.
+You run pnpm create vue, you get this. The Vue docs show it this way.
+Most apps I see in the wild look exactly like this.
 
-Now workout/ is one folder. timers/ is one folder.
-And critically -- workout does NOT import from timers.
-If they need to share something, it goes up to lib/ or composables/.
-
-TRANSITION: Let me show you what that wall does to the agent.
+TRANSITION: Here is the typical scaffold.
 -->
 
 ---
 
-# Same task, two structures
+# The typical Vue scaffold
 
-<div class="text-center text-sm op-60 mb-4">"Add a rest-timer reminder to the active workout". Same agent, same task.</div>
+<div class="text-center text-xs op-50 mb-3">What a fresh Vue app grows into</div>
 
-<div class="grid grid-cols-2 gap-6">
-
-<div>
-
-<div class="text-xs op-50 mb-2">LEFT: Flat (the old layout)</div>
+<div class="max-w-md mx-auto">
 
 <FolderTree
   root
   title="src/"
   :structure="`src/
   components/
-    workout/
-      WorkoutActiveMode.vue
-      WorkoutHeader.vue
-      WorkoutAmrapView.vue
-    settings/
-    exercise/
+    WorkoutActiveMode.vue
+    WorkoutHeader.vue
+    TimerDisplay.vue
+    ExerciseList.vue
+    SettingsForm.vue
   composables/
-    useWorkout.ts
     useWorkoutMode.ts
     useRestTimer.ts
-    timers/
-      useAmrapTimer.ts
+    useExercises.ts
+    useSettings.ts
   stores/
-    workout.ts`"
+    workout.ts
+    timers.ts
+    settings.ts
+  views/
+  router/`"
 />
 
-</div>
-
-<div>
-
-<div class="text-xs op-50 mb-2">RIGHT: Feature-sliced (today)</div>
-
-<FolderTree
-  root
-  title="src/"
-  :structure="`src/
-  features/
-    workout/
-      components/
-        WorkoutActiveMode.vue
-        WorkoutHeader.vue
-      composables/
-        useWorkoutMode.ts
-        useWorkoutPersistence.ts
-    timers/
-      components/
-      composables/
-    exercises/
-    settings/`"
-/>
-
-</div>
-
-</div>
-
-<div class="mt-4 grid grid-cols-2 gap-6 text-xs">
-  <div class="text-center op-60">workout logic spread across <code>components/</code>, <code>composables/</code>, <code>stores/</code></div>
-  <div class="text-center" style="color: #ff6bed"><code>features/workout/</code> is one folder. Cross-feature edges go through <code>lib/</code>.</div>
 </div>
 
 <!--
-Same app -- my workout tracker -- two snapshots in time.
+This is what most Vue projects end up looking like.
 
-LEFT is what src/ used to look like.
-WorkoutActiveMode in components/workout/.
-useWorkoutMode in composables/.
-Workout store somewhere else.
-A change to "active workout" touches three folders.
+Everything that IS a component goes in components/.
+Everything that IS a composable goes in composables/.
+A store is a store -- stores/.
 
-RIGHT is the layout today.
-features/workout is the unit.
-Everything Workout* lives there.
-If timers and workout need to share something --
-say, the rest-timer state -- it gets lifted to lib/.
+Fast to start. Zero setup. Easy to read top-to-bottom on day one.
 
-TRANSITION: Now watch what the agent does in each.
+TRANSITION: It works -- until it does not.
+-->
+
+---
+layout: two-cols-header
+---
+
+# Flat: where it works, where it breaks
+
+::left::
+
+<div class="text-sm mb-4" style="color: #ff6bed">Works for</div>
+
+✅ Small apps and prototypes
+
+✅ Zero setup &mdash; just start
+
+✅ Easy to read top-to-bottom
+
+::right::
+
+<div class="text-sm mb-4" style="color: #ff6bed">Breaks when</div>
+
+❌ <code>components/</code> swells to 80+ files
+
+❌ One feature spans three folders
+
+❌ Tests per feature get tricky
+
+❌ Agents grep across the whole tree
+
+<!--
+Flat is not wrong. It is the right default for small apps.
+
+But there is a point -- maybe 20, 30, 40 components in --
+where the trade-off flips.
+
+components/ becomes a junk drawer.
+A "workout" change touches WorkoutActiveMode.vue, useWorkoutMode.ts,
+and workout.ts -- three different folders.
+
+And this matters for agents too. The agent greps across the whole tree
+to figure out what relates to what. Most of what it pulls is noise.
+
+TRANSITION: Feature-sliced flips this.
+-->
+
+---
+layout: center
+class: 'text-center'
+---
+
+# Feature-sliced flips it
+
+<div class="text-lg op-80 mt-6">
+Group by what files <span v-mark.underline.red="1" style="color: #ff6bed">do</span>, not by what they <span v-mark.underline.red="2">are</span>.
+</div>
+
+<!--
+Same files. Different addressing.
+
+Instead of components/ + composables/ + stores/ at the top level,
+the top level becomes the features themselves: workout/, timers/, exercises/.
+
+Each feature owns its components, its composables, its store.
+You stop asking "where do components live" and start asking
+"where does the workout feature live".
+
+TRANSITION: Watch the regroup happen.
 -->
 
 ---
@@ -2203,7 +2180,81 @@ to find anything related to one thing.
 workout/ is one folder. timers/ is one folder.
 The agent finds everything by name. So do you.
 
-TRANSITION: That regrouping is not cosmetic. It changes what the agent sees.
+TRANSITION: Here is what that looks like in a real project.
+-->
+
+---
+
+# One folder = one feature
+
+<div class="text-center text-xs op-50 mb-3">Real layout from <code>alexanderop/workoutTracker</code></div>
+
+<div class="grid grid-cols-2 gap-8 mt-2">
+
+<div>
+
+<FolderTree
+  root
+  title="src/"
+  :structure="`src/
+  views/
+  router/
+  components/
+  composables/
+  lib/
+  db/
+  stores/
+  types/
+  features/
+    workout/
+      components/
+      composables/
+      utils/
+    timers/
+      components/
+      composables/
+    exercises/
+    settings/
+    templates/`"
+/>
+
+</div>
+
+<div class="flex flex-col justify-center gap-4">
+
+<Card variant="muted">
+<div class="text-sm op-80">Shared layers stay shared: <code>components</code>, <code>composables</code>, <code>lib</code>, <code>db</code>, <code>stores</code>, <code>types</code>.</div>
+</Card>
+
+<Card variant="muted">
+<div class="text-sm op-80">Each feature is one folder. <code>workout/</code> alone has 24 components and 7 composables.</div>
+</Card>
+
+<Card glow>
+<div class="text-sm"><strong style="color: #ff6bed">No <code>workout</code> imports from <code>timers</code>.</strong> The folder boundary <em>is</em> the contract.</div>
+</Card>
+
+</div>
+
+</div>
+
+<!--
+The regroup, grounded in a real project.
+
+This is the actual src/ layout of my workout tracker today.
+Ten features under features/. Shared layers above.
+Views and router at the top.
+
+The workout feature alone is 24 components and 7 composables.
+That used to be 24 components scattered across src/components/workout/
+and 7 composables in src/composables/. The agent had to grep across
+three folders to find anything related to workouts.
+
+Now workout/ is one folder. timers/ is one folder.
+And critically -- workout does NOT import from timers.
+If they need to share something, it goes up to lib/ or composables/.
+
+TRANSITION: Let me show you what that wall does to the agent.
 -->
 
 ---
