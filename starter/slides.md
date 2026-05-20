@@ -1915,6 +1915,26 @@ TRANSITION: So once the project runs locally AND the agent has this...
 -->
 
 ---
+transition: fade-out
+---
+
+<div class="flex justify-center items-center h-full">
+
+<img src="/agent-browser-bug-reproduced.png" alt="Agent reproducing a bug via agent-browser" class="max-h-[85vh] w-auto rounded-lg" />
+
+</div>
+
+<!--
+[breathe]
+
+This is the agent driving agent-browser to reproduce a real bug.
+Resize to mobile, screenshot, read it back, diagnose the cause.
+No human in the loop -- the agent SEES the bug like a user would.
+
+TRANSITION: So once the project runs locally AND the agent has this...
+-->
+
+---
 clicks: 3
 transition: fade-out
 ---
