@@ -1784,47 +1784,14 @@ CLICK -- Browser mode handles all the things jsdom faked.
 The agent can finally trust that "passes in tests" means
 "works in the browser".
 
-TRANSITION: Layer 5 -- mock the network ONCE.
--->
-
----
-
-# Layer 5: API mocking
-
-<div class="text-sm op-60 mb-4">MSW. Define handlers once. Use them everywhere.</div>
-
-```ts
-// src/mocks/handlers.ts
-import { http, HttpResponse } from "msw"
-
-export const handlers = [
-  http.get("/api/users/:id", ({ params }) =>
-    HttpResponse.json({ id: params.id, email: "ada@example.com" })
-  ),
-]
-```
-
-<!--
-Layer 5 -- API mocking with MSW.
-
-Hard-coded fixtures go stale. Tests that hit a real backend are flaky.
-MSW intercepts at the network layer -- fetch, XHR, GraphQL --
-with a service worker in the browser and a request interceptor in Node.
-
-CLICK -- The same handlers run in Vitest, browser mode, Playwright,
-AND the dev server. One source of truth. Not three drifting fixture folders.
-
-Pair MSW with Zod schemas at the same boundary and your mocks are
-typed AND schema-validated. The agent can't lie to itself about the API shape.
-
-TRANSITION: That's 5 of 15. The rest are on the blog.
+TRANSITION: That's 4 of 15. The rest are on the blog.
 -->
 
 ---
 
 # 15 layers of feedback
 
-<div class="text-center text-sm op-60 mb-4">You've seen 5. There are 10 more. Every layer is a signal the agent can chase.</div>
+<div class="text-center text-sm op-60 mb-4">You've seen 4. There are 11 more. Every layer is a signal the agent can chase.</div>
 
 <div class="grid grid-cols-[1fr_auto] gap-8 items-center">
 
@@ -1843,10 +1810,10 @@ TRANSITION: That's 5 of 15. The rest are on the blog.
 </div>
 
 <!--
-You've seen the first 5: types, lint, unit, component, API mocking.
+You've seen the first 4: types, lint, unit, component.
 
-The other 10: contract testing, E2E, a11y, visual regression, performance,
-dead code, i18n drift, preview deploys, AI code review, observability.
+The other 11: API mocking, contract testing, E2E, a11y, visual regression,
+performance, dead code, i18n drift, preview deploys, AI code review, observability.
 
 Every one is a signal the agent can chase.
 The cheap ones at the center run on every save.
