@@ -2099,67 +2099,67 @@ TRANSITION: Watch the regroup happen.
 ```text
 📁 src/
 ├── 📁 components/
-│   ├── 📄 WorkoutActiveMode.vue
-│   ├── 📄 WorkoutHeader.vue
-│   ├── 📄 TimerDisplay.vue
-│   ├── 📄 ExerciseList.vue
-│   └── 📄 SettingsForm.vue
+│   ├── 🏋️ WorkoutActiveMode.vue
+│   ├── 🏋️ WorkoutHeader.vue
+│   ├── ⏱️ TimerDisplay.vue
+│   ├── 💪 ExerciseList.vue
+│   └── ⚙️ SettingsForm.vue
 ├── 📁 composables/
-│   ├── 📄 useWorkoutMode.ts
-│   ├── 📄 useRestTimer.ts
-│   ├── 📄 useExercises.ts
-│   └── 📄 useSettings.ts
+│   ├── 🏋️ useWorkoutMode.ts
+│   ├── ⏱️ useRestTimer.ts
+│   ├── 💪 useExercises.ts
+│   └── ⚙️ useSettings.ts
 └── 📁 stores/
-    ├── 📄 workout.ts
-    ├── 📄 timers.ts
-    └── 📄 settings.ts
+    ├── 🏋️ workout.ts
+    ├── ⏱️ timers.ts
+    └── ⚙️ settings.ts
 ```
 
 ```text
 📁 src/
 ├── 📁 components/
-│   ├── 📄 WorkoutActiveMode.vue    → workout
-│   ├── 📄 WorkoutHeader.vue        → workout
-│   ├── 📄 TimerDisplay.vue         → timers
-│   ├── 📄 ExerciseList.vue         → exercises
-│   └── 📄 SettingsForm.vue         → settings
+│   ├── 🏋️ WorkoutActiveMode.vue    → workout
+│   ├── 🏋️ WorkoutHeader.vue        → workout
+│   ├── ⏱️ TimerDisplay.vue         → timers
+│   ├── 💪 ExerciseList.vue         → exercises
+│   └── ⚙️ SettingsForm.vue         → settings
 ├── 📁 composables/
-│   ├── 📄 useWorkoutMode.ts        → workout
-│   ├── 📄 useRestTimer.ts          → timers
-│   ├── 📄 useExercises.ts          → exercises
-│   └── 📄 useSettings.ts           → settings
+│   ├── 🏋️ useWorkoutMode.ts        → workout
+│   ├── ⏱️ useRestTimer.ts          → timers
+│   ├── 💪 useExercises.ts          → exercises
+│   └── ⚙️ useSettings.ts           → settings
 └── 📁 stores/
-    ├── 📄 workout.ts               → workout
-    ├── 📄 timers.ts                → timers
-    └── 📄 settings.ts              → settings
+    ├── 🏋️ workout.ts               → workout
+    ├── ⏱️ timers.ts                → timers
+    └── ⚙️ settings.ts              → settings
 ```
 
 ```text
 📁 src/features/
 ├── 📁 workout/
 │   ├── 📁 components/
-│   │   ├── 📄 WorkoutActiveMode.vue
-│   │   └── 📄 WorkoutHeader.vue
+│   │   ├── 🏋️ WorkoutActiveMode.vue
+│   │   └── 🏋️ WorkoutHeader.vue
 │   ├── 📁 composables/
-│   │   └── 📄 useWorkoutMode.ts
-│   └── 📄 store.ts
+│   │   └── 🏋️ useWorkoutMode.ts
+│   └── 🏋️ store.ts
 ├── 📁 timers/
 │   ├── 📁 components/
-│   │   └── 📄 TimerDisplay.vue
+│   │   └── ⏱️ TimerDisplay.vue
 │   ├── 📁 composables/
-│   │   └── 📄 useRestTimer.ts
-│   └── 📄 store.ts
+│   │   └── ⏱️ useRestTimer.ts
+│   └── ⏱️ store.ts
 ├── 📁 exercises/
 │   ├── 📁 components/
-│   │   └── 📄 ExerciseList.vue
+│   │   └── 💪 ExerciseList.vue
 │   └── 📁 composables/
-│       └── 📄 useExercises.ts
+│       └── 💪 useExercises.ts
 └── 📁 settings/
     ├── 📁 components/
-    │   └── 📄 SettingsForm.vue
+    │   └── ⚙️ SettingsForm.vue
     ├── 📁 composables/
-    │   └── 📄 useSettings.ts
-    └── 📄 store.ts
+    │   └── ⚙️ useSettings.ts
+    └── ⚙️ store.ts
 ```
 ````
 
