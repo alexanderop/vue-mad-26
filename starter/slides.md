@@ -1509,34 +1509,6 @@ it will ship whatever compiles.
 
 ---
 
-# An agent with a failing test runs in a loop until it's green.
-
-<v-click>
-
-# Without tests, it ships whatever compiles.
-
-</v-click>
-
-<div v-click class="mt-12 text-center text-lg op-80">
-Every red check is a signal the agent can chase.<br/>
-<span style="color: #ff6bed">The faster the signal, the faster the loop.</span>
-</div>
-
-<!--
-This is the most important slide in the whole feedback section.
-
-An agent with a failing test loops until it is green.
-Without tests, it ships whatever compiles.
-
-CLICK -- Every red check is a signal. Faster signal, faster loop.
-
-The slower your tests, the slower the agent. Keep them fast.
-
-TRANSITION: Let's walk the first 5 layers. Modern frontend tooling.
--->
-
----
-
 # Layer 1: Type safety
 
 <div class="text-sm op-60 mb-4">The first lie-detector. Catch the bug before it runs.</div>

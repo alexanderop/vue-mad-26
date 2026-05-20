@@ -3,9 +3,9 @@ const props = withDefaults(defineProps<{ step?: number }>(), { step: 0 })
 
 const cx = 450
 const cy = 250
-const rOuter = 160
-const rInner = 78
-const rLabel = (rOuter + rInner) / 2
+const rOuter = 205
+const rInner = 70
+const rLabel = 137
 
 function pt(angleDeg: number, r: number) {
   const a = (angleDeg * Math.PI) / 180
@@ -50,7 +50,7 @@ function isShown(n: number) {
 <template>
   <div class="agent-ready-pie" :data-step="props.step">
     <svg
-      viewBox="0 0 900 500"
+      viewBox="200 30 500 440"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Four moves compound into an agent-ready codebase: AGENTS.md, brainmaxxing, feedback pipeline, feature architecture."
@@ -92,9 +92,9 @@ function isShown(n: number) {
       <!-- labels (revealed with their slice) -->
       <g v-for="s in slices" :key="`l-${s.n}`" :class="['label', { 'is-shown': isShown(s.n) }]">
         <g :transform="`translate(${labelPos(s)[0]}, ${labelPos(s)[1]})`">
-          <text text-anchor="middle" y="-14" class="num">{{ s.label }}</text>
-          <text text-anchor="middle" y="4"   class="title">{{ s.title }}</text>
-          <text text-anchor="middle" y="20"  class="sub">{{ s.sub }}</text>
+          <text text-anchor="middle" y="-18" class="num">{{ s.label }}</text>
+          <text text-anchor="middle" y="2"   class="title">{{ s.title }}</text>
+          <text text-anchor="middle" y="22"  class="sub">{{ s.sub }}</text>
         </g>
       </g>
 
@@ -138,12 +138,12 @@ function isShown(n: number) {
 
 .agent-ready-pie :deep(.num) {
   font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
+  font-size: 13px;
   fill: rgba(234,237,243,0.55);
   font-weight: 500;
 }
 .agent-ready-pie :deep(.title) {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   fill: #ff6bed;
   letter-spacing: -0.01em;
@@ -153,7 +153,7 @@ function isShown(n: number) {
   fill: rgba(234,237,243,0.6);
 }
 .agent-ready-pie :deep(.beacon-label) {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   fill: #ff6bed;
   letter-spacing: 0.14em;
