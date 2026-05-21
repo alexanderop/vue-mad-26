@@ -1161,7 +1161,7 @@ transition: fade
 # My take: soon, every harness ships this
 
 <div class="text-sm op-70 text-center mb-6 max-w-3xl mx-auto">
-Claude Code already shipped <code>auto memory</code> + <code>auto dream</code>.
+Claude Code already shipped <code>auto memory</code>.
 </div>
 
 <div class="grid grid-cols-2 gap-6">
@@ -1213,9 +1213,7 @@ Quick zoom-out before we leave brainmaxxing.
 
 Two weeks ago, Anthropic shipped this whole pattern into Claude Code
 itself. Auto memory writes notes during your session -- like /reflect.
-Auto dream consolidates them every 24 hours and five sessions -- like
-/meditate. The REM-sleep analogy is theirs, not mine. v2.1.59. On by
-default. No skills, no hooks.
+v2.1.59. On by default. No skills, no hooks.
 
 My bet -- Cursor next. Codex right after. Within a year, "your agent
 has persistent memory" is a checkbox feature, not a project you adopt.
@@ -1235,62 +1233,6 @@ Even when the built-in version arrives everywhere, you may still want
 the checked-in version on top. That is the bet I am making.
 
 TRANSITION: But there is one trick even bigger than memory.
--->
-
----
-transition: fade
----
-
-# Anatomy of a <span style="color: #ff6bed">dream</span>
-
-<div class="text-sm op-70 text-center mb-6 max-w-3xl mx-auto">
-Async job. Reads your memory store + past sessions. Writes a new, reorganized store. Leaves the input untouched.
-</div>
-
-<div class="grid grid-cols-[1fr_auto_1fr] gap-4 items-center">
-
-<Card variant="muted">
-<div class="text-xs op-60 mb-2">In</div>
-<div class="text-sm">
-<code>memory_store</code><br>
-<span class="op-60">+</span><br>
-1–100 <code>sessions</code>
-</div>
-</Card>
-
-<div class="text-3xl op-60 text-center">→</div>
-
-<Card glow>
-<div class="text-xs op-60 mb-2">Out: a new <code>memory_store</code></div>
-<div class="text-sm">
-• duplicates <strong>merged</strong><br>
-• stale entries <strong>replaced</strong><br>
-• new insights <strong>surfaced</strong>
-</div>
-</Card>
-
-</div>
-
-<div class="text-xs op-50 text-center mt-6">
-REM sleep for your agent. Runs every 24h / 5 sessions.
-</div>
-
-<!--
-Memory writes are local and incremental. Over many sessions
-the store accumulates duplicates, contradictions, stale entries.
-
-Dream is the consolidator. Async job. Takes the existing store
-plus 1–100 past session transcripts, produces a NEW store —
-duplicates merged, contradictions resolved with the latest value,
-new patterns surfaced as fresh memories.
-
-The input store is never touched. You review the output, attach
-it to future sessions, or throw it away.
-
-Anthropic's own framing -- this is REM sleep for the agent.
-
-TRANSITION: Dream consolidates what the agent already saw. The next move
-changes what it sees in the first place.
 -->
 
 ---
