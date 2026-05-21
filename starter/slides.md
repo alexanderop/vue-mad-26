@@ -2481,23 +2481,11 @@ layout: statement
 transition: fade-out
 ---
 
-# This talk was about AI.
+# This talk was not about AI.
 
 <v-click>
 
 # I tricked you.
-
-</v-click>
-
-<v-click>
-
-# Testing, TDD, feature-based architecture — none of it is new. It was good before AI. It's good now.
-
-</v-click>
-
-<v-click>
-
-# What's good for devs is good for agents.
 
 </v-click>
 
@@ -2511,12 +2499,12 @@ feedback loops, feature slices.
 
 CLICK -- But I tricked you.
 
-CLICK -- None of it is new. Testing. TDD. Feature-based architecture.
+None of it is new. Testing. TDD. Feature-based architecture.
 Strict types. Small components. These are the things senior engineers
 have fought for in code review for twenty years. They were good before
 a single agent existed.
 
-CLICK -- That's the whole point. What is good for devs is good for agents.
+What is good for devs is good for agents.
 A codebase that is a joy for a human to work in is one an agent thrives in.
 There was never a separate "AI-ready" checklist -- there was just good
 engineering, and now it pays off twice.
