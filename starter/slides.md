@@ -292,12 +292,15 @@ TRANSITION: But the model never sees this code. Here is what it actually gets.
 -->
 
 ---
+layout: two-cols-header
+---
 
 # The model only sees the description
 
-<div class="grid grid-cols-2 gap-6 mt-4">
+::left::
 
-<div>
+<div class="pr-4">
+
 <div class="text-xs op-60 mb-2">What you write</div>
 
 ```ts
@@ -310,7 +313,10 @@ TRANSITION: But the model never sees this code. Here is what it actually gets.
 
 </div>
 
-<div>
+::right::
+
+<div class="pl-4">
+
 <div class="text-xs op-60 mb-2">What the model gets · <code>makeSchema()</code></div>
 
 ```json
@@ -325,12 +331,6 @@ TRANSITION: But the model never sees this code. Here is what it actually gets.
 }
 ```
 
-</div>
-
-</div>
-
-<div v-click class="absolute bottom-4 left-0 right-0 text-center text-lg">
-  <code>execute</code> never leaves your machine. The model picks a tool from its description. <strong style="color: #ff6bed">The description IS the prompt.</strong>
 </div>
 
 <!--
