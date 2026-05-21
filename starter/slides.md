@@ -628,8 +628,26 @@ TWO -- is it universal, or situational? Situational goes in /docs.
 CLICK -- The right context at the right time.
 
 TRANSITION: AGENTS.md is the front door. But the agent has two more
-knobs you should know — skills, then hooks. The examples come from
-one project: brainmaxxing. Let me show you what that is first.
+knobs you should know — skills, then hooks. All my examples come from
+one project. Fair warning: the name is ridiculous.
+-->
+
+---
+layout: statement
+transition: fade-out
+---
+
+# Forget ~~looksmaxxing~~.
+
+<!--
+[beat]
+
+Quick one before the real stuff.
+
+The internet spent two years on looksmaxxing -- mewing, jawline, skincare routines.
+Forget all of it. We're brainmaxxing -- maxxing the one thing your agent actually has: its context.
+
+TRANSITION: And the kit I steal this from is called -- conveniently -- brainmaxxing.
 -->
 
 ---
@@ -695,8 +713,76 @@ The repo is right there. Scan, or read it end-to-end in an afternoon.
 Don't adopt it wholesale -- steal the shape, adapt the vault to your
 project. The hook is six lines of shell.
 
-TRANSITION: The next two slides show /reflect and inject-brain.sh from
-this project. Start with skills.
+TRANSITION: Here is what brain/ actually looks like on disk.
+-->
+
+---
+
+# Inside `brain/`
+
+<div class="grid grid-cols-2 gap-6 mt-6">
+
+<Card variant="muted">
+<div class="text-xs op-60 mb-2">The vault on disk</div>
+
+```text
+brain/
+├── codebase/
+│   ├── slide-gotchas.md
+│   ├── theme-system.md
+│   └── …
+├── plans/
+│   └── roadmap.md
+├── principles/
+│   ├── fix-root-causes.md
+│   ├── prove-it-works.md
+│   └── …
+└── index.md
+```
+
+</Card>
+
+<Card glow>
+<div class="text-xs op-60 mb-2"><code>index.md</code>. The only file always loaded.</div>
+
+```md
+# Brain
+
+## Codebase
+- [[codebase/theme-system]]
+- [[codebase/slide-gotchas]]
+
+## Plans
+- [[plans/roadmap]]
+
+## Principles
+- [[principles/fix-root-causes]]
+- [[principles/prove-it-works]]
+```
+
+</Card>
+
+</div>
+
+<!--
+This is the whole thing on disk. Plain markdown. No magic.
+
+LEFT -- one folder. brain/.
+codebase/ -- what THIS repo actually does.
+plans/ -- what we are working towards.
+principles/ -- coming up later.
+
+RIGHT -- one file. index.md. A list of wikilinks. No content inlined.
+
+The SessionStart hook cats index.md into every conversation.
+The agent sees the MAP, not the territory.
+When it needs theme details, it follows [[codebase/theme-system]].
+When it does not, that file never enters the context window.
+
+Whole vault available. Almost nothing loaded.
+That is guard-the-context-window in practice.
+
+TRANSITION: So what reads and writes this vault? Skills.
 -->
 
 ---
@@ -900,73 +986,6 @@ CLICK 6 -- the hooks. Skills are buttons you press; hooks fire automatically.
            already knowing what's in the vault. The arrows you've seen
            are wishes. The hooks are the mechanism.
 CLICK 7 -- zoom out. The whole loop, lit up. That's brainmaxxing.
-
-TRANSITION: Here is what brain/ actually looks like on disk.
--->
-
----
-
-# Inside `brain/`
-
-<div class="grid grid-cols-2 gap-6 mt-6">
-
-<Card variant="muted">
-<div class="text-xs op-60 mb-2">The vault on disk</div>
-
-```text
-brain/
-├── codebase/
-│   ├── slide-gotchas.md
-│   ├── theme-system.md
-│   └── …
-├── plans/
-│   └── roadmap.md
-├── principles/
-│   ├── fix-root-causes.md
-│   ├── prove-it-works.md
-│   └── …
-└── index.md
-```
-
-</Card>
-
-<Card glow>
-<div class="text-xs op-60 mb-2"><code>index.md</code>. The only file always loaded.</div>
-
-```md
-# Brain
-
-## Codebase
-- [[codebase/theme-system]]
-- [[codebase/slide-gotchas]]
-
-## Plans
-- [[plans/roadmap]]
-
-## Principles
-- [[principles/fix-root-causes]]
-- [[principles/prove-it-works]]
-```
-
-</Card>
-
-</div>
-
-<!--
-LEFT -- one folder. brain/.
-codebase/ -- what THIS repo actually does.
-plans/ -- what we are working towards.
-principles/ -- coming up next.
-
-RIGHT -- one file. index.md. A list of wikilinks. No content inlined.
-
-The SessionStart hook cats index.md into every conversation.
-The agent sees the MAP, not the territory.
-When it needs theme details, it follows [[codebase/theme-system]].
-When it does not, that file never enters the context window.
-
-Whole vault available. Almost nothing loaded.
-That is guard-the-context-window in practice.
 
 TRANSITION: Six skills run on top of this vault.
 -->
