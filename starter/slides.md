@@ -236,38 +236,123 @@ TRANSITION: Let me strip the magic. Here is what a tool actually is.
 
 # A tool is just a function
 
+````md magic-move
 ```ts
-const TOOLS = {
-  read: {
-    description: 'Read file with line numbers',
-    schema: { path: 'string' },
-    execute: async (args) => Bun.file(args.path).text()
-  },
-  bash: {
-    description: 'Run a shell command',
-    schema: { cmd: 'string' },
-    execute: async (args) => $`sh -c ${args.cmd}`.text()
-  },
-  edit: {
-    description: 'Find and replace in file',
-    schema: { path: 'string', old: 'string', new: 'string' },
-    execute: edit
-  }
+// description + schema + the function that runs
+type Tool = {
+  description: string
+  schema: Record<string, string>
+  execute: (args: Record<string, unknown>) => Promise<string>
 }
 ```
+```ts
+// description + schema + the function that runs
+type Tool = {
+  description: string
+  schema: Record<string, string>
+  execute: (args: Record<string, unknown>) => Promise<string>
+}
+
+const TOOLS = new Map<string, Tool>([
+  ['read', {
+    description: 'Read file with line numbers (not a directory)',
+    schema: { path: 'string', offset: 'number?', limit: 'number?' },
+    execute: read,
+  }],
+  ['edit', {
+    description: 'Replace old with new in file (old must be unique)',
+    schema: { path: 'string', old: 'string', new: 'string' },
+    execute: edit,
+  }],
+  ['bash', {
+    description: 'Run shell command',
+    schema: { cmd: 'string' },
+    execute: bash,
+  }],
+])
+```
+````
 
 <!--
 A tool is a function. That is the whole concept.
 
-Name. Description. Schema. The code that runs.
+Three fields. A description. A schema for the arguments. And execute --
+the code that actually runs. That is the shape of every tool.
 
-The LLM does not "know" how to read files.
-You give it a function called read, you describe what it does,
-and you let it call it.
+CLICK -- and here is the registry. A plain Map. read, edit, bash --
+each entry is just that shape filled in.
 
-That is the entire mechanism.
+The LLM does not "know" how to read files. You hand it these functions,
+you describe what they do, and you let it ask for them.
 
-TRANSITION: And the loop is even simpler.
+nanocode ships seven -- read, write, edit, glob, grep, bash, and
+subagent, which spawns a fresh agent. That is the entire tool surface.
+
+TRANSITION: But the model never sees this code. Here is what it actually gets.
+-->
+
+---
+
+# The model only sees the description
+
+<div class="grid grid-cols-2 gap-6 mt-4">
+
+<div>
+<div class="text-xs op-60 mb-2">What you write</div>
+
+```ts
+['read', {
+  description: 'Read file with line numbers',
+  schema: { path: 'string' },
+  execute: read,  // ← never sent
+}]
+```
+
+</div>
+
+<div>
+<div class="text-xs op-60 mb-2">What the model gets · <code>makeSchema()</code></div>
+
+```json
+{
+  "name": "read",
+  "description": "Read file with line numbers",
+  "input_schema": {
+    "type": "object",
+    "properties": { "path": { "type": "string" } },
+    "required": ["path"]
+  }
+}
+```
+
+</div>
+
+</div>
+
+<div v-click class="absolute bottom-4 left-0 right-0 text-center text-lg">
+  <code>execute</code> never leaves your machine. The model picks a tool from its description. <strong style="color: #ff6bed">The description IS the prompt.</strong>
+</div>
+
+<!--
+This is the part that demystifies everything.
+
+LEFT -- what you write. A tool with an execute function.
+
+RIGHT -- what the model actually receives. makeSchema strips your tool
+down to three things: name, description, and a JSON schema for the
+arguments.
+
+Notice what is missing: execute. The function body never leaves your
+machine. The model cannot run read(). It cannot even see it.
+
+So how does it "use" a tool? It reads the description and emits a
+request -- "call read with path equals src/App.vue." Your loop runs the
+real function and feeds the result back.
+
+CLICK -- Which means the description IS the prompt. A vague description
+is a tool the model misuses. Tool descriptions are engineering, not docs.
+
+TRANSITION: And the loop that runs those tools is just recursion.
 -->
 
 ---
@@ -275,17 +360,23 @@ TRANSITION: And the loop is even simpler.
 # The loop is just recursion
 
 ```ts
-async function agentLoop(messages, systemPrompt) {
-  const response = await callApi(messages, systemPrompt, TOOLS)
-  const toolResults = await runTools(response.content)
+async function agentLoop(messages, systemPrompt, tools = TOOLS) {
+  const response = await callApi(messages, systemPrompt, tools)
+  const toolResults = await processToolCalls(response.content)
 
-  // No tools called → the agent is done
-  if (toolResults.length === 0) return messages
+  const newMessages = [
+    ...messages,
+    { role: 'assistant', content: response.content },
+  ]
 
-  // Tools called → loop with results appended
+  // No tool calls → the agent is done
+  if (toolResults.length === 0) return newMessages
+
+  // Tool calls → loop with results as the next user turn
   return agentLoop(
-    [...messages, response, toolResults],
-    systemPrompt
+    [...newMessages, { role: 'user', content: toolResults }],
+    systemPrompt,
+    tools,
   )
 }
 ```
@@ -293,13 +384,64 @@ async function agentLoop(messages, systemPrompt) {
 <!--
 And the loop is just recursion.
 
-Call the API. Run whatever tools the model asked for.
-Loop again with the results appended to the conversation.
+Call the API. The model replies with text and maybe some tool_use
+requests. processToolCalls runs each one.
+
+Then we grow the conversation: append the assistant's reply, then the
+tool results as the next user turn. That is literally how the chat
+history grows.
 
 When the model returns no tool calls -- it is done.
 
 That is the entire agent architecture.
-Everyone is talking about agents like they are a mystery. They are not.
+Everyone talks about agents like they are a mystery. They are not.
+
+TRANSITION: agentLoop grows `messages` -- but where does `messages` start?
+-->
+
+---
+
+# `messages` is the whole conversation
+
+```ts
+// every turn is a message — the list IS the agent's memory
+type Message = {
+  role: 'user' | 'assistant'
+  content: string | ContentBlock[] | ToolResultBlock[]
+}
+
+const loop = async (messages: Message[]) => {
+  const input = await readInput('❯ ')
+
+  // append the user turn, run the agent, keep what it returns
+  const newMessages = await agentLoop(
+    [...messages, { role: 'user', content: input }],
+    systemPrompt,
+  )
+  return loop(newMessages)
+}
+
+await loop([])  // ← messages starts as an empty array
+```
+
+<!--
+So where does messages come from? Right here.
+
+There is a SECOND loop -- the outer REPL. agentLoop runs one turn;
+this loop runs the whole conversation.
+
+A message is just a role plus content. The list of them IS the agent's
+memory -- no database, no session store. Just an array.
+
+It starts empty -- loop([]). Each time you type, we append your turn as
+a user message and hand the whole list to agentLoop.
+
+agentLoop returns the grown list -- your message, the assistant's reply,
+every tool call and result. We pass THAT into the next loop, so the
+conversation accumulates turn after turn.
+
+Two loops: the inner one recurses per tool round-trip, the outer one
+recurses per user message. That is the entire program.
 
 TRANSITION: So how big is this whole thing?
 -->
