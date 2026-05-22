@@ -2493,6 +2493,21 @@ TRANSITION: And here's the exact loop that built it.
 transition: fade
 ---
 
+<div class="h-full flex items-center justify-center">
+  <img src="/vue-ink-playground.png" class="max-h-full max-w-full rounded-lg shadow-lg" />
+</div>
+
+<!--
+The playground itself -- App.vue on the left, the rendered terminal UI
+on the right. Box, Text, useInput, all reactive Vue.
+
+TRANSITION: And here's the exact loop that built it.
+-->
+
+---
+transition: fade
+---
+
 # How `vue-ink` was built
 
 <div class="grid grid-cols-3 gap-8 mt-16 text-center">
