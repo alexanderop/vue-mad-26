@@ -24,6 +24,12 @@ Vue MAD 2026 -- Madrid. One breath, then title.
 -->
 
 ---
+layout: image
+image: /euro-maxing.png
+backgroundSize: contain
+---
+
+---
 
 <PartSlide
   title="Clean Code Is Sexy Again"
