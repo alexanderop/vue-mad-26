@@ -50,6 +50,19 @@ Quick housekeeping before we start.
 No need to take notes. No need to screenshot.
 Scan this -- these are the slides, live, with every link.
 
+TRANSITION: Now -- quick housekeeping on time.
+-->
+
+---
+layout: statement
+---
+
+# Make notes for questions. There's time at the end.
+
+<!--
+And on timing: the talk runs about 30 minutes, then 15 minutes are yours
+for questions. Jot them down as we go -- we'll take them all at the end.
+
 TRANSITION: Now -- quick intro.
 -->
 
