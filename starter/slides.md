@@ -2486,6 +2486,98 @@ Spec, slice, ralph, refactor, QA, review.
 
 Play with it after the talk -- live playground right here.
 
+TRANSITION: And here's the exact loop that built it.
+-->
+
+---
+transition: fade
+---
+
+# How `vue-ink` was built
+
+<div class="grid grid-cols-3 gap-8 mt-16 text-center">
+
+<div>
+<div class="text-xs op-50 mb-2">Setup</div>
+<div class="text-xl font-bold" style="color: #ff6bed">Vendor the source</div>
+</div>
+
+<div>
+<div class="text-xs op-50 mb-2">Context</div>
+<div class="text-xl font-bold" style="color: #ff6bed"><code>brain/</code> vault</div>
+</div>
+
+<div>
+<div class="text-xs op-50 mb-2">Loop</div>
+<div class="text-xl font-bold" style="color: #ff6bed">Port test → RED → GREEN</div>
+</div>
+
+</div>
+
+<!--
+This is the whole machine that built vue-ink -- every bucket from this talk, wired together.
+
+Setup, once: vendor ink, Vue core and vueuse into repos/ as read-only. That's the
+git-trick from earlier -- the agent greps REAL source, not stale training data.
+
+Context, every session: the brain/ vault. Gotchas, principles, an api-tracker, a
+test-port-status file. That's brainmaxxing -- persistent memory across sessions.
+
+Then the loop, per API: pick the next ink API from the tracker. Port ink's TEST
+first -- their Ava scenario becomes a Vitest test, at the behavior level, not the
+React implementation. Run it -- RED, no impl yet. Translate the impl with Claude --
+JSX to SFC, hooks to composables, reconciler host hooks. Run -- GREEN. Then verify
+scenario parity by counting test() blocks against upstream. Gap? Back to porting
+tests. Parity? Reflect the learnings back into brain/ -- and the loop sharpens itself.
+
+That's the feedback loop, the context, and discoverability -- all three buckets
+turning at once. Mostly AFK.
+
+TRANSITION: And it sharpens itself -- automatically, after every session.
+-->
+
+---
+transition: fade
+---
+
+# It updates its own docs in the background
+
+```bash
+# .claude/settings.json: fire on every turn end
+"Stop": [{ "hooks": [{ "command": ".claude/hooks/brain-extract.sh" }] }]
+```
+
+```bash
+# brain-extract.sh: spawn a headless Claude in the background
+read -r -d '' prompt <<'EOF'
+Read this session's transcript + brain/. Save only NEW durable learnings.
+EOF
+
+BRAIN_EXTRACT_CHILD=1 \
+  claude -p "$prompt" \
+  --permission-mode bypassPermissions &
+```
+
+<!--
+The vue-ink loop had /reflect -- but I still had to REMEMBER to run it.
+This removes me from that step entirely.
+
+It's a Stop hook. Every time a turn ends, it fires. Debounced -- it waits
+60 seconds of idle so it doesn't run mid-burst, and the latest one wins.
+
+Then the trick: it spawns a SECOND Claude. Headless. claude -p, the
+non-interactive print mode, running in the background with an ampersand.
+That child gets one job in its prompt -- read this session's transcript,
+read the brain/ vault, and write only the new durable learnings. Same
+job as /reflect, nobody pressed the button.
+
+The one gotcha -- the child agent ALSO ends a turn, which would fire the
+Stop hook again, forever. So BRAIN_EXTRACT_CHILD=1 marks the child, and
+the hook bails the moment it sees that flag. One line, no recursion.
+
+So the project literally updates its own docs while I'm getting coffee.
+Every session, brain/ gets a little sharper -- without me.
+
 TRANSITION: One last confession.
 -->
 
